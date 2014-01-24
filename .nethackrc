@@ -1,0 +1,1 @@
+OPTIONS=color, DECgraphics, number_pad:2, pickup_types:$?+!, fullscreen

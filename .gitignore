@@ -1,0 +1,47 @@
+# . directories
+.dbus
+.ddd
+.adobe
+.android
+.cache
+.config
+.cpan
+.elmo
+.Skype
+.ICEauthority
+.Xauthority
+.emacs.d/auto-save-list/
+.local
+.gimp-2.8
+.m2
+.lyrics
+.macromedia
+.magick
+.mplayer
+.npm
+.root
+.nv
+.sbcl
+.pki
+.slime
+.themes
+.subversion
+.texlive
+.wine
+.thumbnails
+.xchat2
+
+# backup files
+*~
+*.elc
+
+# directories
+School
+Code
+Downloads
+Pictures
+tmp
+Blog
+Documents
+Mail
+Research

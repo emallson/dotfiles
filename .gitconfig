@@ -1,0 +1,7 @@
+[push]
+	default = simple
+[user]
+	email = emallson@archlinux.us
+	name = J. David Smith
+[core]
+	editor = emacs

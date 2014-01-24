@@ -1,0 +1,127 @@
+;; -*- Mode: Lisp -*-
+;;; .stumpwmrc --- StumpWM Init File
+
+(in-package :stumpwm)
+
+(setf stumpwm::*debug-level* 10)
+(redirect-all-output (data-dir-file "debug-output" "txt"))
+
+(message "Loading rc...")
+(run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
+
+;; TODO: Get swank running
+(load "/home/emallson/.emacs.d/elpa/slime-20130626.1151/swank-loader.lisp")
+(defparameter *swank-p* NIL)
+(swank-loader:init)
+(defcommand swank () ()
+  (unless *swank-p*
+    (ignore-errors
+     (setf stumpwm:*top-level-error-action* :break)
+     (swank:create-server :port 4040
+                          :style swank:*communication-style*
+                          :dont-close t)
+     (echo-string (current-screen) 
+                  "Starting swank. M-x slime-connect RET 4040 RET, then (in-package stumpwm).")
+     (setq *swank-p* t))))
+(swank)
+(set-prefix-key (kbd "s-w"))
+
+(setq *run-or-raise-all-groups* NIL)
+
+(defcommand urxvtc () ()
+            (run-or-raise "urxvtc" '(:title "^(emallson|root)@.+:.+|urxvt$")))
+(defcommand new-urxvtc () ()
+            (run-shell-command "urxvtc"))
+(defcommand emacs () ()
+            (run-or-raise "urxvtc -pe \"-tabbedex\" -e new-emacs" '(:title "new-emacs")))
+(defcommand new-emacs () ()
+            (run-shell-command "urxvtc -pe \"-tabbedex\" -e new-emacs"))
+(defcommand chromium () ()
+            (run-or-raise "chromium" '(:instance "chromium")))
+(defcommand new-chromium () ()
+            (run-shell-command "chromium --new-window"))
+(defcommand acroread () ()
+            (run-or-raise "acroread" '(:instance "pdfread")))
+
+(defcommand csync () ()
+  (echo "Running csync...")
+  (run-shell-command "csync"))
+
+(defcommand suspend () ()
+            (run-shell-command "systemctl suspend"))
+(defcommand reboot () ()
+            (run-shell-command "systemctl reboot"))
+(defcommand poweroff () ()
+            (run-shell-command "systemctl poweroff"))
+
+(defvar *powerctl-map* 
+  (let ((m (make-sparse-keymap)))
+    (define-key m (kbd "s") "suspend")
+    (define-key m (kbd "r") "reboot")
+    (define-key m (kbd "p") "poweroff")
+    m))
+
+(define-key *root-map* (kbd "s-p") '*powerctl-map*)
+
+(define-key *root-map* (kbd "c") "urxvtc")
+(define-key *root-map* (kbd "C-c") "new-urxvtc")
+(define-key *root-map* (kbd "e") "emacs")
+(define-key *root-map* (kbd "C-e") "new-emacs")
+
+(define-key *root-map* (kbd "a") "acroread")
+(define-key *root-map* (kbd "b") "chromium")
+(define-key *root-map* (kbd "C-b") "new-chromium")
+
+(define-key *root-map* (kbd "C-M-c") "csync")
+
+;; fonts! - not working
+(set-font "-adobe-source code pro light-*-*-*-*-*-*-*-*-*-*-*-*")
+
+; time display
+
+(defun pretty-time ()
+  (defun stringify-dow (dow)
+    (nth dow '("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")))
+  (defun stringify-month (month)
+    (nth (- month 1) '("January" "February" "March" "April"
+                 "May" "June" "July" "August"
+                 "September" "October" "November" "December")))
+  (multiple-value-bind (second minute hour date month year dow dst-p tz)
+      (get-decoded-time)
+    (format NIL "~2,'0d:~2,'0d:~2,'0d ~a, ~d ~a ~d (GMT ~@d)"
+            hour minute second 
+            (stringify-dow dow) 
+            date (stringify-month month) 
+            year (- tz))))
+
+(defcommand echo-time () ()
+  (echo (pretty-time)))
+
+(define-key *root-map* (kbd "t") "echo-time")
+
+; switch key layouts
+
+(defparameter *colemak-p* t)
+
+(defcommand switch-key-layouts () ()
+  (if *colemak-p*
+      (run-shell-command "setxkbmap us")
+      (run-shell-command "setxkbmap us -variant colemak"))
+  (setq *colemak-p* (not *colemak-p*)))
+
+(define-key *root-map* (kbd "C-M-k") "switch-key-layouts")
+
+; fix window and frame borders
+
+(setq *window-border-style* :thick)
+
+(defvar *bg-color* (xlib:make-color :red (/ 32 256) :green (/ 32 256) :blue (/ 32 256)))
+(set-focus-color *bg-color*)
+
+; machine-specific commands
+(when (equal (machine-instance) "Vorringia")
+  (load "./.stumpwm.d/vorringia.lisp"))
+(when (equal (machine-instance) "Outland")
+  (load "./.stumpwm.d/outland.lisp"))
+
+;; .stumpwrc ends here

@@ -1,0 +1,13 @@
+cd ..
+make deploy
+make deploy
+ls
+cd src_webinterface/
+ls
+make deploy
+exit
+clip ../dataset.json
+exit
+git config --global user.email "emallson@archlinux.us"
+git config --global user.name  "J. David Smith"
+exit
