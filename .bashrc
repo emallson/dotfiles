@@ -12,6 +12,7 @@ export PATH=~/.root/bin:$PATH:/opt/bin:~/Code/node_modules/.bin
 export MPD_HOST=vorringia.atl
 export EDITOR=new-emacs VISUAL=new-emacs ALTERNATE_EDITOR=emacs
 export CHROME_BIN=chromium
+export GLOBIGNORE=".:.."
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     PREFIX="$HOSTNAME:"

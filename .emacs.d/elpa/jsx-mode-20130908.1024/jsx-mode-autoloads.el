@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (jsx-mode) "jsx-mode" "jsx-mode.el" (21200 9655
-;;;;;;  738119 83000))
+;;;### (autoloads (jsx-mode) "jsx-mode" "jsx-mode.el" (21194 50668
+;;;;;;  679740 144000))
 ;;; Generated autoloads from jsx-mode.el
 
 (autoload 'jsx-mode "jsx-mode" "\
@@ -14,8 +14,8 @@
 
 ;;;***
 
-;;;### (autoloads nil nil ("jsx-mode-pkg.el") (21200 9655 822623
-;;;;;;  766000))
+;;;### (autoloads nil nil ("jsx-mode-pkg.el") (21194 50668 780654
+;;;;;;  893000))
 
 ;;;***
 
