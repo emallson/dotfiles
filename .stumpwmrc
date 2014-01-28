@@ -3,13 +3,14 @@
 
 (in-package :stumpwm)
 
+;; debugging output
 (setf stumpwm::*debug-level* 10)
 (redirect-all-output (data-dir-file "debug-output" "txt"))
 
 (message "Loading rc...")
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
-;; TODO: Get swank running
+;; Swank -- for interactive WM Hacking
 (load "/home/emallson/.emacs.d/elpa/slime-20130626.1151/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
@@ -24,10 +25,14 @@
                   "Starting swank. M-x slime-connect RET 4040 RET, then (in-package stumpwm).")
      (setq *swank-p* t))))
 (swank)
+
+;; prefer s-w to C-t
 (set-prefix-key (kbd "s-w"))
 
+;; using groups as independent workspaces; don't want RoR to pull me to another group
 (setq *run-or-raise-all-groups* NIL)
 
+;; keybinds!
 (defcommand urxvtc () ()
             (run-or-raise "urxvtc" '(:title "^(emallson|root)@.+:.+|urxvt$")))
 (defcommand new-urxvtc () ()
@@ -43,10 +48,7 @@
 (defcommand acroread () ()
             (run-or-raise "acroread" '(:instance "pdfread")))
 
-(defcommand csync () ()
-  (echo "Running csync...")
-  (run-shell-command "csync"))
-
+;; power control commands
 (defcommand suspend () ()
             (run-shell-command "systemctl suspend"))
 (defcommand reboot () ()
@@ -72,13 +74,10 @@
 (define-key *root-map* (kbd "b") "chromium")
 (define-key *root-map* (kbd "C-b") "new-chromium")
 
-(define-key *root-map* (kbd "C-M-c") "csync")
+;; fonts! - not AA'd - looks awful w/o that
+;; (set-font "-adobe-source code pro medium-medium-r-normal--17-120-100-100-m-0-adobe-standard")
 
-;; fonts! - not working
-(set-font "-adobe-source code pro light-*-*-*-*-*-*-*-*-*-*-*-*")
-
-; time display
-
+;; time display
 (defun pretty-time ()
   (defun stringify-dow (dow)
     (nth dow '("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")))
@@ -99,8 +98,7 @@
 
 (define-key *root-map* (kbd "t") "echo-time")
 
-; switch key layouts
-
+;; switch key layouts - sometimes other people need to type on my machine
 (defparameter *colemak-p* t)
 
 (defcommand switch-key-layouts () ()
@@ -111,14 +109,26 @@
 
 (define-key *root-map* (kbd "C-M-k") "switch-key-layouts")
 
-; fix window and frame borders
-
+;; fix window and frame borders. By default there is a white border around one
+;; frame in a dual-monitor setup. This changes it, making everything silky
+;; smooth ^.^
 (setq *window-border-style* :thick)
 
 (defvar *bg-color* (xlib:make-color :red (/ 32 256) :green (/ 32 256) :blue (/ 32 256)))
 (set-focus-color *bg-color*)
 
-; machine-specific commands
+;; contrib modules
+;; multimedia-keys
+(load "~/.stumpwm.d/multimedia-keys.lisp")
+;; MPD
+(load-module "mpd")
+(define-key *root-map* (kbd "s-m") '*mpd-map*)
+(define-key *top-map* (kbd "XF86AudioPlay") "mpd-toggle-pause")
+(define-key *top-map* (kbd "XF86AudioStop") "mpd-stop")
+(define-key *top-map* (kbd "XF86AudioNext") "mpd-next")
+(define-key *top-map* (kbd "XF86AudioPrev") "mpd-prev")
+
+;; machine-specific commands
 (when (equal (machine-instance) "Vorringia")
   (load "./.stumpwm.d/vorringia.lisp"))
 (when (equal (machine-instance) "Outland")
