@@ -99,6 +99,11 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+;; no-easy-keys
+;; time to stop using them thar arrows
+(require 'no-easy-keys)
+(no-easy-keys 1)
+
 ;; js
 (autoload 'js3-mode "js3" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
