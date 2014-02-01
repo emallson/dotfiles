@@ -30,6 +30,7 @@
 
 (require 'column-marker)
 (add-hook 'js3-mode-hook (lambda () (interactive) (column-marker-1 81)))
+(add-hook 'fortran-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
 (require 'magit)
 (require 'lacarte)

@@ -34,7 +34,7 @@
 
 ;; keybinds!
 (defcommand urxvtc () ()
-            (run-or-raise "urxvtc" '(:title "^(emallson|root)@.+:.+|urxvt$")))
+            (run-or-raise "urxvtc" '(:class "URxvt" :title "^(?!new-emacs)")))
 (defcommand new-urxvtc () ()
             (run-shell-command "urxvtc"))
 (defcommand emacs () ()
@@ -45,8 +45,8 @@
             (run-or-raise "chromium" '(:instance "chromium")))
 (defcommand new-chromium () ()
             (run-shell-command "chromium --new-window"))
-(defcommand acroread () ()
-            (run-or-raise "acroread" '(:instance "pdfread")))
+(defcommand evince () ()
+            (run-or-raise "evince" '(:class "Evince")))
 
 ;; power control commands
 (defcommand suspend () ()
@@ -70,7 +70,7 @@
 (define-key *root-map* (kbd "e") "emacs")
 (define-key *root-map* (kbd "C-e") "new-emacs")
 
-(define-key *root-map* (kbd "a") "acroread")
+(define-key *root-map* (kbd "a") "evince")
 (define-key *root-map* (kbd "b") "chromium")
 (define-key *root-map* (kbd "C-b") "new-chromium")
 
