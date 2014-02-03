@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: SUBROUTINE .... END
+# key: sub
+# --
+        SUBROUTINE $1
+        $0
+        END
