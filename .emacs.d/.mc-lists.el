@@ -9,6 +9,8 @@
         icicle-yank-maybe-completing
         indent-for-tab-command
         kill-region
+        paredit-backward
+        paredit-forward
         sgml-slash
         yas-expand
         ))

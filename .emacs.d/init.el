@@ -58,6 +58,10 @@
 ;; elpa/melpa packages
 (package-initialize)
 
+; projectile
+(require 'projectile)
+(projectile-global-mode)
+
 ; magit
 (require 'magit)
 
@@ -166,6 +170,9 @@
  '(js3-indent-on-enter-key nil)
  '(js3-reparse-on-indent nil)
  '(js3-strict-missing-semi-warning t)
+ '(org-export-latex-minted-langs (quote ((emacs-lisp "common-lisp") (cc "c++") (cperl "perl") (shell-script "bash") (caml "ocaml") (clojure "clojure"))))
+ '(org-latex-default-packages-alist (quote (("AUTO" "inputenc" t) ("T1" "fontenc" t) ("" "fixltx2e" nil) ("" "graphicx" t) ("" "longtable" nil) ("" "float" nil) ("" "wrapfig" nil) ("" "rotating" nil) ("normalem" "ulem" t) ("" "amsmath" t) ("" "textcomp" t) ("" "marvosym" t) ("" "wasysym" t) ("" "amssymb" t) ("" "hyperref" nil) ("" "minted" nil) "\\tolerance=1000")))
+ '(org-latex-listings (quote minted))
  '(org2blog/wp-blog-alist (quote (("Record of Motion" :username "emallson" :url "http://emallson.wordpress.com/xmlrpc.php"))))
  '(org2blog/wp-show-post-in-browser (quote show))
  '(org2blog/wp-use-wp-latex t)
