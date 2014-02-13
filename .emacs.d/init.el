@@ -31,6 +31,15 @@
 (add-hook 'jsx-mode-hook #'hs-minor-mode)
 (add-hook 'js3-mode-hook #'hs-minor-mode)
 
+; flyspell
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+(add-hook 'jsx-mode-hook #'flyspell-prog-mode)
+(add-hook 'js3-mode-hook #'flyspell-prog-mode)
+
+; auto-fill-mode
+(add-hook 'text-mode-hook #'turn-on-auto-fill)
+
 ; latex mode
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
 (add-hook 'LaTeX-mode-hook 
