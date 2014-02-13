@@ -48,6 +48,10 @@
 (defcommand evince () ()
             (run-or-raise "evince" '(:class "Evince")))
 
+;; mail
+(defcommand switch-to-mail () ()
+  (switch-to-group (find-group (current-screen) "mail")))
+
 ;; power control commands
 (defcommand suspend () ()
             (run-shell-command "systemctl suspend"))
@@ -73,6 +77,8 @@
 (define-key *root-map* (kbd "a") "evince")
 (define-key *root-map* (kbd "b") "chromium")
 (define-key *root-map* (kbd "C-b") "new-chromium")
+
+(define-key *root-map* (kbd "m") "switch-to-mail")
 
 ;; fonts! - not AA'd - looks awful w/o that
 ;; (set-font "-adobe-source code pro medium-medium-r-normal--17-120-100-100-m-0-adobe-standard")
