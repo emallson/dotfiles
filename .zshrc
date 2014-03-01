@@ -56,12 +56,12 @@ source $ZSH/oh-my-zsh.sh
 export PATH="/home/emallson/.root/bin:/home/emallson/bin:/usr/local/bin:/home/emallson/.root/bin:/home/emallson/.root/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/bin:/home/emallson/Code/node_modules/.bin:/opt/bin:/home/emallson/Code/node_modules/.bin:/opt/bin:/home/emallson/Code/node_modules/.bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='new-emacs'
+else
+  export EDITOR='emacs'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
