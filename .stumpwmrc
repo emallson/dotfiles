@@ -11,7 +11,7 @@
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
 ;; Swank -- for interactive WM Hacking
-(load "/home/emallson/.emacs.d/elpa/slime-20140127.1046/swank-loader.lisp")
+(load "/home/emallson/.emacs.d/elpa/slime-20140302.1712/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
 (defcommand swank () ()
