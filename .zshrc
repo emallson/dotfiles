@@ -70,3 +70,5 @@ fi
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 alias ls='ls --color=auto -B'
+
+setopt extendedglob
