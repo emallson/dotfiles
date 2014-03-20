@@ -133,6 +133,12 @@
 (define-key *top-map* (kbd "XF86AudioStop") "mpd-stop")
 (define-key *top-map* (kbd "XF86AudioNext") "mpd-next")
 (define-key *top-map* (kbd "XF86AudioPrev") "mpd-prev")
+;; Window Hiding
+
+
+(load "~/.stumpwm.d/hide-windows.lisp")
+(define-key *root-map* (kbd "C-h") "toggle-hide-window")
+
 
 ;; machine-specific commands
 (when (equal (machine-instance) "Vorringia")
