@@ -5,3 +5,4 @@
 	name = J David Smith
 [core]
 	editor = emacs
+	excludesfile = ~/.gitignore_global

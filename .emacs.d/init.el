@@ -80,6 +80,7 @@
 ; projectile
 (require 'projectile)
 (projectile-global-mode)
+(setq tags-revert-without-query t)
 
 ; magit
 (require 'magit)
@@ -190,6 +191,7 @@
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
  '(fortran-minimum-statement-indent-fixed 8)
+ '(ignoramus-file-basename-endings (quote (".386" ".a" ".acn" ".acr" ".alg" ".ap_" ".apk" "_archive" ".asv" "-autoloads.el" ".aux" ".bak" ".bbl" ".beam" ".bin" ".blg" ".cgo1.go" ".cgo2.c" ".chi" ".chi.h" ".class" ".com" ".cp" ".cps" ".d64fsl" ".dcu" ".dep" ".dex" ".dfsl" ".dll" ".drc" ".drv" ".dvi" ".dx32fsl" ".dx64fsl" ".dxl" ".dylib" ".ear" ".elc" ".esproj" "-Ex.R" ".exe" ".fas" ".fasl" ".fdb_latexmk" ".fmx" ".fn" ".fns" ".fsl" ".fx32fsl" ".fx64fsl" ".gcda" ".gcno" ".gcov" ".glg" ".glo" ".gls" ".gmo" ".hi" ".identcache" ".ilg" ".ilk" ".iml" ".ind" ".ipr" ".ist" ".iws" ".jar" ".ky" ".kys" ".la" ".lai" ".launch" ".lbin" ".lib" ".lnk" ".lo" ".lock" ".lof" ".lot" ".lx32fsl" ".lx64fsl" ".maf" ".mem" ".min.js" "-min.js" ".min.css" "-min.css" ".mmx" ".mo" ".moved-aside" ".mtc" ".mtc0" ".nav" ".nlo" ".o" ".obj" ".opensdf" ".orig" ".p64fsl" ".pdfsync" ".pfsl" ".pg" ".pgs" ".pid" ".pidb" ".plt" ".plx" ".pot" ".psess" ".Publish.xml" ".pyc" ".pyd" ".pydevproject" ".pyo" ".rbc" ".rej" ".sassc" ".scc" ".sdf" ".seed" ".sln.docstates" ".slo" ".snm" ".so" ".sparcf" ".sublime-project" ".sublime-workspace" ".suo" ".swo" ".swp" ".sx32fsl" ".sx64fsl" ".synctex.gz" ".ttc" ".tfm" ".tmproj" ".tmproject" ".toc" ".tp" ".tps" ".ufsl" ".un~" ".vr" ".vrb" ".vrs" ".vsp" ".vspscc" ".vssscc" ".vxd" ".war" ".wx32fsl" ".wx64fsl" ".x86f" ".xdy" ".zwc" "~")))
  '(js3-auto-indent-p nil)
  '(js3-dont-rebind-backtick t)
  '(js3-electric-keys (quote nil))
@@ -209,8 +211,10 @@
  '(org2blog/wp-show-post-in-browser (quote show))
  '(org2blog/wp-use-wp-latex t)
  '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(projectile-enable-idle-timer t)
+ '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv")))
  '(projectile-globally-ignored-files (quote ("TAGS")))
- '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore %s")
+ '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=\"*min.js\" %s")
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map (quote ((20 . "#BC8383") (40 . "#CC9393") (60 . "#DFAF8F") (80 . "#D0BF8F") (100 . "#E0CF9F") (120 . "#F0DFAF") (140 . "#5F7F5F") (160 . "#7F9F7F") (180 . "#8FB28F") (200 . "#9FC59F") (220 . "#AFD8AF") (240 . "#BFEBBF") (260 . "#93E0E3") (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3") (340 . "#94BFF3") (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3"))

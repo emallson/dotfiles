@@ -76,3 +76,4 @@ setopt extendedglob
 function uva() {
     g++ -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
+export CHROME_BIN=chromium;
