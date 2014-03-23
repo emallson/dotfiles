@@ -10,5 +10,6 @@ elif [[ $1 == "add" ]]; then
     cd ~;
     cp --parents "${2#$HOME/}" "${CWD}/";
     cd $CWD;
+    git add "${2#$HOME/}";
 fi
 
