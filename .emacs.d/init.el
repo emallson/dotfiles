@@ -183,9 +183,13 @@
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c M-r") 'replace-regexp)
 
-;; org stuff
-;; (define-key org-mode-map (kbd "C-c C-d") 'org-demote-subtree)
-;; (define-key org-mode-map (kbd "C-c C-p") 'org-promote-subtree)
+
+;; org mode
+(require 'org)
+(org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
+(org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
+(org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -213,8 +217,9 @@
  '(js3-reparse-on-indent nil)
  '(js3-strict-missing-semi-warning t)
  '(org-export-date-timestamp-format "%d %B %Y")
+ '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "CONTEXT" "HIDDEN")))
  '(org-export-latex-minted-langs (quote ((emacs-lisp "common-lisp") (cc "c++") (cperl "perl") (shell-script "bash") (caml "ocaml") (clojure "clojure"))))
- '(org-latex-default-packages-alist (quote (("AUTO" "inputenc" t) ("T1" "fontenc" t) ("" "fixltx2e" nil) ("" "graphicx" t) ("" "longtable" nil) ("" "float" nil) ("" "wrapfig" nil) ("" "rotating" nil) ("normalem" "ulem" t) ("" "amsmath" t) ("" "textcomp" t) ("" "marvosym" t) ("" "wasysym" t) ("" "amssymb" t) ("" "hyperref" nil) "\\tolerance=1000" ("" "minted" t))))
+ '(org-latex-default-packages-alist (quote (("AUTO" "inputenc" t) ("T1" "fontenc" t) ("" "fixltx2e" nil) ("" "graphicx" t) ("" "longtable" nil) ("" "float" nil) ("" "wrapfig" nil) ("" "rotating" nil) ("normalem" "ulem" t) ("" "amsmath" t) ("" "textcomp" t) ("" "marvosym" t) ("" "wasysym" t) ("" "amssymb" t) ("" "hyperref" nil) "\\tolerance=1000" ("" "minted" t) ("" "microtype" nil))))
  '(org-latex-listings (quote minted))
  '(org-latex-pdf-process (quote ("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")))
  '(org-latex-to-pdf-process (quote ("pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")))
