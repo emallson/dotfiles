@@ -190,6 +190,10 @@
 (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
 (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
 
+;; smalltalk
+(require 'smalltalk-mode)
+(require 'gst-mode)
+(add-to-list 'auto-mode-alist '("\\.st$" . smalltalk-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
