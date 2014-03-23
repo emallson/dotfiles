@@ -5,6 +5,7 @@
       '(
         backward-sexp
         evil-numbers/inc-at-pt
+        forward-sexp
         icicle-goto-marker-or-set-mark-command
         icicle-yank-maybe-completing
         indent-for-tab-command

@@ -98,9 +98,12 @@
 (global-set-key (kbd "C-c A") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c M-a") 'mc/mark-all-in-region)
 
-;; icicles
-(require 'icicles)
-(icy-mode)
+;; ido
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(setq ido-use-filename-at-point 'guess)
 
 ;; slime
 (setq inferior-lisp-program "/usr/bin/sbcl")
@@ -143,11 +146,19 @@
 (add-to-list 'magic-mode-alist '("^/\\*\\* +@jsx.+ \\*/$" . jsx-mode))
 (autoload 'jsx-mode "jsx-mode" "JSX mode" t)
 
-(setq-default indent-tabs-mode nil)
+;; subword-mode
+;; makes cursor movement stop in camelCase variables
+(subword-mode 1)
 
+;; indentation
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4)
+
+;; disable startup screen and non-empty scratchpad
 (setq-default inhibit-startup-screen t)
 (setq initial-scratch-message "")
 
+;; paren stuff
 (show-paren-mode t)
 (setq show-paren-delay 0)
 
@@ -164,11 +175,11 @@
                              (blink-matching-open))))
     (when matching-text (message matching-text))))
 
-(global-set-key [?\C-c ?\g] 'goto-line)
-(global-set-key [?\C-c ?\m] 'magit-status)
-(global-set-key [?\C-c ?\c] 'compile)
+(global-set-key (kbd "C-c g") 'goto-line)
+(global-set-key (kbd "C-c m") 'magit-status)
+(global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "M-`") 'lacarte-execute-menu-command)
-(global-set-key [?\C-c ?\q] 'auto-fill-mode)
+(global-set-key (kbd "C-c q") 'auto-fill-mode)
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c M-r") 'replace-regexp)
 
@@ -213,8 +224,10 @@
  '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/"))))
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv")))
- '(projectile-globally-ignored-files (quote ("TAGS")))
- '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=\"*min.js\" %s")
+ '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
+ '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=virtualenv --exclude=\"*min.js\" %s")
+ '(reb-re-syntax (quote string))
+ '(tags-add-tables nil)
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map (quote ((20 . "#BC8383") (40 . "#CC9393") (60 . "#DFAF8F") (80 . "#D0BF8F") (100 . "#E0CF9F") (120 . "#F0DFAF") (140 . "#5F7F5F") (160 . "#7F9F7F") (180 . "#8FB28F") (200 . "#9FC59F") (220 . "#AFD8AF") (240 . "#BFEBBF") (260 . "#93E0E3") (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3") (340 . "#94BFF3") (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3"))
