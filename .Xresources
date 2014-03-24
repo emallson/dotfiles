@@ -62,5 +62,5 @@ URxvt.tabbed.tab-bg:    0
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 
-Xcursor.theme: ComixCursors-Slim-Black
+Xcursor.theme: ComixCursors-Slim-White
 Xcursor.size: 16
