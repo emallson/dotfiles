@@ -116,6 +116,9 @@
   (local-set-key (kbd "C-c e") 'slime-eval-last-expression))
 (add-hook 'lisp-mode-hook 'lisp-mode-keys)
 
+;; clojure
+(add-to-list 'auto-mode-alist '("\\.cljx\\'" . clojure-mode))
+
 ;; paredit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
@@ -220,8 +223,8 @@
  '(js3-indent-on-enter-key nil)
  '(js3-reparse-on-indent nil)
  '(js3-strict-missing-semi-warning t)
- '(org-export-date-timestamp-format "%d %B %Y")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "CONTEXT" "HIDDEN")))
+ '(org-export-date-timestamp-format "%d %B %Y")
  '(org-export-latex-minted-langs (quote ((emacs-lisp "common-lisp") (cc "c++") (cperl "perl") (shell-script "bash") (caml "ocaml") (clojure "clojure"))))
  '(org-latex-default-packages-alist (quote (("AUTO" "inputenc" t) ("T1" "fontenc" t) ("" "fixltx2e" nil) ("" "graphicx" t) ("" "longtable" nil) ("" "float" nil) ("" "wrapfig" nil) ("" "rotating" nil) ("normalem" "ulem" t) ("" "amsmath" t) ("" "textcomp" t) ("" "marvosym" t) ("" "wasysym" t) ("" "amssymb" t) ("" "hyperref" nil) "\\tolerance=1000" ("" "minted" t) ("" "microtype" nil))))
  '(org-latex-listings (quote minted))
@@ -234,7 +237,7 @@
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv")))
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
- '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=virtualenv --exclude=\"*min.js\" %s")
+ '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=virtualenv --exclude=\"*min.js\" --exclude=\"*#*\" %s")
  '(reb-re-syntax (quote string))
  '(tags-add-tables nil)
  '(vc-annotate-background "#2B2B2B")
