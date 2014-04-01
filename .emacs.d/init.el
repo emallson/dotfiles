@@ -116,6 +116,9 @@
   (local-set-key (kbd "C-c e") 'slime-eval-last-expression))
 (add-hook 'lisp-mode-hook 'lisp-mode-keys)
 
+;; clojure
+(add-to-list 'auto-mode-alist '("\\.cljx\\'" . clojure-mode))
+
 ;; paredit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
