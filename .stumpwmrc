@@ -11,7 +11,7 @@
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
 ;; Swank -- for interactive WM Hacking
-(load "/home/emallson/.emacs.d/elpa/slime-20140302.1712/swank-loader.lisp")
+(load "/home/emallson/.emacs.d/elpa/slime-20140329.814/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
 (defcommand swank () ()
@@ -79,6 +79,8 @@
 (define-key *root-map* (kbd "C-b") "new-chromium")
 
 (define-key *root-map* (kbd "m") "switch-to-mail")
+
+(define-key *root-map* (kbd "C-g") "abort")
 
 ;; fonts! - not AA'd - looks awful w/o that
 ;; (set-font "-adobe-source code pro medium-medium-r-normal--17-120-100-100-m-0-adobe-standard")

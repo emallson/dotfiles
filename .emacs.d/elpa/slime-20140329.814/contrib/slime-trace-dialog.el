@@ -206,33 +206,39 @@ inspecting details of traced functions. Invoke this dialog with C-c T."
               ;; (overlay-put overlay 'face '(:background "darkslategrey"))
               overlay)))))
 
-(defun slime-trace-dialog--get-buffer ()
-  (let* ((name (format "*traces for %s*"
-                       (slime-connection-name slime-default-connection)))
-         (existing (get-buffer name)))
-    (cond ((and existing
-                (buffer-live-p existing)
-                (with-current-buffer existing
-                  (memq slime-buffer-connection slime-net-processes)))
-           existing)
-          (t
-           (if existing (kill-buffer existing))
-           (with-current-buffer (get-buffer-create name)
-             (slime-trace-dialog-mode)
-             (save-excursion
-               (buffer-disable-undo)
-               (slime-trace-dialog--insert-and-overlay
-                "[waiting for the traced specs to be available]"
-                slime-trace-dialog--specs-overlay)
-               (slime-trace-dialog--insert-and-overlay
-                "[waiting for some info on trace download progress ]"
-                slime-trace-dialog--progress-overlay)
-               (slime-trace-dialog--insert-and-overlay
-                "[waiting for the actual traces to be available]"
-                slime-trace-dialog--tree-overlay)
-               (current-buffer))
-             (setq slime-buffer-connection slime-default-connection)
-             (pop-to-buffer (current-buffer)))))))
+(defun slime-trace-dialog--buffer-name ()
+  (format "*traces for %s*"
+          (slime-connection-name slime-default-connection)))
+
+(defun slime-trace-dialog--live-dialog (&optional buffer-or-name)
+  (let ((buffer-or-name (or buffer-or-name
+                            (slime-trace-dialog--buffer-name))))
+    (and (buffer-live-p (get-buffer buffer-or-name))
+       (with-current-buffer buffer-or-name
+         (memq slime-buffer-connection slime-net-processes))
+       buffer-or-name)))
+
+(defun slime-trace-dialog--ensure-buffer ()
+  (let ((name (slime-trace-dialog--buffer-name)))
+    (or (slime-trace-dialog--live-dialog name)
+        (with-current-buffer (get-buffer-create name)
+          (let ((inhibit-read-only t))
+            (erase-buffer))
+          (slime-trace-dialog-mode)
+          (save-excursion
+            (buffer-disable-undo)
+            (slime-trace-dialog--insert-and-overlay
+             "[waiting for the traced specs to be available]"
+             slime-trace-dialog--specs-overlay)
+            (slime-trace-dialog--insert-and-overlay
+             "[waiting for some info on trace download progress ]"
+             slime-trace-dialog--progress-overlay)
+            (slime-trace-dialog--insert-and-overlay
+             "[waiting for the actual traces to be available]"
+             slime-trace-dialog--tree-overlay)
+            (current-buffer))
+          (setq slime-buffer-connection slime-default-connection)
+          (current-buffer)))))
 
 (defun slime-trace-dialog--make-autofollow-fn (id)
   (let ((requested nil))
@@ -436,8 +442,8 @@ inspecting details of traced functions. Invoke this dialog with C-c T."
       (insert "\n\n"))))
 
 (defun slime-trace-dialog--open-detail (trace-tuple &optional no-pop)
-  (slime-with-popup-buffer ("*trace-detail*" :select (not no-pop))
-    (slime-trace-dialog--detail-mode)
+  (slime-with-popup-buffer ("*trace-detail*" :select (not no-pop)
+                            :mode 'slime-trace-dialog--detail-mode)
     (cl-destructuring-bind (id _parent-id _spec args retlist backtrace external)
         trace-tuple
       (let ((headline (slime-trace-dialog--format-trace-entry id external)))
@@ -460,8 +466,7 @@ inspecting details of traced functions. Invoke this dialog with C-c T."
       (when backtrace
         (insert "\nBacktrace:\n"
                 (cl-loop for (i spec) in backtrace
-                         concat (format "   %s: %s\n" i spec))))
-      )))
+                         concat (format "   %s: %s\n" i spec)))))))
 
 
 ;;;; Rendering traces
@@ -543,11 +548,13 @@ inspecting details of traced functions. Invoke this dialog with C-c T."
     (if has-children-p
         (insert (slime-trace-dialog--make-collapse-button trace))
       (setf (slime-trace-dialog--trace-collapse-button-marker trace)
-            (point-marker)))
+            (point-marker))
+      (insert "-"))
     (insert (format " %s\n" spec))
     (setf (slime-trace-dialog--trace-summary-beg trace) (point-marker))
     (insert summary)
     (setf (slime-trace-dialog--trace-end trace) (point-marker))
+    (set-marker-insertion-type (slime-trace-dialog--trace-beg trace) t)
 
     (add-text-properties (slime-trace-dialog--trace-beg trace)
                          (slime-trace-dialog--trace-end trace)
@@ -583,6 +590,7 @@ inspecting details of traced functions. Invoke this dialog with C-c T."
                (slime-trace-dialog--trace-collapse-button-marker parent))
       (slime-trace-dialog--maintaining-properties
           (slime-trace-dialog--trace-collapse-button-marker parent)
+        (delete-char 1)
         (insert (slime-trace-dialog--make-collapse-button parent))
         (setf (slime-trace-dialog--trace-collapse-button-marker parent)
               nil)))
@@ -782,6 +790,15 @@ other complicated function specs."
                                 (swank::from-string ,spec-string))))
     (run-hooks 'slime-trace-dialog-after-toggle-hook)))
 
+(defun slime-trace-dialog--update-existing-dialog ()
+  (let ((existing (slime-trace-dialog--live-dialog)))
+    (when existing
+      (with-current-buffer existing
+        (slime-trace-dialog-fetch-status)))))
+
+(add-hook 'slime-trace-dialog-after-toggle-hook
+          'slime-trace-dialog--update-existing-dialog)
+
 (defun slime-trace-dialog-toggle-complex-trace ()
   "Toggle the dialog-trace of the complex spec at point.
 
@@ -796,7 +813,7 @@ With optional CLEAR-AND-FETCH prefix arg, clear the current tree
 and fetch a first batch of traces."
   (interactive "P")
   (with-current-buffer
-      (pop-to-buffer (slime-trace-dialog--get-buffer))
+      (pop-to-buffer (slime-trace-dialog--ensure-buffer))
     (slime-trace-dialog-fetch-status)
     (when (or clear-and-fetch
               (null slime-trace-dialog--fetch-key))

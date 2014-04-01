@@ -8,7 +8,7 @@ elif [[ $1 == "in" ]]; then
 elif [[ $1 == "add" ]]; then
     CWD=$(pwd);
     cd $HOME;
-    cp --parents "${2#$HOME/}" "${CWD}/";
+    cp -R --parents "${2#$HOME/}" "${CWD}/";
     cd $CWD;
     git add "${2#$HOME/}";
 fi

@@ -1,3 +1,65 @@
+2014-03-29  João Távora  <joaotavora@gmail.com>
+
+	* slime-trace-dialog.el (slime-trace-dialog--insert-trace): Set
+	trace entry's marker-insertion-type to T to avoid text later being
+	inserted before the marker from entering its protected region.
+
+2014-03-27  João Távora  <joaotavora@gmail.com>
+
+	The previous technique for setting *, ** and friends just-in-time
+	didn't work, especially when the inspector was called from the
+	REPL buffer to inspect *. The problem this was fixing was fixed in
+	a different manner, by making slime-repl.el ensure that these
+	variables are set in the swank side.
+
+	* swank-repl.lisp (set-repl-variables): New slimefun.
+	(repl-eval): Call SET-REPL-VARIABLES *after* evaluating region.
+
+	* slime-repl.el (sldb-copy-down-to-repl): Call new
+	SWANK:SET-REPL-VARIABLES just after copying down to REPL.
+
+2014-03-09  João Távora  <joaotavora@gmail.com>
+
+	* slime-trace-dialog.el (slime-trace-dialog--open-detail): Restore
+	`:mode' argument to `slime-with-popup-buffer'.
+
+	* slime-sprof.el (slime-sprof-report): idem
+
+	* slime-compiler-notes-tree.el (slime-list-compiler-notes): idem
+
+	* slime-clipboard.el (slime-clipboard-display-entries): idem
+
+2014-03-08  Luís Oliveira  <loliveira@common-lisp.net>
+
+	slime-autodoc: avoid adding a newline after things like
+	with-open-file when doing multiline display.
+
+	* swank-arglists.lisp (print-decoded-arglist): Don't
+	pprint-newline when adding a space after the operator.
+
+2014-03-07  João Távora  <joaotavora@gmail.com>
+
+	* slime-trace-dialog.el (slime-trace-dialog--open-detail): Fix
+	"read-only" error when navigating to the trace details.
+	(slime-trace-dialog--insert-trace): Nudge non-parent trace entries
+	one "-" to the right to line up with others at the same level.
+
+	When toggling trace on a definition, automatically update the
+	trace dialog if it is open already. Idea by Luís Oliveira.
+
+	* slime-trace-dialog.el (slime-trace-dialog--get-buffer): split
+	into reusable functions.
+	(slime-trace-dialog--buffer-name): new function
+	(slime-trace-dialog--live-dialog): new function
+	(slime-trace-dialog--ensure-buffer): new function
+	(slime-trace-dialog--update-existing-dialog): new function for
+	added to `slime-trace-dialog-after-toggle-hook' by default.
+	(slime-trace-dialog): Use `slime-trace-dialog--ensure-buffer'.
+
+2014-03-03  Helmut Eller  <heller@common-lisp.net>
+
+	* slime-presentations.el: Require 'cl for case, return-from etc.
+
 2014-03-03  João Távora  <joaotavora@gmail.com>
 
 	* test/slime-indentation-tests.el: New file. Defines ERT

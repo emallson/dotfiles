@@ -375,7 +375,7 @@ conditions (assertions)."
       (with-current-buffer random-buffer-name
         ;; Notice that we cannot quit the buffer within the extent
         ;; of slime-with-output-to-temp-buffer.
-        (slime-popup-buffer-quit t))
+        (quit-window t))
       (slime-check ("Checking that we've got back from `%s'"
                     random-buffer-name)
         (and (eq (current-buffer) tmpbuffer)
@@ -507,6 +507,21 @@ confronted with nasty #.-fu."
       ("cl:m-v-l" (nil "")))
   (let ((completions (slime-simple-completions prefix)))
     (slime-test-expect "Completion set" expected-completions completions)))
+
+(def-slime-test read-from-minibuffer
+  (input-keys expected-result)
+  "Test `slime-read-from-minibuffer' with INPUT-KEYS as events."
+  '(("( r e v e TAB SPC ' ( 1 SPC 2 SPC 3 ) ) RET"
+     "(reverse '(1 2 3))")
+    ("( c l : c o n TAB s t a n t l TAB SPC 4 2 ) RET"
+     "(cl:constantly 42)"))
+  (when noninteractive
+    (slime-skip-test "Can't use unread-command-events in batch mode"))
+  (let ((keys (eval `(kbd ,input-keys)))) ; kbd is a macro in Emacs 23
+    (setq unread-command-events (listify-key-sequence keys)))
+  (let ((actual-result (slime-read-from-minibuffer "Test: ")))
+    (accept-process-output) ; run idle timers
+    (slime-test-expect "Completed string" expected-result actual-result)))
 
 (def-slime-test arglist
     ;; N.B. Allegro apparently doesn't return the default values of
