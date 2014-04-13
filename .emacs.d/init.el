@@ -228,6 +228,7 @@
 (org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
 (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
 (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
+(org-defkey org-mode-map (kbd "C-c SPC") nil)
 
 ;; smalltalk
 (require 'smalltalk-mode)
@@ -268,8 +269,10 @@
  '(org-export-date-timestamp-format "%d %B %Y")
  '(org-export-html-protect-char-alist (quote (("<" . "&lt;") (">" . "&gt;"))))
  '(org-export-latex-minted-langs (quote ((emacs-lisp "common-lisp") (cc "c++") (cperl "perl") (shell-script "bash") (caml "ocaml") (clojure "clojure"))))
+ '(org-export-pdf-logfiles (quote ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "blg" "pyg" "pdf")))
  '(org-latex-default-packages-alist (quote (("AUTO" "inputenc" t) ("T1" "fontenc" t) ("" "fixltx2e" nil) ("" "graphicx" t) ("" "longtable" nil) ("" "float" nil) ("" "wrapfig" nil) ("" "rotating" nil) ("normalem" "ulem" t) ("" "amsmath" t) ("" "textcomp" t) ("" "marvosym" t) ("" "wasysym" t) ("" "amssymb" t) ("" "hyperref" nil) "\\tolerance=1000" ("" "minted" t) ("" "microtype" nil))))
  '(org-latex-listings (quote minted))
+ '(org-latex-logfiles-extensions (quote ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "bbl" "blg" "pyg")))
  '(org-latex-pdf-process (quote ("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")))
  '(org-latex-to-pdf-process (quote ("pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")))
  '(org2blog/wp-blog-alist (quote (("Record of Motion" :username "emallson" :url "http://emallson.wordpress.com/xmlrpc.php"))))
