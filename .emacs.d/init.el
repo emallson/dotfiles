@@ -122,6 +122,12 @@
 
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
+;; ace-jump-mode
+(require 'ace-jump-mode)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+
 ;; uniquify
 (require 'uniquify)
 
