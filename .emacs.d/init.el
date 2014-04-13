@@ -74,7 +74,11 @@
 (add-to-list 'load-path "~/.emacs.d/ess")
 (require 'ess-site)
 
-;; elpa/melpa packages
+;; elpa/melpa/marmalade packages
+;;
+;; I am fully aware that the packages installed through package.el do not need
+;; to be (require)'d, but for uniformity with other packages (eg ido, uniquify)
+;; and for future-proofing I am using them
 (package-initialize)
 
 ; projectile
@@ -104,6 +108,19 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 (setq ido-use-filename-at-point 'guess)
+;; ido-better-flex
+(require 'ido-better-flex)
+(ido-better-flex/enable)
+;; ido-vertical-mode
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+
+;; smex -- only using it for major modes because it is very slow over all
+;; functions
+(require 'smex)
+(smex-initialize)
+
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; uniquify
 (require 'uniquify)
@@ -252,7 +269,7 @@
  '(org2blog/wp-blog-alist (quote (("Record of Motion" :username "emallson" :url "http://emallson.wordpress.com/xmlrpc.php"))))
  '(org2blog/wp-show-post-in-browser (quote show))
  '(org2blog/wp-use-wp-latex t)
- '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv")))
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
