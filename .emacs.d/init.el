@@ -132,6 +132,12 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+;; auto-complete
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+(ac-flyspell-workaround)
+
 ;; no-easy-keys
 ;; time to stop using them thar arrows
 (require 'no-easy-keys)
