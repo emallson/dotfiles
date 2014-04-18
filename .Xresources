@@ -8,7 +8,7 @@ Xft.hintstyle:  hintfull
 xterm*termName: xterm-256color
 xterm*foreground: rgb:dc/dc/cc
 xterm*background: rgb:20/20/20
-xterm*faceName: Source Code Pro Light:size=12:antialias=true
+xterm*faceName: xft:Source Code Pro:style=Light:size=13:antialias=true
 xterm*color0: rgb:20/20/20
 xterm*color1: rgb:e8/93/93
 xterm*color2: rgb:9e/ce/9e

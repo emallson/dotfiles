@@ -11,7 +11,7 @@
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
 ;; Swank -- for interactive WM Hacking
-(load "/home/emallson/.emacs.d/elpa/slime-20140329.814/swank-loader.lisp")
+(load "/home/emallson/.emacs.d/elpa/slime-20140417.309/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
 (defcommand swank () ()
@@ -37,10 +37,14 @@
             (run-or-raise "urxvtc" '(:class "URxvt" :title "^(?!emacs)")))
 (defcommand new-urxvtc () ()
             (run-shell-command "urxvtc"))
-(defcommand emacs () ()
-            (run-or-raise "urxvtc -pe \"-tabbedex\" -title emacs -e emacsclient -t" '(:title "^emacs$")))
-(defcommand new-emacs () ()
+(defcommand console-emacs () ()
+            (run-or-raise "urxvtc -pe \"-tabbedex\" -title emacs -e emacsclient -t" '(:title "^emacs$" :class "URxvt")))
+(defcommand new-console-emacs () ()
             (run-shell-command "urxvtc -pe \"-tabbedex\" -title emacs -e emacsclient -t"))
+(defcommand emacs () ()
+            (run-or-raise "emacsclient -c" '(:class "Emacs")))
+(defcommand new-emacs () ()
+            (run-shell-command "emacsclient -c"))
 (defcommand chromium () ()
             (run-or-raise "chromium" '(:instance "chromium")))
 (defcommand new-chromium () ()

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jasmine-it
+# key: it
+# --
+it("$1", function() {
+    
+});

@@ -12,6 +12,6 @@ elif [[ $1 == "add" ]]; then
     cd $HOME;
     cp -R --parents "${2#$HOME/}" "${CWD}/";
     cd $CWD;
-    git add "${2#$HOME/}";
+    git add --all "${2#$HOME/}";
 fi
 
