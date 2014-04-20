@@ -17,7 +17,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;; (setq-default fill-column 80)
+(setq-default fill-column 79)
 
 ; my functions
 (load "~/.emacs.d/functions.el")
@@ -139,6 +139,12 @@
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (require 'slime)
 (slime-setup '(slime-repl))
+(add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'slime-repl-mode))
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
@@ -228,6 +234,7 @@
 
 
 ;; org mode
+;; (add-to-list 'load-path "~/org-mode/lisp/") ;; was used to export while the URL bug was still in place
 (require 'org)
 (org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
 (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
@@ -255,3 +262,8 @@
 (require 'smart-mode-line)
 (sml/setup)
 (column-number-mode)
+
+
+;; paradox
+(require 'paradox)
+(setq paradox-github-token "6b29de76c9e601977d611044edd285d6cc67d48a")
