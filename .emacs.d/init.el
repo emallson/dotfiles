@@ -10,6 +10,10 @@
 (load-theme 'zenburn t)
 (set-frame-font "Source Code Pro Light:size=17:antialias=true")
 (defadvice make-frame-command (after make-frame-change-background-color last)
+  "Adjusts the background color for different frame types.
+Graphical (X) frames should have the theme color, while terminal
+frames should match the terminal color (which matches the theme
+color...but terminal frames can't directly render this color)"
   (if (display-graphic-p)
       (set-background-color "#202020")
     (set-background-color "black")))
@@ -50,7 +54,7 @@
 
 ; latex mode
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-(add-hook 'LaTeX-mode-hook 
+(add-hook 'LaTeX-mode-hook
           (lambda ()
             (set (make-local-variable 'compile-command)
                  (concat "pdflatex " (buffer-file-name)))))
@@ -68,7 +72,7 @@
 (require 'google-this)
 (google-this-mode 1)
 (global-set-key (kbd "C-c f") 'google-search)
-(global-set-key (kbd "C-x g") 'google-this-mode-submap)
+(global-set-key (kbd "C-x C-g") 'google-this-mode-submap)
 
 ;; matlab - commented out cuz I'm using octave atm
 ;; (add-to-list 'load-path "~/.emacs.d/matlab")
@@ -140,6 +144,7 @@
 (require 'slime)
 (slime-setup '(slime-repl))
 (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
+(define-key slime-mode-map (kbd "M-.") nil)
 (require 'ac-slime)
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
@@ -148,8 +153,19 @@
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
+(defun slime-edit-definition-push-mark (&optional name where)
+  "Wrapper for `slime-edit-definition' that pushes the mark before moving.
+
+NAME is the function/variable name, WHERE is its location (I think?)"
+  (interactive (list (or (and (not current-prefix-arg)
+                              (slime-symbol-at-point))
+                         (slime-read-symbol-name "Edit Definition of: "))))
+  (push-mark)
+  (slime-edit-definition name where))
 (defun lisp-mode-keys ()
-  (local-set-key (kbd "C-c e") 'slime-eval-last-expression))
+  "Defines key-bindings for `lisp-mode' (notably slime eval)."
+  (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
+  (local-set-key (kbd "M-.") 'slime-edit-definition-push-mark))
 (add-hook 'lisp-mode-hook 'lisp-mode-keys)
 
 ;; paredit
@@ -212,11 +228,10 @@
 (setq show-paren-delay 0)
 
 ;; shows the matching paren in the minibuffer when it is off-screen
-(defadvice show-paren-function
-  (after show-matching-paren-offscreen activate)
-  "If the matching paren is offscreen, show the matching line in the
-        echo area. Has no effect if the character before point is not of
-        the syntax class ')'."
+(defadvice show-paren-function (after show-matching-paren-offscreen activate)
+  "Show matching paren with context in the minibuffer if it is off-screen.
+Has no effect if the character before point is not of
+the syntax class ')'."
   (interactive)
   (let* ((cb (char-before (point)))
          (matching-text (and cb
@@ -250,6 +265,9 @@
 (require 'sublimity-scroll)
 ;; (require 'sublimity-map)
 (defadvice switch-to-buffer (after switch-to-buffer-toggle-sublimity last)
+  "Enable `sublimity-mode' only in graphical (X) windows.
+
+Scrolling works okay-ish in the terminal, but map doesn't work at all."
   (if (display-graphic-p)
       (sublimity-mode)
     (sublimity-mode -1)))
@@ -267,3 +285,8 @@
 ;; paradox
 (require 'paradox)
 (setq paradox-github-token "6b29de76c9e601977d611044edd285d6cc67d48a")
+
+;; god-mode
+(require 'god-mode)
+(global-set-key (kbd "C-x g") 'god-mode)
+;;; init.el ends here
