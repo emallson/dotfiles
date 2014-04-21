@@ -49,6 +49,12 @@
             (run-or-raise "chromium" '(:instance "chromium")))
 (defcommand new-chromium () ()
             (run-shell-command "chromium --new-window"))
+(defcommand firefox (&optional (new-window nil)) (:y-or-n)
+  "Open firefox. If the optional new-window parameter is non-nil, opens a new
+window."
+  (if new-window
+      (run-shell-command "firefox-aurora -new-window")
+      (run-or-raise "firefox-aurora" '(:class "Firefox"))))
 (defcommand evince () ()
             (run-or-raise "evince" '(:class "Evince")))
 
@@ -79,8 +85,9 @@
 (define-key *root-map* (kbd "C-e") "new-emacs")
 
 (define-key *root-map* (kbd "a") "evince")
-(define-key *root-map* (kbd "b") "chromium")
-(define-key *root-map* (kbd "C-b") "new-chromium")
+(define-key *root-map* (kbd "b") "firefox")
+(define-key *root-map* (kbd "C-b") "firefox t")
+
 
 (define-key *root-map* (kbd "m") "switch-to-mail")
 
