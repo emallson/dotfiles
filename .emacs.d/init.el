@@ -144,7 +144,6 @@ color...but terminal frames can't directly render this color)"
 (require 'slime)
 (slime-setup '(slime-repl))
 (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-(define-key slime-mode-map (kbd "M-.") nil)
 (require 'ac-slime)
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
@@ -153,19 +152,13 @@ color...but terminal frames can't directly render this color)"
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
-(defun slime-edit-definition-push-mark (&optional name where)
-  "Wrapper for `slime-edit-definition' that pushes the mark before moving.
-
-NAME is the function/variable name, WHERE is its location (I think?)"
-  (interactive (list (or (and (not current-prefix-arg)
-                              (slime-symbol-at-point))
-                         (slime-read-symbol-name "Edit Definition of: "))))
-  (push-mark)
-  (slime-edit-definition name where))
+(defadvice slime-edit-definition (before slime-edit-definition-push-mark)
+  "Pushes the mark before jumping to the definition with `slime-edit-definition'."
+  (push-mark))
+(ad-activate 'slime-edit-definition)
 (defun lisp-mode-keys ()
   "Defines key-bindings for `lisp-mode' (notably slime eval)."
-  (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
-  (local-set-key (kbd "M-.") 'slime-edit-definition-push-mark))
+  (local-set-key (kbd "C-c e") 'slime-eval-last-expression))
 (add-hook 'lisp-mode-hook 'lisp-mode-keys)
 
 ;; paredit
