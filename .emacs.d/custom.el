@@ -28,6 +28,7 @@
  '(js3-reparse-on-indent nil)
  '(js3-strict-missing-semi-warning t)
  '(menu-bar-mode nil)
+ '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "CONTEXT" "HIDDEN")))
  '(org-export-date-timestamp-format "%d %B %Y")
  '(org-export-html-protect-char-alist (quote (("<" . "&lt;") (">" . "&gt;"))))
