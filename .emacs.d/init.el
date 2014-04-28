@@ -149,6 +149,10 @@ color...but terminal frames can't directly render this color)"
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
+(add-hook 'c-mode-hook
+          (lambda ()
+            (add-to-list 'ac-sources 'ac-source-c-headers)
+            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
