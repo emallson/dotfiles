@@ -78,6 +78,8 @@ color...but terminal frames can't directly render this color)"
 ;; (add-to-list 'load-path "~/.emacs.d/matlab")
 ;; (require 'matlab-load)
 
+(add-to-list 'auto-mode-alist '("/*.\.m$" . octave-mode))
+
 ;; php
 (autoload 'php-mode "php-mode.el" "Php mode." t)
 ;(setq auto-mode-alist (append '(("/*.\.php[345]?$" . php-mode)) auto-mode-alist))
@@ -112,13 +114,14 @@ color...but terminal frames can't directly render this color)"
 
 ;; ido
 (require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
 (ido-mode 1)
+(ido-everywhere 1)
 (setq ido-use-filename-at-point 'guess)
-;; ido-better-flex
-(require 'ido-better-flex)
-(ido-better-flex/enable)
+;; flx-ido
+(require 'flx-ido)
+(flx-ido-mode 1)
+;;; uncomment the line below to see all flx highlights
+;; (setq ido-use-faces nil)
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
 (ido-vertical-mode)
@@ -149,10 +152,6 @@ color...but terminal frames can't directly render this color)"
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
-(add-hook 'c-mode-hook
-          (lambda ()
-            (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
@@ -225,9 +224,10 @@ color...but terminal frames can't directly render this color)"
 (setq show-paren-delay 0)
 
 ;; shows the matching paren in the minibuffer when it is off-screen
-(defadvice show-paren-function (after show-matching-paren-offscreen activate)
-  "Show matching paren with context in the minibuffer if it is off-screen.
-Has no effect if the character before point is not of
+(defadvice show-paren-function
+  (after show-matching-paren-offscreen activate)
+  "If the matching paren is offscreen, show the matching line in the
+echo area. Has no effect if the character before point is not of
 the syntax class ')'."
   (interactive)
   (let* ((cb (char-before (point)))
@@ -286,4 +286,3 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 ;; god-mode
 (require 'god-mode)
 (global-set-key (kbd "C-x g") 'god-mode)
-;;; init.el ends here

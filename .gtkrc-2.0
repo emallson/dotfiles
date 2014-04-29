@@ -1,2 +1,2 @@
-gtk-theme-name = "Boje-Orange"
+gtk-application-prefer-dark-theme=1
 gtk-key-theme-name = "Emacs"
