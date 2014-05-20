@@ -85,8 +85,8 @@ window."
 (define-key *root-map* (kbd "C-e") "new-emacs")
 
 (define-key *root-map* (kbd "a") "evince")
-(define-key *root-map* (kbd "b") "firefox")
-(define-key *root-map* (kbd "C-b") "firefox t")
+(define-key *root-map* (kbd "b") "chromium")
+(define-key *root-map* (kbd "C-b") "new-chromium")
 
 
 (define-key *root-map* (kbd "m") "switch-to-mail")
@@ -140,7 +140,8 @@ window."
 ;; multimedia-keys
 (load "~/.stumpwm.d/multimedia-keys.lisp")
 ;; MPD
-(load-module "mpd")
+;; (load-module "mpd")
+(load "~/.stumpwm.d/contrib/mpd.lisp")
 (define-key *root-map* (kbd "s-m") '*mpd-map*)
 (define-key *top-map* (kbd "XF86AudioPlay") "mpd-toggle-pause")
 (define-key *top-map* (kbd "XF86AudioStop") "mpd-stop")

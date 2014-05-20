@@ -29,6 +29,7 @@
  '(js3-strict-missing-semi-warning t)
  '(menu-bar-mode nil)
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
+ '(org-agenda-files (quote ("/home/emallson/org/agenda/webcalib.org")))
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "CONTEXT" "HIDDEN")))
  '(org-export-date-timestamp-format "%d %B %Y")
  '(org-export-html-protect-char-alist (quote (("<" . "&lt;") (">" . "&gt;"))))
@@ -42,9 +43,9 @@
  '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(paradox-automatically-star nil)
  '(projectile-enable-idle-timer t)
- '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv")))
+ '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv" "node_modules")))
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
- '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=virtualenv --exclude=\"*min.js\" --exclude=\"*#*\" %s")
+ '(projectile-tags-command "ctags -e -R --exclude=target --exclude=.repl --exclude=.git --exclude=resources --exclude=doc --exclude=LICENSE --exclude=.gitignore --exclude=venv --exclude=virtualenv --exclude=\"*min.js\" --exclude=\"*#*\" --exclude=\"node_modules\" %s")
  '(reb-re-syntax (quote string))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -65,7 +66,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js3-external-variable-face ((t (:foreground "color-105"))) t)
+ '(js3-external-variable-face ((t (:foreground "color-105"))))
  '(mode-line ((t (:background "#202020" :foreground "#8FB28F" :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#383838" :foreground "#5F7F5F" :box nil :weight light))))
  '(sml/battery ((t (:inherit sml/global :foreground "#E0CF9F"))) t)

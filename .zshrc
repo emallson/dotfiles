@@ -74,9 +74,12 @@ alias ls='ls --color=auto -B'
 setopt extendedglob
 
 function uva() {
-    g++ -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
+    g++ -g -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
 function uva-11() {
-    g++ -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
+    g++ -g -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
 export CHROME_BIN=chromium;
+
+
+alias syus='systemctl --user'

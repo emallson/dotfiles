@@ -27,6 +27,7 @@ color...but terminal frames can't directly render this color)"
 (load "~/.emacs.d/functions.el")
 
 (global-set-key (kbd "M-W") 'yank-to-x-clipboard)
+(global-set-key (kbd "C-c C-r") 'revert-all-buffers)
 
 ; tramp
 (require 'tramp)
@@ -122,6 +123,9 @@ color...but terminal frames can't directly render this color)"
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
 (ido-vertical-mode)
+;; kill-ring-ido
+(require 'kill-ring-ido)
+(global-set-key (kbd "C-M-y") 'kill-ring-ido)
 
 ;; smex -- only using it for major modes because it is very slow over all
 ;; functions
@@ -252,6 +256,9 @@ the syntax class ')'."
 (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
 (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
 (org-defkey org-mode-map (kbd "C-c SPC") nil)
+(org-defkey org-mode-map (kbd "C-c a l") 'org-timeline)
+(global-set-key (kbd "C-c a a") 'org-agenda-list)
+(global-set-key (kbd "C-c a t") 'org-todo-list)
 
 ;; chrome integration
 (require 'edit-server)
@@ -286,4 +293,9 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 ;; god-mode
 (require 'god-mode)
 (global-set-key (kbd "C-x g") 'god-mode)
+
+;; jedi
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
 ;;; init.el ends here

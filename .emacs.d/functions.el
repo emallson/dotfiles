@@ -11,4 +11,13 @@
         (deactivate-mark))
     (message "No region active; can't yank to clipboard!")))
 
+
+(defun revert-all-buffers ()
+  "Reverts all unmodified file buffers."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
+        (revert-buffer t t t))))
+  (message "Refreshed all unmodified file buffers."))
 ;;; functions.el ends here
