@@ -80,6 +80,5 @@ function uva-11() {
     g++ -g -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
 export CHROME_BIN=chromium;
-
-
-alias syus='systemctl --user'
+alias rs="redshift -l 38:-85"
+alias syus="systemctl --user"
