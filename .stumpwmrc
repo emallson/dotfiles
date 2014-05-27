@@ -11,7 +11,7 @@
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
 ;; Swank -- for interactive WM Hacking
-(load "/home/emallson/.emacs.d/elpa/slime-20140417.309/swank-loader.lisp")
+(load "/home/emallson/.emacs.d/elpa/slime-20140420.33/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
 (defcommand swank () ()
@@ -85,8 +85,8 @@ window."
 (define-key *root-map* (kbd "C-e") "new-emacs")
 
 (define-key *root-map* (kbd "a") "evince")
-(define-key *root-map* (kbd "b") "chromium")
-(define-key *root-map* (kbd "C-b") "new-chromium")
+(define-key *root-map* (kbd "b") "firefox")
+(define-key *root-map* (kbd "C-b") "firefox t")
 
 
 (define-key *root-map* (kbd "m") "switch-to-mail")

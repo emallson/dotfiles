@@ -4,6 +4,8 @@
 (setq mc/cmds-to-run-for-all
       '(
         backward-sexp
+        c-electric-delete-forward
+        comment-dwim
         evil-numbers/inc-at-pt
         forward-sexp
         icicle-goto-marker-or-set-mark-command
