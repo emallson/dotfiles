@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ $1 == "out" ]]; then
     rsync -avz --exclude-from=excludes ./ ~/;

@@ -1,5 +1,5 @@
 [push]
-	default = simple
+	default = upstream 
 [user]
 	email = emallson@archlinux.us
 	name = J David Smith
