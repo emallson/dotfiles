@@ -12,6 +12,9 @@
         icicle-yank-maybe-completing
         indent-for-tab-command
         kill-region
+        org-beginning-of-line
+        org-end-of-line
+        org-self-insert-command
         paredit-backward
         paredit-forward
         sgml-slash
