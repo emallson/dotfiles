@@ -42,13 +42,13 @@ color...but terminal frames can't directly render this color)"
 ; hideshow globally!
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 (add-hook 'jsx-mode-hook #'hs-minor-mode)
-(add-hook 'js3-mode-hook #'hs-minor-mode)
+;; (add-hook 'js3-mode-hook #'hs-minor-mode)
 
 ; flyspell
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 (add-hook 'jsx-mode-hook #'flyspell-prog-mode)
-(add-hook 'js3-mode-hook #'flyspell-prog-mode)
+;; (add-hook 'js3-mode-hook #'flyspell-prog-mode)
 
 ; auto-fill-mode
 (add-hook 'text-mode-hook #'turn-on-auto-fill)
@@ -61,7 +61,7 @@ color...but terminal frames can't directly render this color)"
                  (concat "pdflatex " (buffer-file-name)))))
 
 (require 'column-marker)
-(add-hook 'js3-mode-hook (lambda () (interactive) (column-marker-1 81)))
+(add-hook 'js2-mode-hook (lambda () (interactive) (column-marker-1 81)))
 (add-hook 'fortran-mode-hook (lambda () (interactive) (column-marker-1 81)))
 
 (require 'lacarte)
@@ -208,8 +208,16 @@ color...but terminal frames can't directly render this color)"
 (ignoramus-setup)
 
 ;; js
-(autoload 'js3-mode "js3" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+(require 'js2-mode)
+(require 'nodejs-repl)
+(require 'nodejs-repl-eval)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(define-key js2-mode-map (kbd "C-c M-j") 'nodejs-repl)
+(define-key js2-mode-map (kbd "C-x C-e") 'nodejs-repl-eval-dwim)
+(define-key js2-mode-map (kbd "C-x M-e") 'nodejs-repl-eval-function)
+(define-key js2-mode-map (kbd "C-x C-M-e") 'nodejs-repl-eval-buffer)
+(define-key js2-mode-map (kbd "M-RET") #'js2-line-break)
+
 ;; jsx
 ;; (add-to-list 'auto-mode-alist '("\\.jsx$\\'" . jsx-mode))
 ;; (add-to-list 'magic-mode-alist '("^/\\*\\* +@jsx.+ \\*/$" . jsx-mode))
@@ -267,8 +275,11 @@ the syntax class ')'."
 (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
 (org-defkey org-mode-map (kbd "C-c SPC") nil)
 (org-defkey org-mode-map (kbd "C-c a l") 'org-timeline)
+(org-defkey org-mode-map (kbd "C-c C-x t") 'org-set-tags)
+(org-defkey org-mode-map (kbd "C-x C-e") 'org-emphasize)
 (global-set-key (kbd "C-c a a") 'org-agenda-list)
 (global-set-key (kbd "C-c a t") 'org-todo-list)
+(global-set-key (kbd "C-c a m") 'org-tags-view)
 
 ;; chrome integration
 (require 'edit-server)
@@ -308,5 +319,11 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
-;;; init.el ends here
+;;; desktop-save-mode
+(setq desktop-dirname "~/")
+(desktop-save-mode 0)
+
+;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
+
+;;; init.el ends here
