@@ -20,4 +20,11 @@
       (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
         (revert-buffer t t t))))
   (message "Refreshed all unmodified file buffers."))
+
+(defun package-require (package)
+  "Download `PACKAGE' via `package.el' if it is not installed."
+  (unless (package-installed-p package)
+    (unless package-refreshed
+      (package-refresh-contents))
+    (package-install package)))
 ;;; functions.el ends here

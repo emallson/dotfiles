@@ -21,6 +21,14 @@ color...but terminal frames can't directly render this color)"
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+;; elpa/melpa/marmalade packages
+(defvar package-refreshed nil
+  "Used by `package-require' to determine whether to refresh package contents.")
+(defadvice package-refresh-contents (after package-set-refreshed last activate)
+  "Change `package-refreshed' to t after refreshing package contents."
+  (setq package-refreshed t))
+(package-initialize)
+
 (setq-default fill-column 79)
 
 ; my functions
@@ -30,11 +38,11 @@ color...but terminal frames can't directly render this color)"
 (global-set-key (kbd "C-c C-r") 'revert-all-buffers)
 
 ; tramp
-(require 'tramp)
-(add-to-list 'tramp-default-proxies-alist
-             '(nil "\\`root\\'" "/ssh:%h:"))
-(add-to-list 'tramp-default-proxies-alist
-             '((regexp-quote (system-name)) nil nil))
+(package-require 'tramp)
+;; (add-to-list 'tramp-default-proxies-alist
+;;              '(nil "\\`root\\'" "/ssh:%h:"))
+;; (add-to-list 'tramp-default-proxies-alist
+;;              '((regexp-quote (system-name)) nil nil))
 
 ; wdired
 (setq-default wdired-allow-to-change-permissions t)
@@ -42,13 +50,12 @@ color...but terminal frames can't directly render this color)"
 ; hideshow globally!
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 (add-hook 'jsx-mode-hook #'hs-minor-mode)
-;; (add-hook 'js3-mode-hook #'hs-minor-mode)
 
 ; flyspell
+(package-require 'flyspell)
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 (add-hook 'jsx-mode-hook #'flyspell-prog-mode)
-;; (add-hook 'js3-mode-hook #'flyspell-prog-mode)
 
 ; auto-fill-mode
 (add-hook 'text-mode-hook #'turn-on-auto-fill)
@@ -67,44 +74,24 @@ color...but terminal frames can't directly render this color)"
 (require 'lacarte)
 
 ;; flycheck
+(package-require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; google-this
-(require 'google-this)
-(google-this-mode 1)
-(global-set-key (kbd "C-c f") 'google-search)
-(global-set-key (kbd "C-x C-g") 'google-this-mode-submap)
-
-;; matlab - commented out cuz I'm using octave atm
-;; (add-to-list 'load-path "~/.emacs.d/matlab")
-;; (require 'matlab-load)
-
-;; php
-(autoload 'php-mode "php-mode.el" "Php mode." t)
-;(setq auto-mode-alist (append '(("/*.\.php[345]?$" . php-mode)) auto-mode-alist))
-
-;; elpa/melpa/marmalade packages
-;;
-;; I am fully aware that the packages installed through package.el do not need
-;; to be (require)'d, but for uniformity with other packages (eg ido, uniquify)
-;; and for future-proofing I am using them
-(package-initialize)
-
 ; projectile
-(require 'projectile)
+(package-require 'projectile)
 (projectile-global-mode)
 (setq tags-revert-without-query t)
 
 ; magit
-(require 'magit)
+(package-require 'magit)
 
 ; evil-numbers
-(require 'evil-numbers)
+(package-require 'evil-numbers)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
 ; multiple-cursors
-(require 'multiple-cursors)
+(package-require 'multiple-cursors)
 (global-set-key (kbd "C-c L") 'mc/edit-lines)
 (global-set-key (kbd "C-c N") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c P") 'mc/mark-previous-like-this)
@@ -112,16 +99,16 @@ color...but terminal frames can't directly render this color)"
 (global-set-key (kbd "C-c M-a") 'mc/mark-all-in-region)
 
 ;; ido
-(require 'ido)
+(package-require 'ido)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
 (setq ido-use-filename-at-point 'guess)
 ;; ido-better-flex
-(require 'ido-better-flex)
+(package-require 'ido-better-flex)
 (ido-better-flex/enable)
 ;; ido-vertical-mode
-(require 'ido-vertical-mode)
+(package-require 'ido-vertical-mode)
 (ido-vertical-mode)
 ;; kill-ring-ido
 (require 'kill-ring-ido)
@@ -129,13 +116,13 @@ color...but terminal frames can't directly render this color)"
 
 ;; smex -- only using it for major modes because it is very slow over all
 ;; functions
-(require 'smex)
+(package-require 'smex)
 (smex-initialize)
 
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; ace-jump-mode
-(require 'ace-jump-mode)
+(package-require 'ace-jump-mode)
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
@@ -143,12 +130,47 @@ color...but terminal frames can't directly render this color)"
 ;; uniquify
 (require 'uniquify)
 
+;; auto-complete
+(package-require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+(ac-flyspell-workaround)
+
+;; clojure stuff
+(package-require 'cider)
+(require 'cider-mode)
+(unless (boundp 'cider-mode-hook)
+  (message "Oops! cider-mode-hook is unbound!")
+  (defvar cider-mode-hook nil
+    "Hook that is run when `cider-mode' is activated."))
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+
+(package-require 'ac-cider-compliment)
+(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
+(add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes cider-mode))
+
+;; paredit
+(package-require 'paredit)
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook #'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+(add-hook 'clojure-mode-hook #'enable-paredit-mode)
+(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
+
 ;; slime
 (setq inferior-lisp-program "/usr/bin/sbcl")
-(require 'slime)
+
+(package-require 'slime)
 (slime-setup '(slime-repl))
 (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-(require 'ac-slime)
+
+(package-require 'ac-slime)
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 (eval-after-load "auto-complete"
@@ -169,34 +191,9 @@ color...but terminal frames can't directly render this color)"
   (local-set-key (kbd "C-c e") 'slime-eval-last-expression))
 (add-hook 'lisp-mode-hook 'lisp-mode-keys)
 
-;; paredit
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-(add-hook 'clojure-mode-hook #'enable-paredit-mode)
-(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
-
 ;; yasnippet
-(require 'yasnippet)
+(package-require 'yasnippet)
 (yas-global-mode 1)
-
-;; auto-complete
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-flyspell-workaround)
-
-;; clojure stuff
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq nrepl-hide-special-buffers t)
-(require 'ac-cider-compliment)
-(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
-(add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes cider-mode))
 
 ;; no-easy-keys
 ;; time to stop using them thar arrows
@@ -204,7 +201,7 @@ color...but terminal frames can't directly render this color)"
 (no-easy-keys 1)
 
 ;; ignoramus
-(require 'ignoramus)
+(package-require 'ignoramus)
 (ignoramus-setup)
 
 ;; js
@@ -224,7 +221,7 @@ color...but terminal frames can't directly render this color)"
 ;; (autoload 'jsx-mode "jsx-mode" "JSX mode" t)
 
 ;; web-mode
-(require 'web-mode)
+(package-require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-engines-alist
@@ -269,7 +266,7 @@ the syntax class ')'."
 
 ;; org mode
 ;; (add-to-list 'load-path "~/org-mode/lisp/") ;; was used to export while the URL bug was still in place
-(require 'org)
+(package-require 'org)
 (org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
 (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
 (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
@@ -282,11 +279,11 @@ the syntax class ')'."
 (global-set-key (kbd "C-c a m") 'org-tags-view)
 
 ;; chrome integration
-(require 'edit-server)
+(package-require 'edit-server)
 (edit-server-start)
 
 ;; sublimity -- only start this when running under X
-(require 'sublimity)
+(package-require 'sublimity)
 (require 'sublimity-scroll)
 ;; (require 'sublimity-map)
 (defadvice switch-to-buffer (after switch-to-buffer-toggle-sublimity last)
@@ -302,17 +299,16 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 
 ;; mode line stuff
 (setq sml/theme 'respectful)
-(require 'smart-mode-line)
+(package-require 'smart-mode-line)
 (sml/setup)
 (column-number-mode)
 
-
 ;; paradox
-(require 'paradox)
+(package-require 'paradox)
 (setq paradox-github-token "6b29de76c9e601977d611044edd285d6cc67d48a")
 
 ;; god-mode
-(require 'god-mode)
+(package-require 'god-mode)
 (global-set-key (kbd "C-x g") 'god-mode)
 
 ;; jedi
