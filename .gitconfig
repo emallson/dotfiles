@@ -1,7 +1,7 @@
 [push]
 	default = upstream 
 [user]
-	email = emallson@archlinux.us
+	email = smithjd@us.ibm.com
 	name = J David Smith
 [core]
 	editor = emacs

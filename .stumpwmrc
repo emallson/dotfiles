@@ -5,13 +5,14 @@
 
 ;; debugging output
 (setf stumpwm::*debug-level* 10)
-(redirect-all-output (data-dir-file "debug-output" "txt"))
+(redirect-all-output (data-dir-file
+                      (format nil "debug-output-~d" (get-universal-time)) "txt"))
 
 (message "Loading rc...")
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
 ;; Swank -- for interactive WM Hacking
-(load "/home/emallson/.emacs.d/elpa/slime-20140420.33/swank-loader.lisp")
+(load "~/.emacs.d/elpa/slime-20140705.748/swank-loader.lisp")
 (defparameter *swank-p* NIL)
 (swank-loader:init)
 (defcommand swank () ()
@@ -21,7 +22,7 @@
      (swank:create-server :port 4040
                           :style swank:*communication-style*
                           :dont-close t)
-     (echo-string (current-screen) 
+     (echo-string (current-screen)
                   "Starting swank. M-x slime-connect RET 4040 RET, then (in-package stumpwm).")
      (setq *swank-p* t))))
 (swank)
@@ -33,30 +34,45 @@
 (setq *run-or-raise-all-groups* NIL)
 
 ;; keybinds!
-(defcommand urxvtc () ()
-            (run-or-raise "urxvtc" '(:class "URxvt" :title "^(?!emacs)")))
-(defcommand new-urxvtc () ()
-            (run-shell-command "urxvtc"))
-(defcommand console-emacs () ()
-            (run-or-raise "urxvtc -pe \"-tabbedex\" -title emacs -e emacsclient -t" '(:title "^emacs$" :class "URxvt")))
-(defcommand new-console-emacs () ()
-            (run-shell-command "urxvtc -pe \"-tabbedex\" -title emacs -e emacsclient -t"))
-(defcommand emacs () ()
-            (run-or-raise "emacsclient -c" '(:class "Emacs")))
-(defcommand new-emacs () ()
-            (run-shell-command "emacsclient -c"))
+(defcommand urxvtc (&optional new-window) (:y-or-n)
+  (if new-window
+      (run-shell-command "urxvtcd")
+      (run-or-raise "urxvtcd" '(:class "URxvt"))))
+(defcommand st () ()
+            (run-or-raise "st -e tmux attach" '(:class "st")))
+(define-key *root-map* (kbd "c") "st")
+;; (define-key *root-map* (kbd "C-c") "urxvtc t")
+
+(defcommand emacs (&optional new) (:y-or-n)
+  (let ((command "emacsclient -c"))
+    (if new
+        (run-shell-command command)
+        (run-or-raise command '(:class "Emacs")))))
+(define-key *root-map* (kbd "e") "emacs")
+(define-key *root-map* (kbd "C-e") "emacs t")
+
 (defcommand chromium () ()
-            (run-or-raise "chromium" '(:instance "chromium")))
+  (run-or-raise "chromium" '(:instance "chromium")))
 (defcommand new-chromium () ()
-            (run-shell-command "chromium --new-window"))
+  (run-shell-command "chromium --new-window"))
+
 (defcommand firefox (&optional (new-window nil)) (:y-or-n)
   "Open firefox. If the optional new-window parameter is non-nil, opens a new
 window."
   (if new-window
-      (run-shell-command "firefox-aurora -new-window")
-      (run-or-raise "firefox-aurora" '(:class "Firefox"))))
+      (run-shell-command "firefox -new-window")
+      (run-or-raise "firefox" '(:class "Firefox"))))
+(define-key *root-map* (kbd "b") "firefox")
+(define-key *root-map* (kbd "C-b") "firefox t")
+
 (defcommand evince () ()
-            (run-or-raise "evince" '(:class "Evince")))
+  (run-or-raise "evince" '(:class "Evince")))
+(define-key *root-map* (kbd "a") "evince")
+
+(defcommand music () ()
+  "Open the music player. Right now, that's banshee."
+  (run-or-raise "banshee" '(:class "Banshee")))
+
 
 ;; mail
 ;; (defcommand switch-to-mail () ()
@@ -64,13 +80,13 @@ window."
 
 ;; power control commands
 (defcommand suspend () ()
-            (run-shell-command "systemctl suspend"))
+  (run-shell-command "dbus-send --system --print-reply --dest=\"org.freedesktop.UPower\" /org/freedesktop/UPower org.freedesktop.UPower.Suspend"))
 (defcommand reboot () ()
-            (run-shell-command "systemctl reboot"))
+  (run-shell-command "shutdown -r 0"))
 (defcommand poweroff () ()
-            (run-shell-command "systemctl poweroff"))
+  (run-shell-command "shutdown -P 0"))
 
-(defvar *powerctl-map* 
+(defvar *powerctl-map*
   (let ((m (make-sparse-keymap)))
     (define-key m (kbd "s") "suspend")
     (define-key m (kbd "r") "reboot")
@@ -78,16 +94,6 @@ window."
     m))
 
 (define-key *root-map* (kbd "s-p") '*powerctl-map*)
-
-(define-key *root-map* (kbd "c") "urxvtc")
-(define-key *root-map* (kbd "C-c") "new-urxvtc")
-(define-key *root-map* (kbd "e") "emacs")
-(define-key *root-map* (kbd "C-e") "new-emacs")
-
-(define-key *root-map* (kbd "a") "evince")
-(define-key *root-map* (kbd "b") "firefox")
-(define-key *root-map* (kbd "C-b") "firefox t")
-
 
 (define-key *root-map* (kbd "m") "switch-to-mail")
 
@@ -107,9 +113,9 @@ window."
   (multiple-value-bind (second minute hour date month year dow dst-p tz)
       (get-decoded-time)
     (format NIL "~2,'0d:~2,'0d:~2,'0d ~a, ~d ~a ~d (GMT ~@d)"
-            hour minute second 
-            (stringify-dow dow) 
-            date (stringify-month month) 
+            hour minute second
+            (stringify-dow dow)
+            date (stringify-month month)
             year (- tz))))
 
 (defcommand echo-time () ()
@@ -156,8 +162,10 @@ window."
 
 ;; machine-specific commands
 (when (equal (machine-instance) "Vorringia")
-  (load "./.stumpwm.d/vorringia.lisp"))
+  (load "~/.stumpwm.d/vorringia.lisp"))
 (when (equal (machine-instance) "Outland")
-  (load "./.stumpwm.d/outland.lisp"))
+  (load "~/.stumpwm.d/outland.lisp"))
+(when (equal (machine-instance) "smithjd")
+  (load "~/.stumpwm.d/smithjd.lisp"))
 
 ;; .stumpwrc ends here

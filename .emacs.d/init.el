@@ -31,11 +31,14 @@ color...but terminal frames can't directly render this color)"
 
 (setq-default fill-column 79)
 
+(electric-indent-mode)
+
 ; my functions
 (load "~/.emacs.d/functions.el")
 
 (global-set-key (kbd "M-W") 'yank-to-x-clipboard)
 (global-set-key (kbd "C-c C-r") 'revert-all-buffers)
+(global-set-key (kbd "M-Q") 'unfill-paragraph)
 
 ; tramp
 (package-require 'tramp)
@@ -48,8 +51,15 @@ color...but terminal frames can't directly render this color)"
 (setq-default wdired-allow-to-change-permissions t)
 
 ; hideshow globally!
-(add-hook 'prog-mode-hook #'hs-minor-mode)
-(add-hook 'jsx-mode-hook #'hs-minor-mode)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-hook 'jsx-mode-hook 'hs-minor-mode)
+(eval-after-load "hideshow"
+  '(progn
+     (define-key hs-minor-mode-map (kbd "C-c s h") 'hs-hide-block)
+     (define-key hs-minor-mode-map (kbd "C-c s s") 'hs-show-block)
+     (define-key hs-minor-mode-map (kbd "C-c s a") 'hs-hide-all)
+     (define-key hs-minor-mode-map (kbd "C-c s A") 'hs-show-all)))
+;; (add-hook 'js3-mode-hook #'hs-minor-mode)
 
 ; flyspell
 (package-require 'flyspell)
@@ -67,10 +77,6 @@ color...but terminal frames can't directly render this color)"
             (set (make-local-variable 'compile-command)
                  (concat "pdflatex " (buffer-file-name)))))
 
-(require 'column-marker)
-(add-hook 'js2-mode-hook (lambda () (interactive) (column-marker-1 81)))
-(add-hook 'fortran-mode-hook (lambda () (interactive) (column-marker-1 81)))
-
 (require 'lacarte)
 
 ;; flycheck
@@ -81,6 +87,51 @@ color...but terminal frames can't directly render this color)"
 (package-require 'projectile)
 (projectile-global-mode)
 (setq tags-revert-without-query t)
+(defun projectile-custom-test-suffix (project-type)
+  "Get custom test suffixes based on `PROJECT-TYPE'."
+  (cond
+   ((member project-type '(grunt npm)) "_spec")
+   (t (projectile-test-suffix project-type))))
+
+;;; grep tweaks
+(defvar greps '(grep lgrep grep-find rgrep zrgrep)
+  "List of grep commands.")
+;;; hide grep headers
+(defun delete-grep-header ()
+  "Hide the first 4 lines of the `grep-mode' buffer."
+  (save-excursion
+    (with-current-buffer grep-last-buffer
+      (goto-line 5)
+      (narrow-to-region (point) (point-max)))))
+
+(defvar delete-grep-header-advice
+  (ad-make-advice
+   'delete-grep-header nil t
+   '(advice lambda () (delete-grep-header))))
+
+(defun add-delete-grep-header-advice (f)
+  "Add the `delete-grep-header-advice' advice to `F'."
+  (ad-add-advice f delete-grep-header-advice 'after 'first)
+  (ad-activate f))
+
+(mapc 'add-delete-grep-header-advice greps)
+
+;;; focus grep buffer
+(defun switch-to-grep ()
+  "Switch to the `grep-mode' buffer."
+  (switch-to-buffer-other-window grep-last-buffer))
+
+(defvar switch-to-grep-advice
+  (ad-make-advice
+   'switch-to-grep nil t
+   '(advice lambda () (switch-to-grep))))
+
+(defun add-switch-to-grep-advice (f)
+  "Add the `switch-to-grep-advice' advice to `F'."
+  (ad-add-advice f switch-to-grep-advice 'after 'last)
+  (ad-activate f))
+
+(mapc 'add-switch-to-grep-advice greps)
 
 ; magit
 (package-require 'magit)
@@ -98,28 +149,40 @@ color...but terminal frames can't directly render this color)"
 (global-set-key (kbd "C-c A") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c M-a") 'mc/mark-all-in-region)
 
-;; ido
-(package-require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
-(setq ido-use-filename-at-point 'guess)
-;; ido-better-flex
-(package-require 'ido-better-flex)
-(ido-better-flex/enable)
-;; ido-vertical-mode
-(package-require 'ido-vertical-mode)
-(ido-vertical-mode)
-;; kill-ring-ido
-(require 'kill-ring-ido)
-(global-set-key (kbd "C-M-y") 'kill-ring-ido)
+;; ;; ido
+;; (package-require 'ido)
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; (ido-mode 1)
+;; (setq ido-use-filename-at-point 'guess)
+;; (setq ido-default-buffer-method 'selected-window)
+;; ;; ido-better-flex
+;; (package-require 'ido-better-flex)
+;; (ido-better-flex/enable)
+;; ;; ido-vertical-mode
+;; (package-require 'ido-vertical-mode)
+;; (ido-vertical-mode)
+;; ;; kill-ring-ido
+;; (require 'kill-ring-ido)
+;; (global-set-key (kbd "C-M-y") 'kill-ring-ido)
 
-;; smex -- only using it for major modes because it is very slow over all
-;; functions
-(package-require 'smex)
-(smex-initialize)
+;; ;; smex -- only using it for major modes because it is very slow over all
+;; ;; functions
+;; (package-require 'smex)
+;; (smex-initialize)
 
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;;; helm
+(package-require 'helm)
+(require 'helm-config)
+(require 'helm-grep)
+(package-require 'helm-projectile)
+(helm-mode 1)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; ace-jump-mode
 (package-require 'ace-jump-mode)
@@ -213,7 +276,20 @@ color...but terminal frames can't directly render this color)"
 (define-key js2-mode-map (kbd "C-x C-e") 'nodejs-repl-eval-dwim)
 (define-key js2-mode-map (kbd "C-x M-e") 'nodejs-repl-eval-function)
 (define-key js2-mode-map (kbd "C-x C-M-e") 'nodejs-repl-eval-buffer)
-(define-key js2-mode-map (kbd "M-RET") #'js2-line-break)
+(define-key js2-mode-map (kbd "M-RET") 'js2-line-break)
+(define-key js2-mode-map (kbd "RET") 'js2-line-break)
+(add-hook 'js2-mode-hook 'subword-mode)
+
+;;; tern
+;; (add-to-list 'load-path "~/.emacs.d/tern/emacs/")
+;; (autoload 'tern-mode "tern.el" nil t)
+(package-require 'tern)
+(package-require 'tern-auto-complete)
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(eval-after-load 'tern
+  '(progn
+     (require 'tern-auto-complete)
+     (tern-ac-setup)))
 
 ;; jsx
 ;; (add-to-list 'auto-mode-alist '("\\.jsx$\\'" . jsx-mode))
@@ -242,6 +318,13 @@ color...but terminal frames can't directly render this color)"
 ;; paren stuff
 (show-paren-mode t)
 (setq show-paren-delay 0)
+;;; smartparens
+(package-require 'smartparens)
+(require 'smartparens-config)
+(add-hook 'js2-mode-hook 'smartparens-strict-mode)
+(define-key smartparens-strict-mode-map (kbd "C-<right>") 'sp-slurp-hybrid-sexp)
+(define-key smartparens-strict-mode-map (kbd "M-r") 'sp-raise-sexp)
+
 
 ;; shows the matching paren in the minibuffer when it is off-screen
 (defadvice show-paren-function (after show-matching-paren-offscreen activate)
@@ -267,16 +350,18 @@ the syntax class ')'."
 ;; org mode
 ;; (add-to-list 'load-path "~/org-mode/lisp/") ;; was used to export while the URL bug was still in place
 (package-require 'org)
-(org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
-(org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
-(org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
-(org-defkey org-mode-map (kbd "C-c SPC") nil)
-(org-defkey org-mode-map (kbd "C-c a l") 'org-timeline)
-(org-defkey org-mode-map (kbd "C-c C-x t") 'org-set-tags)
-(org-defkey org-mode-map (kbd "C-x C-e") 'org-emphasize)
-(global-set-key (kbd "C-c a a") 'org-agenda-list)
-(global-set-key (kbd "C-c a t") 'org-todo-list)
-(global-set-key (kbd "C-c a m") 'org-tags-view)
+(eval-after-load "org"
+  '(progn
+     (org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
+     (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
+     (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
+     (org-defkey org-mode-map (kbd "C-c SPC") nil)
+     (org-defkey org-mode-map (kbd "C-c a l") 'org-timeline)
+     (org-defkey org-mode-map (kbd "C-c C-x t") 'org-set-tags)
+     (org-defkey org-mode-map (kbd "C-x C-e") 'org-emphasize)
+     (global-set-key (kbd "C-c a a") 'org-agenda-list)
+     (global-set-key (kbd "C-c a t") 'org-todo-list)
+     (global-set-key (kbd "C-c a m") 'org-tags-view)))
 
 ;; chrome integration
 (package-require 'edit-server)

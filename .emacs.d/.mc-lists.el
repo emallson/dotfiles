@@ -4,7 +4,9 @@
 (setq mc/cmds-to-run-for-all
       '(
         backward-sexp
+        bibtex-next-field
         c-electric-delete-forward
+        c-electric-semi&comma
         comment-dwim
         evil-numbers/inc-at-pt
         forward-sexp
@@ -12,12 +14,18 @@
         icicle-yank-maybe-completing
         indent-for-tab-command
         kill-region
+        markdown-exdent-or-delete
         org-beginning-of-line
         org-end-of-line
         org-self-insert-command
         paredit-backward
         paredit-forward
         sgml-slash
+        sp--self-insert-command
+        sp-delete-char
+        sp-kill-hybrid-sexp
+        sp-kill-word
+        tern-ac-dot-complete
         yas-expand
         ))
 
