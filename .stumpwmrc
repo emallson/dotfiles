@@ -38,9 +38,12 @@
   (if new-window
       (run-shell-command "urxvtcd")
       (run-or-raise "urxvtcd" '(:class "URxvt"))))
-(defcommand st () ()
-            (run-or-raise "st -e tmux attach" '(:class "st")))
+(defcommand st (&optional new-window) (:y-or-n)
+            (if new-window
+                (run-shell-command "st -e tmux new")
+                (run-or-raise "st -e tmux attach" '(:class "st"))))
 (define-key *root-map* (kbd "c") "st")
+(define-key *root-map* (kbd "C-c") "st t")
 ;; (define-key *root-map* (kbd "C-c") "urxvtc t")
 
 (defcommand emacs (&optional new) (:y-or-n)

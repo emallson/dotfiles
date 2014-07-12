@@ -1,8 +1,8 @@
 [push]
-	default = upstream 
+	default = upstream
 [user]
 	email = smithjd@us.ibm.com
 	name = J David Smith
 [core]
-	editor = emacs
+	editor = emacsclient -c
 	excludesfile = ~/.gitignore_global

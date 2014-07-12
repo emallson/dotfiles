@@ -22,6 +22,7 @@
         paredit-forward
         sgml-slash
         sp--self-insert-command
+        sp-backward-delete-char
         sp-delete-char
         sp-kill-hybrid-sexp
         sp-kill-word
