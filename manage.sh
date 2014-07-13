@@ -14,4 +14,3 @@ elif [[ $1 == "add" ]]; then
     cd $CWD;
     git add --all "${2#$HOME/}";
 fi
-

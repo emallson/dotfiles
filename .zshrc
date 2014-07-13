@@ -40,3 +40,6 @@ function uva-11() {
 export CHROME_BIN=chromium;
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
+
+# OPAM configuration
+. /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

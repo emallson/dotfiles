@@ -30,6 +30,7 @@
  '(js2-include-node-externs t)
  '(js2-mode-show-strict-warnings nil)
  '(menu-bar-mode nil)
+ '(merlin-command "~/.opam/system/bin/ocamlmerlin")
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
  '(org-agenda-files (quote ("~/org/tmaas/tmaas.org")))
  '(org-display-custom-times t)
@@ -51,7 +52,7 @@
  '(org-time-stamp-custom-formats (quote ("<%a, %d %B %Y>" . "<%a, %d %B %Y at %H:%M>")))
  '(package-archives (quote (("melpa" . "http://melpa.milkbox.net/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(paradox-automatically-star nil)
- '(paradox-github-token t t)
+ '(paradox-github-token t)
  '(projectile-completion-system (quote helm))
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv" "node_modules")))
@@ -85,7 +86,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(italic ((t (:slant italic))))
  '(mode-line ((t (:background "#202020" :foreground "#8FB28F" :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#383838" :foreground "#5F7F5F" :box nil :weight light))))
  '(sml/battery ((t (:inherit sml/global :foreground "#E0CF9F"))) t)

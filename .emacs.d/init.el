@@ -6,17 +6,8 @@
 ;;; Code:
 (add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-
+(require 'cl)
 (load-theme 'zenburn t)
-(set-frame-font "Source Code Pro Light:size=17:antialias=true")
-(defadvice make-frame-command (after make-frame-change-background-color last)
-  "Adjusts the background color for different frame types.
-Graphical (X) frames should have the theme color, while terminal
-frames should match the terminal color (which matches the theme
-color...but terminal frames can't directly render this color)"
-  (if (display-graphic-p)
-      (set-background-color "#202020")
-    (set-background-color "black")))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -29,12 +20,22 @@ color...but terminal frames can't directly render this color)"
   (setq package-refreshed t))
 (package-initialize)
 
+;;; my functions
+(load "~/.emacs.d/functions.el")
+
+(set-frame-font "Source Code Pro Light:size=17:antialias=true")
+(defadvice make-frame-command (after make-frame-change-background-color last)
+  "Adjusts the background color for different frame types.
+Graphical (X) frames should have the theme color, while terminal
+frames should match the terminal color (which matches the theme
+color...but terminal frames can't directly render this color)"
+  (if (display-graphic-p)
+      (set-background-color "#202020")
+    (set-background-color "black")))
+
 (setq-default fill-column 79)
 
 (electric-indent-mode)
-
-; my functions
-(load "~/.emacs.d/functions.el")
 
 (global-set-key (kbd "M-W") 'yank-to-x-clipboard)
 (global-set-key (kbd "C-c C-r") 'revert-all-buffers)
@@ -194,10 +195,14 @@ color...but terminal frames can't directly render this color)"
 (require 'uniquify)
 
 ;; auto-complete
-(package-require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-flyspell-workaround)
+;; (package-require 'auto-complete)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (ac-flyspell-workaround)
+
+;;; trying company-mode
+(package-require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; clojure stuff
 (package-require 'clojure-mode)
@@ -420,6 +425,23 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 ;; jedi
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
+
+;;; ocaml stuff
+(package-require 'tuareg)
+(require 'merlin)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'merlin-company-backend))
+(package-require 'utop)
+(eval-after-load 'tuareg
+  '(progn
+     (define-key tuareg-mode-map (kbd "RET") 'tuareg-newline-and-indent)
+     (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+     (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
+     (add-hook 'tuareg-mode-hook 'merlin-mode)
+     (setq merlin-use-auto-complete-mode t)
+     (setq merlin-error-after-save nil)))
+
+
 
 ;;; desktop-save-mode
 (setq desktop-dirname "~/")
