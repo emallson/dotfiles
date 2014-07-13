@@ -291,7 +291,7 @@ color...but terminal frames can't directly render this color)"
 
 ;; js
 (package-require 'js2-mode)
-(require 'nodejs-repl)
+(package-require 'nodejs-repl)
 (require 'nodejs-repl-eval)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (define-key js2-mode-map (kbd "C-c M-j") 'nodejs-repl)
