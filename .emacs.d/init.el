@@ -200,6 +200,26 @@ color...but terminal frames can't directly render this color)"
 (ac-flyspell-workaround)
 
 ;; clojure stuff
+(package-require 'clojure-mode)
+(require 'clojure-mode)
+(add-to-list 'auto-mode-alist '("\\.cljs?.hl\\'" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
+;;; indentation for compojure
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2)
+  (POST 2)
+  (PUT 2)
+  (DELETE 2)
+  (HEAD 2)
+  (ANY 2)
+  (context 2)
+  (loop-tpl 2)
+  (page 'defun))
+
+(eval-after-load 'clojure-mode
+  '(define-key clojure-mode-map (kbd "RET") 'paredit-newline))
+
 (package-require 'cider)
 (require 'cider-mode)
 (unless (boundp 'cider-mode-hook)
@@ -207,6 +227,8 @@ color...but terminal frames can't directly render this color)"
   (defvar cider-mode-hook nil
     "Hook that is run when `cider-mode' is activated."))
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(eval-after-load 'cider
+  '(define-key cider-repl-mode-map (kbd "RET") 'cider-repl-return))
 (setq nrepl-hide-special-buffers t)
 
 (package-require 'ac-cider-compliment)
@@ -268,7 +290,7 @@ color...but terminal frames can't directly render this color)"
 (ignoramus-setup)
 
 ;; js
-(require 'js2-mode)
+(package-require 'js2-mode)
 (require 'nodejs-repl)
 (require 'nodejs-repl-eval)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -348,7 +370,6 @@ the syntax class ')'."
 
 
 ;; org mode
-;; (add-to-list 'load-path "~/org-mode/lisp/") ;; was used to export while the URL bug was still in place
 (package-require 'org)
 (eval-after-load "org"
   '(progn
