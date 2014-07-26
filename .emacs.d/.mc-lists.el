@@ -27,6 +27,7 @@
         sp-kill-hybrid-sexp
         sp-kill-word
         tern-ac-dot-complete
+        tuareg-newline-and-indent
         yas-expand
         ))
 

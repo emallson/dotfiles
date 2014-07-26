@@ -438,8 +438,7 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
      (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
      (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
      (add-hook 'tuareg-mode-hook 'merlin-mode)
-     (setq merlin-use-auto-complete-mode t)
-     (setq merlin-error-after-save nil)))
+     (setq merlin-error-after-save t)))
 
 
 
