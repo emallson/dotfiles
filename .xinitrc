@@ -9,10 +9,11 @@ if [ "$(hostname)" = "Vorringia" ]; then
     xrandr --output DVI-I-1 --auto --output DVI-I-2 --auto --right-of DVI-I-1;
 fi
 
-setxkbmap -option ctrl:nocaps
 xrdb .Xresources
 xset -b
 xsetroot -cursor_name left_ptr
-setxkbmap us -variant colemak
+setxkbmap us -variant colemak -option ctrl:nocaps -option compose:ralt
 pulseaudio --start &
-/home/emallson/.root/bin/stumpwm
+xbindkeys
+eval `cat ~/.fehbg`
+exec /home/emallson/.root/bin/stumpwm

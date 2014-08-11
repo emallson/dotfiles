@@ -11,20 +11,19 @@
 (message "Loading rc...")
 (run-shell-command "rm .xsession-errors") ; clear this so any errors are from this session only
 
-;; Swank -- for interactive WM Hacking
-(load "~/.emacs.d/elpa/slime/swank-loader.lisp")
+(ql:quickload "swank")
 (defparameter *swank-p* NIL)
-(swank-loader:init)
+;; Swank -- for interactive WM Hacking
 (defcommand swank () ()
   (unless *swank-p*
     (ignore-errors
-     (setf stumpwm:*top-level-error-action* :break)
-     (swank:create-server :port 4040
-                          :style swank:*communication-style*
-                          :dont-close t)
-     (echo-string (current-screen)
-                  "Starting swank. M-x slime-connect RET 4040 RET, then (in-package stumpwm).")
-     (setq *swank-p* t))))
+      (setf stumpwm:*top-level-error-action* :break)
+      (swank:create-server :port 4040
+                           :style swank:*communication-style*
+                           :dont-close t)
+      (echo-string (current-screen)
+                   "Starting swank. M-x slime-connect RET 4040 RET, then (in-package stumpwm).")
+      (setq *swank-p* t))))
 (swank)
 
 ;; prefer s-w to C-t
@@ -38,6 +37,7 @@
   (if new-window
       (run-shell-command "urxvtcd")
       (run-or-raise "urxvtcd" '(:class "URxvt"))))
+
 (defcommand st (&optional new-window) (:y-or-n)
             (if new-window
                 (run-shell-command "st -e tmux new")
@@ -146,21 +146,24 @@ window."
 (set-focus-color *bg-color*)
 
 ;; contrib modules
+
 ;; multimedia-keys
 (load "~/.stumpwm.d/multimedia-keys.lisp")
+
 ;; MPD
-;; (load-module "mpd")
-(load "~/.stumpwm.d/contrib/mpd.lisp")
+(load-module "mpd")
 (define-key *root-map* (kbd "s-m") '*mpd-map*)
 (define-key *top-map* (kbd "XF86AudioPlay") "mpd-toggle-pause")
 (define-key *top-map* (kbd "XF86AudioStop") "mpd-stop")
 (define-key *top-map* (kbd "XF86AudioNext") "mpd-next")
 (define-key *top-map* (kbd "XF86AudioPrev") "mpd-prev")
+
 ;; Window Hiding
-
-
 (load "~/.stumpwm.d/hide-windows.lisp")
 (define-key *root-map* (kbd "C-h") "toggle-hide-window")
+
+;;; Other modules
+(load-module "battery-portable")
 
 
 ;; machine-specific commands

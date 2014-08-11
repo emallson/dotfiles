@@ -16,6 +16,7 @@
         kill-region
         markdown-exdent-or-delete
         org-beginning-of-line
+        org-delete-char
         org-end-of-line
         org-self-insert-command
         paredit-backward

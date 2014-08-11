@@ -47,3 +47,5 @@ URxvt.iso14755_52: false
 
 Xcursor.theme: ComixCursors-Slim-White
 Xcursor.size: 16
+
+Emacs.font: Source Code Pro Light:size=15:antialias=true

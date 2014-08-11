@@ -23,8 +23,8 @@
 ;;; my functions
 (load "~/.emacs.d/functions.el")
 
-(set-frame-font "Source Code Pro Light:size=17:antialias=true")
-(defadvice make-frame-command (after make-frame-change-background-color last)
+(set-default-font "Source Code Pro Light:size=15:antialias=true")
+(defadvice make-frame-command (after make-frame-change-background-color last activate)
   "Adjusts the background color for different frame types.
 Graphical (X) frames should have the theme color, while terminal
 frames should match the terminal color (which matches the theme
@@ -236,6 +236,10 @@ color...but terminal frames can't directly render this color)"
   '(define-key cider-repl-mode-map (kbd "RET") 'cider-repl-return))
 (setq nrepl-hide-special-buffers t)
 
+(package-require 'company-cider)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-cider))
+
 (package-require 'ac-cider-compliment)
 (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
 (add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
@@ -388,6 +392,10 @@ the syntax class ')'."
      (global-set-key (kbd "C-c a a") 'org-agenda-list)
      (global-set-key (kbd "C-c a t") 'org-todo-list)
      (global-set-key (kbd "C-c a m") 'org-tags-view)))
+
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
+
+(package-require 'htmlize)
 
 ;; chrome integration
 (package-require 'edit-server)
