@@ -43,10 +43,6 @@ color...but terminal frames can't directly render this color)"
 
 ; tramp
 (package-require 'tramp)
-;; (add-to-list 'tramp-default-proxies-alist
-;;              '(nil "\\`root\\'" "/ssh:%h:"))
-;; (add-to-list 'tramp-default-proxies-alist
-;;              '((regexp-quote (system-name)) nil nil))
 
 ; wdired
 (setq-default wdired-allow-to-change-permissions t)
@@ -235,17 +231,6 @@ color...but terminal frames can't directly render this color)"
 (eval-after-load 'cider
   '(define-key cider-repl-mode-map (kbd "RET") 'cider-repl-return))
 (setq nrepl-hide-special-buffers t)
-
-(package-require 'company-cider)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-cider))
-
-(package-require 'ac-cider-compliment)
-(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
-(add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes cider-mode))
 
 ;; paredit
 (package-require 'paredit)

@@ -19,6 +19,7 @@
         org-delete-char
         org-end-of-line
         org-self-insert-command
+        org-table-sum
         paredit-backward
         paredit-forward
         sgml-slash

@@ -1,13 +1,15 @@
 source .zsh.d/antigen/antigen.zsh
 
-antigen use oh-my-zsh # needed to make gallois work
+antigen use oh-my-zsh
+
 antigen bundle git
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle autojump
 antigen bundle lein
+
 antigen theme gallois
 
-# User configuration
+antigen apply
 
 export PATH="$HOME/.root/bin:$HOME/bin:/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin"
 
