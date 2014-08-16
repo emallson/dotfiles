@@ -1,18 +1,15 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+source .zsh.d/antigen/antigen.zsh
 
-ZSH_THEME="gallois"
-
-DEFAULT_USER="emallson"
-
-plugins=(git zsh-syntax-highlighting autojump)
-
-source $ZSH/oh-my-zsh.sh
+antigen use oh-my-zsh # needed to make gallois work
+antigen bundle git
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle autojump
+antigen bundle lein
+antigen theme gallois
 
 # User configuration
 
 export PATH="$HOME/.root/bin:$HOME/bin:/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -20,12 +17,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='emacs'
 fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 alias ls='ls --color=auto -B'
 

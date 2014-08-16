@@ -1,3 +1,6 @@
 [submodule "/home/emallson/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
 	path = /home/emallson/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".zsh.d/antigen"]
+	path = .zsh.d/antigen
+	url = https://github.com/zsh-users/antigen.git
