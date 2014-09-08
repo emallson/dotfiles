@@ -3,9 +3,12 @@ source .zsh.d/antigen/antigen.zsh
 antigen use oh-my-zsh
 
 antigen bundle git
+antigen bundle git-flow-avh
+antigen bundle lein
+antigen bundle emallson/gulp-zsh-completion
+
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle autojump
-antigen bundle lein
 
 antigen theme gallois
 
@@ -36,3 +39,6 @@ alias syus="systemctl --user"
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export NVM_DIR="/home/emallson/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

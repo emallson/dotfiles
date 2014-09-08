@@ -190,12 +190,6 @@ color...but terminal frames can't directly render this color)"
 ;; uniquify
 (require 'uniquify)
 
-;; auto-complete
-;; (package-require 'auto-complete)
-;; (require 'auto-complete-config)
-;; (ac-config-default)
-;; (ac-flyspell-workaround)
-
 ;;; trying company-mode
 (package-require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -216,7 +210,10 @@ color...but terminal frames can't directly render this color)"
   (ANY 2)
   (context 2)
   (loop-tpl 2)
-  (page 'defun))
+  (page 'defun)
+  (let-realised 'defun)
+  (when-realised 'defun)
+  (waitp 'defun))
 
 (eval-after-load 'clojure-mode
   '(define-key clojure-mode-map (kbd "RET") 'paredit-newline))
@@ -248,16 +245,6 @@ color...but terminal frames can't directly render this color)"
 (package-require 'slime)
 (slime-setup '(slime-repl))
 (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-
-(package-require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'slime-repl-mode))
-(add-hook 'c-mode-hook
-          (lambda ()
-            (add-to-list 'ac-sources 'ac-source-c-headers)
-            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; lisp mode
 (setq auto-mode-alist (append '(("/*.\.cl$" . lisp-mode)) auto-mode-alist))
@@ -297,15 +284,12 @@ color...but terminal frames can't directly render this color)"
 (add-hook 'js2-mode-hook 'subword-mode)
 
 ;;; tern
-;; (add-to-list 'load-path "~/.emacs.d/tern/emacs/")
-;; (autoload 'tern-mode "tern.el" nil t)
 (package-require 'tern)
-(package-require 'tern-auto-complete)
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)))
+
+(package-require 'company-tern)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-tern))
 
 ;; jsx
 ;; (add-to-list 'auto-mode-alist '("\\.jsx$\\'" . jsx-mode))
@@ -433,7 +417,9 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
      (add-hook 'tuareg-mode-hook 'merlin-mode)
      (setq merlin-error-after-save t)))
 
-
+;;; matlab-mode
+(package-require 'matlab-mode)
+(add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 
 ;;; desktop-save-mode
 (setq desktop-dirname "~/")
@@ -441,5 +427,8 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
+
+;;; mail!
+(require 'mu4e-config)
 
 ;;; init.el ends here
