@@ -83,11 +83,11 @@ window."
 
 ;; power control commands
 (defcommand suspend () ()
-  (run-shell-command "dbus-send --system --print-reply --dest=\"org.freedesktop.UPower\" /org/freedesktop/UPower org.freedesktop.UPower.Suspend"))
+  (run-shell-command "systemctl suspend"))
 (defcommand reboot () ()
-  (run-shell-command "shutdown -r 0"))
+  (run-shell-command "systemctl reboot"))
 (defcommand poweroff () ()
-  (run-shell-command "shutdown -P 0"))
+  (run-shell-command "systemctl poweroff"))
 
 (defvar *powerctl-map*
   (let ((m (make-sparse-keymap)))

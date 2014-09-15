@@ -74,15 +74,21 @@ color...but terminal frames can't directly render this color)"
             (set (make-local-variable 'compile-command)
                  (concat "pdflatex " (buffer-file-name)))))
 
-(require 'lacarte)
-
 ;; flycheck
 (package-require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ; projectile
 (package-require 'projectile)
-(projectile-global-mode)
+;; (projectile-global-mode -1)
+
+(defun projectile-enable-unless-tramp ()
+  "Enables `projectile-mode` unless in a TRAMP buffer."
+  (unless (tramp-tramp-file-p (buffer-name (current-buffer)))
+    (projectile-mode 1)))
+
+(add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
+
 (setq tags-revert-without-query t)
 (defun projectile-custom-test-suffix (project-type)
   "Get custom test suffixes based on `PROJECT-TYPE'."
@@ -431,4 +437,30 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 ;;; mail!
 (require 'mu4e-config)
 
+;;; haskell
+(package-require 'haskell-mode)
+(add-hook 'haskell-mode-hook 'ghc-init)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(package-require 'shm)
+(add-hook 'haskell-mode-hook 'structured-haskell-mode)
+(define-key-after shm-map (kbd "RET") 'shm/ret-proxy 'shm-map)
+
+(package-require 'company-ghc)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-ghc))
+
+;;; ggtags
+(package-require 'ggtags)
+
+(defun ggtags-enable-in-c-land ()
+  "Enable `ggtags-mode` in C-style modes."
+  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+    (ggtags-mode 1)))
+
+(add-hook 'c-mode-common-hook 'ggtags-enable-in-c-land)
+
+;;; semantic
+(add-hook 'c-mode-hook 'semantic-mode)
+(global-semantic-idle-summary-mode 1)
 ;;; init.el ends here

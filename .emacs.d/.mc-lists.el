@@ -7,6 +7,7 @@
         bibtex-next-field
         c-electric-delete-forward
         c-electric-semi&comma
+        c-electric-star
         comment-dwim
         evil-numbers/inc-at-pt
         forward-sexp

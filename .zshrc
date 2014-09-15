@@ -36,9 +36,19 @@ function uva-11() {
 export CHROME_BIN=chromium;
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
+alias na='sudo netctl-auto'
+alias start='sudo systemctl start'
+alias restart='sudo systemctl restart'
+alias stop='sudo systemctl stop'
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 export NVM_DIR="/home/emallson/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Cabal config
+export PATH="$HOME/.cabal/bin:$PATH"
+
+# export PATH user units -- mostly emacs
+syus import-environment PATH
