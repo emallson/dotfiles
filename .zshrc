@@ -37,9 +37,12 @@ export CHROME_BIN=chromium;
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
 alias na='sudo netctl-auto'
+
 alias start='sudo systemctl start'
 alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
+
+alias em='emacsclient'
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

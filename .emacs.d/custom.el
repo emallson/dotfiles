@@ -101,6 +101,6 @@
  '(mode-line ((t (:background "#202020" :foreground "#8FB28F" :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#383838" :foreground "#5F7F5F" :box nil :weight light))))
  '(org-checkbox ((t (:inherit bold :background "#202020" :foreground "#ECECDC" :box nil))))
- '(shm-current-face ((t (:background "#303030"))))
+ '(shm-current-face ((t (:background "#303030"))) t)
  '(sml/battery ((t (:inherit sml/global :foreground "#E0CF9F"))) t)
  '(sml/discharging ((t (:inherit sml/global :foreground "#E0CF9F")))))
