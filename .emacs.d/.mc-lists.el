@@ -23,6 +23,8 @@
         org-table-sum
         paredit-backward
         paredit-forward
+        paredit-forward-kill-word
+        paredit-kill
         sgml-slash
         sp--self-insert-command
         sp-backward-delete-char
