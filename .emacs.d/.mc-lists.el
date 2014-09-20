@@ -6,6 +6,7 @@
         backward-sexp
         bibtex-next-field
         c-electric-delete-forward
+        c-electric-paren
         c-electric-semi&comma
         c-electric-star
         comment-dwim

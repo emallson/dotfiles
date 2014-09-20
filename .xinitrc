@@ -12,8 +12,14 @@ fi
 xrdb .Xresources
 xset -b
 xsetroot -cursor_name left_ptr
-setxkbmap us -variant colemak -option ctrl:nocaps -option compose:ralt
+setxkbmap us -variant colemak -option ctrl:nocaps -option compose:prsc
+
+if [ -s ~/.Xmodmap ]; then
+    xmodmap ~/.Xmodmap;
+fi
+
 pulseaudio --start &
 xbindkeys
 eval `cat ~/.fehbg`
-exec /home/emallson/.root/bin/stumpwm
+# exec /home/emallson/.root/bin/stumpwm
+exec xmonad

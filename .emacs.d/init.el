@@ -84,7 +84,7 @@ color...but terminal frames can't directly render this color)"
 
 (defun projectile-enable-unless-tramp ()
   "Enables `projectile-mode` unless in a TRAMP buffer."
-  (unless (tramp-tramp-file-p (buffer-name (current-buffer)))
+  (unless (tramp-tramp-file-p (buffer-file-name))
     (projectile-mode 1)))
 
 (add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
@@ -444,7 +444,6 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 
 (package-require 'shm)
 (add-hook 'haskell-mode-hook 'structured-haskell-mode)
-(define-key-after shm-map (kbd "RET") 'shm/ret-proxy 'shm-map)
 
 (package-require 'company-ghc)
 (eval-after-load 'company
