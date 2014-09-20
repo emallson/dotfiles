@@ -74,6 +74,8 @@ color...but terminal frames can't directly render this color)"
             (set (make-local-variable 'compile-command)
                  (concat "pdflatex " (buffer-file-name)))))
 
+(package-require 'auctex)
+
 ;; flycheck
 (package-require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -82,12 +84,13 @@ color...but terminal frames can't directly render this color)"
 (package-require 'projectile)
 ;; (projectile-global-mode -1)
 
-(defun projectile-enable-unless-tramp ()
-  "Enables `projectile-mode` unless in a TRAMP buffer."
-  (unless (tramp-tramp-file-p (buffer-file-name))
-    (projectile-mode 1)))
-
-(add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
+(eval-after-load 'tramp
+  '(progn
+     (defun projectile-enable-unless-tramp ()
+       "Enables `projectile-mode` unless in a TRAMP buffer."
+       (unless (tramp-tramp-file-p (buffer-name (current-buffer)))
+         (projectile-mode 1)))
+     (add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)))
 
 (setq tags-revert-without-query t)
 (defun projectile-custom-test-suffix (project-type)
@@ -152,28 +155,6 @@ color...but terminal frames can't directly render this color)"
 (global-set-key (kbd "C-c A") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c M-a") 'mc/mark-all-in-region)
 
-;; ;; ido
-;; (package-require 'ido)
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-everywhere t)
-;; (ido-mode 1)
-;; (setq ido-use-filename-at-point 'guess)
-;; (setq ido-default-buffer-method 'selected-window)
-;; ;; ido-better-flex
-;; (package-require 'ido-better-flex)
-;; (ido-better-flex/enable)
-;; ;; ido-vertical-mode
-;; (package-require 'ido-vertical-mode)
-;; (ido-vertical-mode)
-;; ;; kill-ring-ido
-;; (require 'kill-ring-ido)
-;; (global-set-key (kbd "C-M-y") 'kill-ring-ido)
-
-;; ;; smex -- only using it for major modes because it is very slow over all
-;; ;; functions
-;; (package-require 'smex)
-;; (smex-initialize)
-
 ;;; helm
 (package-require 'helm)
 (require 'helm-config)
@@ -205,6 +186,7 @@ color...but terminal frames can't directly render this color)"
 (require 'clojure-mode)
 (add-to-list 'auto-mode-alist '("\\.cljs?.hl\\'" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
+
 ;;; indentation for compojure
 (define-clojure-indent
   (defroutes 'defun)
@@ -222,7 +204,8 @@ color...but terminal frames can't directly render this color)"
   (waitp 'defun))
 
 (eval-after-load 'clojure-mode
-  '(define-key clojure-mode-map (kbd "RET") 'paredit-newline))
+  '(progn
+     (define-key clojure-mode-map (kbd "RET") 'paredit-newline)))
 
 (package-require 'cider)
 (require 'cider-mode)
@@ -249,7 +232,7 @@ color...but terminal frames can't directly render this color)"
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
 (package-require 'slime)
-(slime-setup '(slime-repl))
+(require 'slime-autoloads)
 (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
 
 ;; lisp mode
@@ -297,21 +280,12 @@ color...but terminal frames can't directly render this color)"
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-tern))
 
-;; jsx
-;; (add-to-list 'auto-mode-alist '("\\.jsx$\\'" . jsx-mode))
-;; (add-to-list 'magic-mode-alist '("^/\\*\\* +@jsx.+ \\*/$" . jsx-mode))
-;; (autoload 'jsx-mode "jsx-mode" "JSX mode" t)
-
 ;; web-mode
 (package-require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-engines-alist
       '(("django" . "\\.html?\\'")))
-
-;; subword-mode
-;; makes cursor movement stop in camelCase variables
-;; (subword-mode 1) ; need to add as hook for certain modes ... or all modes?
 
 ;; indentation
 (setq-default indent-tabs-mode nil)
@@ -328,8 +302,10 @@ color...but terminal frames can't directly render this color)"
 (package-require 'smartparens)
 (require 'smartparens-config)
 (add-hook 'js2-mode-hook 'smartparens-strict-mode)
-(define-key smartparens-strict-mode-map (kbd "C-<right>") 'sp-slurp-hybrid-sexp)
-(define-key smartparens-strict-mode-map (kbd "M-r") 'sp-raise-sexp)
+(eval-after-load 'smartparens-strict-mode
+  '(progn
+     (define-key smartparens-strict-mode-map (kbd "C-<right>") 'sp-slurp-hybrid-sexp)
+     (define-key smartparens-strict-mode-map (kbd "M-r") 'sp-raise-sexp)))
 
 
 ;; shows the matching paren in the minibuffer when it is off-screen
@@ -372,25 +348,6 @@ the syntax class ')'."
 
 (package-require 'htmlize)
 
-;; chrome integration
-(package-require 'edit-server)
-(edit-server-start)
-
-;; sublimity -- only start this when running under X
-(package-require 'sublimity)
-(require 'sublimity-scroll)
-;; (require 'sublimity-map)
-(defadvice switch-to-buffer (after switch-to-buffer-toggle-sublimity last)
-  "Enable `sublimity-mode' only in graphical (X) windows.
-
-Scrolling works okay-ish in the terminal, but map doesn't work at all."
-  (if (display-graphic-p)
-      (sublimity-mode)
-    (sublimity-mode -1)))
-(ad-activate 'switch-to-buffer)
-
-(put 'upcase-region 'disabled nil)
-
 ;; mode line stuff
 (setq sml/theme 'respectful)
 (package-require 'smart-mode-line)
@@ -424,18 +381,16 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
      (setq merlin-error-after-save t)))
 
 ;;; matlab-mode
-(package-require 'matlab-mode)
+(add-to-list 'load-path "~/.emacs.d/matlab/")
+(autoload 'matlab-mode "matlab")
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 
 ;;; desktop-save-mode
 (setq desktop-dirname "~/")
 (desktop-save-mode 0)
 
-;;; un-disabled fns
-(put 'scroll-left 'disabled nil)
-
 ;;; mail!
-(require 'mu4e-config)
+(require 'mu4e-config nil t)
 
 ;;; haskell
 (package-require 'haskell-mode)
@@ -461,5 +416,9 @@ Scrolling works okay-ish in the terminal, but map doesn't work at all."
 
 ;;; semantic
 (add-hook 'c-mode-hook 'semantic-mode)
-(global-semantic-idle-summary-mode 1)
+
+;;; un-disabled fns
+(put 'scroll-left 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
 ;;; init.el ends here

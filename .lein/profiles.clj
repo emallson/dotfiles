@@ -3,9 +3,9 @@
                        [im.chit/vinyasa "0.1.8"]
                        [difform "1.1.2"]
                        [compliment "0.1.0"]]
-        :plugins [[cider/cider-nrepl "0.6.0"]]
+        :plugins [[cider/cider-nrepl "0.7.0"]]
         :injections [(require 'vinyasa.inject)
-                     (vinyasa.inject/inject 
+                     (vinyasa.inject/inject
                       'clojure.core '>
                       '[[clojure.repl doc source]
                         [clojure.pprint pprint pp]
