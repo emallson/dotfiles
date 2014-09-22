@@ -84,13 +84,12 @@ color...but terminal frames can't directly render this color)"
 (package-require 'projectile)
 ;; (projectile-global-mode -1)
 
-(eval-after-load 'tramp
-  '(progn
-     (defun projectile-enable-unless-tramp ()
-       "Enables `projectile-mode` unless in a TRAMP buffer."
-       (unless (tramp-tramp-file-p (buffer-name (current-buffer)))
-         (projectile-mode 1)))
-     (add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)))
+(defun projectile-enable-unless-tramp ()
+  "Enables `projectile-mode` unless in a TRAMP buffer."
+  (unless (tramp-tramp-file-p (buffer-file-name))
+    (projectile-mode 1)))
+
+(add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
 
 (setq tags-revert-without-query t)
 (defun projectile-custom-test-suffix (project-type)

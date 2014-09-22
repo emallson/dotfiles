@@ -53,5 +53,8 @@ export NVM_DIR="/home/emallson/.nvm"
 # Cabal config
 export PATH="$HOME/.cabal/bin:$PATH"
 
+# added by Anaconda 2.0.1 installer
+export PATH="/home/emallson/anaconda/bin:$PATH"
+
 # export PATH user units -- mostly emacs
-syus import-environment PATH
+# syus import-environment PATH
