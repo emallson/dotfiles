@@ -1,4 +1,5 @@
 import XMonad
+import System.Exit
 import XMonad.Prompt
 import qualified XMonad.StackSet as W
 
@@ -37,5 +38,6 @@ main = xmonad $ ewmh defaultConfig
                        ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
                        ,("M-e", raiseMaybe (spawn "emacsclient -c") (className =? "Emacs"))
                        ,("M-,", renameWorkspace defaultXPConfig)
+                       ,("C-S-q", io (exitSuccess)) -- emergency hatch while debugging mod3Mask
                        ,("M-C-k", spawn "./.xmonad/switch-keymap.sh")
                        ]

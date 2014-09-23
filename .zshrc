@@ -14,8 +14,6 @@ antigen theme gallois
 
 antigen apply
 
-export PATH="$HOME/.root/bin:$HOME/bin:/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin"
-
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='new-emacs'
@@ -44,17 +42,8 @@ alias stop='sudo systemctl stop'
 
 alias em='emacsclient'
 
-# OPAM configuration
-. /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+# # OPAM configuration
+# . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-export NVM_DIR="/home/emallson/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# Cabal config
-export PATH="$HOME/.cabal/bin:$PATH"
-
-# added by Anaconda 2.0.1 installer
-export PATH="/home/emallson/anaconda/bin:$PATH"
-
-# export PATH user units -- mostly emacs
-# syus import-environment PATH
+# export NVM_DIR="/home/emallson/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

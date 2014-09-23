@@ -394,10 +394,13 @@ the syntax class ')'."
 ;;; haskell
 (package-require 'haskell-mode)
 (add-hook 'haskell-mode-hook 'ghc-init)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
 (package-require 'shm)
+(require 'shm)
 (add-hook 'haskell-mode-hook 'structured-haskell-mode)
+(defun haskell-mode-stop-bugging-me-goddammit ()
+  (setq indent-line-function (lambda ())))
+(add-hook 'haskell-mode-hook 'haskell-mode-stop-bugging-me-goddammit)
 
 (package-require 'company-ghc)
 (eval-after-load 'company
