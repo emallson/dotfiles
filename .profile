@@ -15,4 +15,6 @@ export NVM_DIR="/home/emallson/.nvm"
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
+export PATH=~/anaconda/bin:$PATH
+
 systemctl --user import-environment PATH

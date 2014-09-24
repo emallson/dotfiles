@@ -361,10 +361,6 @@ the syntax class ')'."
 (package-require 'god-mode)
 (global-set-key (kbd "C-x g") 'god-mode)
 
-;; jedi
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-
 ;;; ocaml stuff
 (package-require 'tuareg)
 (require 'merlin)
@@ -418,6 +414,10 @@ the syntax class ')'."
 
 ;;; semantic
 (add-hook 'c-mode-hook 'semantic-mode)
+
+;;; python
+(package-require 'pymacs)
+(pymacs-load "ropemacs" "rope-" t)      ; don't throw an error on fail. too finicky
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
