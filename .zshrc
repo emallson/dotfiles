@@ -14,13 +14,6 @@ antigen theme gallois
 
 antigen apply
 
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='new-emacs'
-else
-  export EDITOR='emacs'
-fi
-
 alias ls='ls --color=auto -B'
 
 setopt extendedglob
@@ -31,7 +24,7 @@ function uva() {
 function uva-11() {
     g++ -g -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
-export CHROME_BIN=chromium;
+
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
 alias na='sudo netctl-auto'
