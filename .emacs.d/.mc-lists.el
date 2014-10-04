@@ -27,6 +27,7 @@
         paredit-forward-kill-word
         paredit-kill
         sgml-slash
+        shm/space
         sp--self-insert-command
         sp-backward-delete-char
         sp-delete-char
@@ -41,4 +42,5 @@
       '(
         beginning-of-buffer
         icicle-execute-extended-command
+        org-export
         ))

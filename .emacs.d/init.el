@@ -12,6 +12,12 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+;;; make shift-insert behave like every other freaking program
+(setq mouse-yank-at-point t)
+(global-set-key (kbd "S-<insert>") (lambda ()
+                                     (interactive)
+                                     (mouse-yank-primary (point))))
+
 ;; elpa/melpa/marmalade packages
 (defvar package-refreshed nil
   "Used by `package-require' to determine whether to refresh package contents.")
@@ -418,6 +424,7 @@ the syntax class ')'."
 ;;; python
 (package-require 'pymacs)
 (pymacs-load "ropemacs" "rope-" t)      ; don't throw an error on fail. too finicky
+(define-key ropemacs-local-keymap (kbd "C-c g") nil)
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
