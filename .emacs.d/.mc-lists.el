@@ -10,7 +10,12 @@
         c-electric-semi&comma
         c-electric-star
         comment-dwim
+        evil-backward-char
+        evil-delete
+        evil-forward-char
+        evil-insert
         evil-numbers/inc-at-pt
+        evil-scroll-down
         forward-sexp
         icicle-goto-marker-or-set-mark-command
         icicle-yank-maybe-completing
@@ -24,6 +29,7 @@
         org-table-sum
         paredit-backward
         paredit-forward
+        paredit-forward-delete
         paredit-forward-kill-word
         paredit-kill
         sgml-slash
@@ -41,6 +47,10 @@
 (setq mc/cmds-to-run-once
       '(
         beginning-of-buffer
+        describe-key
+        evil-force-normal-state
+        evil-normal-state
+        helm-mini
         icicle-execute-extended-command
         org-export
         ))

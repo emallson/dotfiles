@@ -1,16 +1,26 @@
 import XMonad
+import Data.List
+import Data.List.Split
 import System.Exit
-import XMonad.Prompt
+import System.Process
 import qualified XMonad.StackSet as W
 
-import XMonad.Actions.WindowGo (raiseMaybe, runOrRaise)
+import XMonad.Actions.WindowGo
 import XMonad.Actions.WorkspaceNames (renameWorkspace, workspaceNamesPP)
-import XMonad.Layout.LayoutModifier
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Prompt
+import XMonad.Prompt.Input
 import XMonad.Util.EZConfig (additionalKeysP, removeKeysP, checkKeymap)
 import XMonad.Util.Run
+
+tmuxAttach :: String -> X ()
+tmuxAttach session = spawn ("st -e tmux attach -t " ++ session)
+
+tmuxSessionCompl :: String -> IO [String]
+tmuxSessionCompl partial = do output <- readProcess "tmux" ["list-sessions", "-F", "#{session_name}"] ""
+                              return $ filter (isInfixOf partial) $ splitOn "\n" output
 
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myKeymap = [("M-n", windows W.focusDown)
@@ -22,6 +32,7 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-r", spawn "dmenu_run")
            ,("M-b", runOrRaise "firefox" (className =? "Firefox"))
            ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
+           ,("M-S-c", inputPromptWithCompl defaultXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-e", raiseMaybe (spawn "emacsclient -c") (className =? "Emacs"))
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("C-S-q", io exitSuccess) -- emergency hatch while debugging mod3Mask

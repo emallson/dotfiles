@@ -4,8 +4,13 @@
 ;;; I'll be really pissed if I ever lose this
 ;;; I should back it up, really.
 ;;; Code:
-(add-to-list 'load-path "~/.emacs.d")
+
+;;; no suspend-buffer
+(global-set-key (kbd "C-z") nil)
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+
 (require 'cl)
 (load-theme 'zenburn t)
 
@@ -28,6 +33,8 @@
 
 ;;; my functions
 (load "~/.emacs.d/functions.el")
+
+(add-hook 'prog-mode-hook 'linum-mode)
 
 (set-default-font "Source Code Pro Light:size=15:antialias=true")
 (defadvice make-frame-command (after make-frame-change-background-color last activate)
@@ -206,7 +213,8 @@ color...but terminal frames can't directly render this color)"
   (page 'defun)
   (let-realised 'defun)
   (when-realised 'defun)
-  (waitp 'defun))
+  (waitp 'defun)
+  (ann-record 'defun))
 
 (eval-after-load 'clojure-mode
   '(progn
@@ -233,6 +241,11 @@ color...but terminal frames can't directly render this color)"
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 
+(require 'evil-paredit)
+(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'evil-paredit-mode)
+
 ;; slime
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
@@ -254,11 +267,6 @@ color...but terminal frames can't directly render this color)"
 ;; yasnippet
 (package-require 'yasnippet)
 (yas-global-mode 1)
-
-;; no-easy-keys
-;; time to stop using them thar arrows
-(require 'no-easy-keys)
-(no-easy-keys 1)
 
 ;; ignoramus
 (package-require 'ignoramus)
@@ -385,6 +393,8 @@ the syntax class ')'."
 (add-to-list 'load-path "~/.emacs.d/matlab/")
 (autoload 'matlab-mode "matlab")
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+(load-library "matlab-load")
+(matlab-cedet-setup)
 
 ;;; desktop-save-mode
 (setq desktop-dirname "~/")
@@ -396,38 +406,67 @@ the syntax class ')'."
 ;;; haskell
 (package-require 'haskell-mode)
 (add-hook 'haskell-mode-hook 'ghc-init)
-
-(package-require 'shm)
-(require 'shm)
-(add-hook 'haskell-mode-hook 'structured-haskell-mode)
-(defun haskell-mode-stop-bugging-me-goddammit ()
-  (setq indent-line-function (lambda ())))
-(add-hook 'haskell-mode-hook 'haskell-mode-stop-bugging-me-goddammit)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 (package-require 'company-ghc)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-ghc))
 
-;;; ggtags
-(package-require 'ggtags)
+;; ;;; ggtags
+;; (package-require 'ggtags)
 
-(defun ggtags-enable-in-c-land ()
-  "Enable `ggtags-mode` in C-style modes."
-  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-    (ggtags-mode 1)))
+;; (defun ggtags-enable-in-c-land ()
+;;   "Enable `ggtags-mode` in C-style modes."
+;;   (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+;;     (ggtags-mode 1)))
 
-(add-hook 'c-mode-common-hook 'ggtags-enable-in-c-land)
+;; (add-hook 'c-mode-common-hook 'ggtags-enable-in-c-land)
 
 ;;; semantic
 (add-hook 'c-mode-hook 'semantic-mode)
 
 ;;; python
 (package-require 'pymacs)
+(setq pymacs-python-command "/home/emallson/anaconda/bin/python")
 (pymacs-load "ropemacs" "rope-" t)      ; don't throw an error on fail. too finicky
 (define-key ropemacs-local-keymap (kbd "C-c g") nil)
+
+;;; sql stuff
+(add-hook 'sql-mode-hook 'sql-highlight-ansi-keywords)
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
 (put 'upcase-region 'disabled nil)
+
+;;; evil
+(package-require 'evil)
+(evil-mode 1)
+(defun evil-global-set-noninsert-key (key cmd)
+  "Bind `KEY' to `CMD' in all non-insert evil states."
+  (dolist (state '(normal motion visual))
+    (evil-global-set-key state key cmd)))
+
+(evil-global-set-noninsert-key "e" 'evil-backward-char)
+(evil-global-set-noninsert-key "n" 'evil-forward-char)
+(evil-global-set-noninsert-key "s" 'evil-previous-line)
+(evil-global-set-noninsert-key "t" 'evil-next-line)
+(evil-global-set-noninsert-key "r" 'evil-search-next)
+(evil-global-set-noninsert-key "x" 'helm-M-x)
+
+(evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
+(evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
+
+(evil-define-key 'normal evil-paredit-mode-map "x" nil)
+
+(add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
+(add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
+(add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
+(add-to-list 'evil-emacs-state-modes 'woman-mode)
+(add-to-list 'evil-emacs-state-modes 'help-mode)
+
+;;; twittering-mode
+(package-require 'twittering-mode)
+(setq twittering-use-master-password t)
+(setq twittering-oauth-invoke-browser t)
 
 ;;; init.el ends here
