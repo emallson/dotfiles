@@ -33,10 +33,14 @@ alias start='sudo systemctl start'
 alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 
-alias em='emacsclient'
+alias em='emacsclient -nw -c'
+alias wem='emacsclient -c'
 
 # # OPAM configuration
 # . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 # export NVM_DIR="/home/emallson/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# fix colors
+TERM=xterm-256color

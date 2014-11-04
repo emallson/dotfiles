@@ -11,9 +11,15 @@
         c-electric-star
         comment-dwim
         evil-backward-char
+        evil-backward-word-begin
         evil-delete
+        evil-delete-backward-char-and-join
+        evil-delete-backward-word
+        evil-find-char
         evil-forward-char
+        evil-forward-word-begin
         evil-insert
+        evil-next-line
         evil-numbers/inc-at-pt
         evil-scroll-down
         forward-sexp
@@ -48,6 +54,7 @@
       '(
         beginning-of-buffer
         describe-key
+        evil-ex
         evil-force-normal-state
         evil-normal-state
         helm-mini

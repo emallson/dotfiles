@@ -214,7 +214,8 @@ color...but terminal frames can't directly render this color)"
   (let-realised 'defun)
   (when-realised 'defun)
   (waitp 'defun)
-  (ann-record 'defun))
+  (ann-record 'defun)
+  (db-do-commands 'defun))
 
 (eval-after-load 'clojure-mode
   '(progn
@@ -463,7 +464,9 @@ the syntax class ')'."
 (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 (add-to-list 'evil-emacs-state-modes 'woman-mode)
 (add-to-list 'evil-emacs-state-modes 'help-mode)
+(add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
 
+(add-to-list 'evil-insert-state-modes 'cider-repl-mode)
 ;;; twittering-mode
 (package-require 'twittering-mode)
 (setq twittering-use-master-password t)
