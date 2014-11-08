@@ -25,6 +25,10 @@ function uva-11() {
     g++ -g -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }
 
+function anacondon() {
+    PATH="$HOME/anaconda/bin:${PATH}";
+}
+
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
 alias na='sudo netctl-auto'

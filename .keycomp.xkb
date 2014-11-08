@@ -1366,7 +1366,7 @@ xkb_symbols "pc+us(colemak)+inet(evdev)+ctrl(nocaps)+compose(prsc)" {
     key <KPDL> {         [       KP_Delete,      KP_Decimal ] };
     key <LVL3> {
         type= "ONE_LEVEL",
-        symbols[Group1]= [ ISO_Level3_Shift ]
+        symbols[Group1]= [ Alt_R ]
     };
     key <LSGT> {
         type= "FOUR_LEVEL",
@@ -1531,9 +1531,9 @@ xkb_symbols "pc+us(colemak)+inet(evdev)+ctrl(nocaps)+compose(prsc)" {
     modifier_map Mod1 { <LALT> };
     modifier_map Control { <CAPS> };
     modifier_map Mod2 { <NMLK> };
-    modifier_map Mod5 { <LVL3> };
     modifier_map Control { <RCTL> };
     modifier_map Mod3 { <RALT> };
+    modifier_map Mod3 { <LVL3> };
     modifier_map Mod4 { <LWIN> };
     modifier_map Mod4 { <RWIN> };
     modifier_map Mod5 { <MDSW> };

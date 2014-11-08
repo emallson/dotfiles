@@ -18,6 +18,9 @@ import XMonad.Util.Run
 tmuxAttach :: String -> X ()
 tmuxAttach session = spawn ("st -e tmux attach -t " ++ session)
 
+tmuxCreateAttach :: String -> X ()
+tmuxCreateAttach session = spawn ("st -e tmux new-session -s " ++ session)
+
 tmuxSessionCompl :: String -> IO [String]
 tmuxSessionCompl partial = do output <- readProcess "tmux" ["list-sessions", "-F", "#{session_name}"] ""
                               return $ filter (isInfixOf partial) $ splitOn "\n" output
@@ -33,11 +36,15 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-b", runOrRaise "firefox" (className =? "Firefox"))
            ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", inputPromptWithCompl defaultXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
+           ,("M-C-c", inputPrompt defaultXPConfig "Session" ?+ tmuxCreateAttach)
            ,("M-e", raiseMaybe (spawn "emacsclient -c") (className =? "Emacs"))
+           ,("M-S-e", spawn "emacsclient -c")
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("C-S-q", io exitSuccess) -- emergency hatch while debugging mod3Mask
            ,("M-C-k", spawn "./.xmonad/switch-keymap.sh")
            ,("M-S-l", sendMessage ToggleStruts)
+           ,("M-=", sendMessage (IncMasterN 1))
+           ,("M--", sendMessage (IncMasterN (-1)))
            ]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))

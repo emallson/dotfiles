@@ -458,6 +458,8 @@ the syntax class ')'."
 (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
 
 (evil-define-key 'normal evil-paredit-mode-map "x" nil)
+(evil-define-key 'normal ropemacs-local-keymap "M-." 'rope-goto-definition)
+(evil-define-key 'insert ropemacs-local-keymap "M-." 'rope-goto-definition)
 
 (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
@@ -465,6 +467,7 @@ the syntax class ')'."
 (add-to-list 'evil-emacs-state-modes 'woman-mode)
 (add-to-list 'evil-emacs-state-modes 'help-mode)
 (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
+(add-to-list 'evil-emacs-state-modes 'flycheck-error-list-mode)
 
 (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
 ;;; twittering-mode

@@ -55,6 +55,12 @@
    (quote
     ("$RECYCLE.BIN" ".AppleDouble" ".DS_Store" ".DocumentRevisions-V100" ".LSOverride" ".Rhistory" ".Spotlight-V100" ".TemporaryItems" ".Trashes" ".actionScriptProperties" ".apt_generated" ".bdfcache.el" ".build" ".buildpath" ".builds" ".bzr" ".cdv" ".classpath" ".com.apple.timemachine.donotpresent" ".com.apple.timemachine.supported" ".coverage" ".cproject" ".directory" ".dropbox" ".dropbox.cache" ".emacs-places" ".emacs.desktop" ".emacs.desktop.lock" ".eunit" ".externalToolBuilders" ".flexProperties" ".fseventsd" ".git" ".hg" ".idea" ".idlwave" ".ido.last" ".kkcrc" ".last_cover_stats" ".lein-deps-sum" ".loadpath" ".netrwhist" ".notes" ".org-id-locations" ".pc" ".project" ".projectile" ".prove" ".puppet-bak" ".quickurls" ".recentf" ".redcar" ".rspec" ".sass-cache" ".scala_dependencies" ".shadow_todo" ".shadows" ".strokes" ".svn" ".timelog" ".todo-do" ".todo-done" ".todo-top" ".tox" ".type-break" ".vip" ".viper" ".wmncach.el" ".yardoc" "_MTN" "__history" "_bdfcache.el" "_build" "_cgo_defun.c" "_cgo_gotypes.go" "_darcs" "_obj" "_sgbak" "_site" "_test" "_testmain.go" "_yardoc" "aclocal.m4" "auto-save-list" "autom4te.cache" "bin-debug" "bin-release" "blib" "build" "Build" "Build.bat" "COMMIT_EDITMSG" "cmake_install.cmake" "CMakeCache.txt" "CMakeFiles" "cover_db" "cscope.csd" "cscope.files" "cscope.inc" "cscope.lst" "cscope.out" "cscope.out.po" "cscope.tmplist" "CVS" "Debug" "debug" "depcomp" "DerivedData" "Desktop.ini" "ehthumbs.db" "GHI_ISSUE" "git-rebase-todo" "gwt-unitCache" "gwt_bree" "install-sh" "install_manifest.txt" "InstalledFiles" "Makefile.in" "Makefile.old" "MCVS" "META.yml" "MERGE_MSG" "minimal-session-saver-data.el" "MYMETA.yml" "nbbuild" "nbdist" "nosetests.xml" "nytprof" "nytprof.out" "perltidy.ERR" "pm_to_blib" "Profile" "profile" "RCS" "Release" "release" "SCCS" "Session.vim" "slprj" "SQUASH_MSG" "TAGS" "TAG_EDITMSG" "tags" "TestResult" "testresult" "Thumbs.db" "tmtags" "xcuserdata" "xhtml-loader.rnc" "{arch}" "~.dep" "~.dot" "~.nib" "~.plst" "test.out" "test_out" "test.output" "test_output" "node_modules")))
  '(indicate-empty-lines nil)
+ '(jabber-account-list
+   (quote
+    (("emallson@atlanis.net"
+      (:network-server . "talk.google.com")
+      (:port . 5222)
+      (:connection-type . ssl)))))
  '(js2-concat-multiline-strings (quote eol))
  '(js2-global-externs (quote ("describe" "it")))
  '(js2-include-node-externs t)
