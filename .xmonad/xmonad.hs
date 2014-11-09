@@ -3,6 +3,7 @@ import Data.List
 import Data.List.Split
 import System.Exit
 import System.Process
+import Network.HostName
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.WindowGo
@@ -79,11 +80,13 @@ myConfig = ewmh defaultConfig {modMask = mod3Mask
 emallsonPP :: PP
 emallsonPP = defaultPP {ppOrder = \(ws:_:_:_) -> [ws]}
 
-xmobarCmd :: String
-xmobarCmd = "xmobar ~/.xmonad/xmobar.hs"
+xmobarCmd :: IO String
+xmobarCmd = do hostName <- getHostName
+               return $ "~/.cabal/bin/xmobar ~/.xmonad/" ++ hostName ++ "/xmobar.hs"
 
-pipeLog :: String -> PP -> XConfig l -> IO (XConfig l)
-pipeLog cmd pp conf = do
+pipeLog :: IO String -> PP -> XConfig l -> IO (XConfig l)
+pipeLog cmdIO pp conf = do
+    cmd <- cmdIO
     pipe <- spawnPipe cmd
     return $ conf
            {logHook = do

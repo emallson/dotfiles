@@ -428,9 +428,10 @@ the syntax class ')'."
 
 ;;; python
 (package-require 'pymacs)
-(setq pymacs-python-command "/home/emallson/anaconda/bin/python")
-(pymacs-load "ropemacs" "rope-" t)      ; don't throw an error on fail. too finicky
-(define-key ropemacs-local-keymap (kbd "C-c g") nil)
+(when (file-exists-p "/home/emallson/anaconda/bin/python")
+    (setq pymacs-python-command "/home/emallson/anaconda/bin/python")
+    (pymacs-load "ropemacs" "rope-" t)
+    (define-key ropemacs-local-keymap (kbd "C-c g") nil))
 
 ;;; sql stuff
 (add-hook 'sql-mode-hook 'sql-highlight-ansi-keywords)
@@ -458,8 +459,6 @@ the syntax class ')'."
 (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
 
 (evil-define-key 'normal evil-paredit-mode-map "x" nil)
-(evil-define-key 'normal ropemacs-local-keymap "M-." 'rope-goto-definition)
-(evil-define-key 'insert ropemacs-local-keymap "M-." 'rope-goto-definition)
 
 (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
