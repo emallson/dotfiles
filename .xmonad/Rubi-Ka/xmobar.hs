@@ -4,8 +4,9 @@ Config { commands = [ Run Wireless "wlp3s0" ["-t", "<essid> <quality>"
                                             ,"-l", "#CC9393"]
                            100
                     , Run Battery [] 600
-                    , Run Date "%H:%M on %d %B" "date" 10
-                    , Run StdinReader ]
+                    , Run Date "%H:%M on %d %B" "date" 600
+                    , Run StdinReader
+                    ]
        , template = "%StdinReader% }{ %wlp3s0wi% | %battery% | %date%"
        , bgColor = "#202020"
        , position = Bottom

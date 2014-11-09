@@ -19,4 +19,4 @@ pulseaudio --start &
 xbindkeys
 eval `cat ~/.fehbg`
 #exec /home/emallson/.root/bin/stumpwm
-exec xmonad
+exec /home/emallson/.cabal/bin/xmonad
