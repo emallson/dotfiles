@@ -21,7 +21,9 @@
         evil-insert
         evil-next-line
         evil-numbers/inc-at-pt
+        evil-previous-line
         evil-scroll-down
+        evil-shift-left-line
         forward-sexp
         icicle-goto-marker-or-set-mark-command
         icicle-yank-maybe-completing
@@ -38,7 +40,9 @@
         paredit-forward-delete
         paredit-forward-kill-word
         paredit-kill
+        prolog-electric-underscore
         sgml-slash
+        shm/del
         shm/space
         sp--self-insert-command
         sp-backward-delete-char
@@ -60,4 +64,5 @@
         helm-mini
         icicle-execute-extended-command
         org-export
+        undo-tree-visualizer-quit
         ))

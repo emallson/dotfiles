@@ -37,6 +37,7 @@
  '(erc-nick "Atlanis")
  '(erc-prompt-for-nickserv-password nil)
  '(erc-prompt-for-password nil)
+ '(evil-want-fine-undo t)
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
  '(fortran-minimum-statement-indent-fixed 8)
@@ -45,8 +46,10 @@
  '(grep-find-ignored-directories
    (quote
     ("$RECYCLE.BIN" ".AppleDouble" ".DS_Store" ".DocumentRevisions-V100" ".LSOverride" ".Rhistory" ".Spotlight-V100" ".TemporaryItems" ".Trashes" ".actionScriptProperties" ".apt_generated" ".bdfcache.el" ".build" ".buildpath" ".builds" ".bzr" ".cdv" ".classpath" ".com.apple.timemachine.donotpresent" ".com.apple.timemachine.supported" ".coverage" ".cproject" ".directory" ".dropbox" ".dropbox.cache" ".emacs-places" ".emacs.desktop" ".emacs.desktop.lock" ".eunit" ".externalToolBuilders" ".flexProperties" ".fseventsd" ".git" ".hg" ".idea" ".idlwave" ".ido.last" ".kkcrc" ".last_cover_stats" ".lein-deps-sum" ".loadpath" ".netrwhist" ".notes" ".org-id-locations" ".pc" ".project" ".projectile" ".prove" ".puppet-bak" ".quickurls" ".recentf" ".redcar" ".rspec" ".sass-cache" ".scala_dependencies" ".shadow_todo" ".shadows" ".strokes" ".svn" ".timelog" ".todo-do" ".todo-done" ".todo-top" ".tox" ".type-break" ".vip" ".viper" ".wmncach.el" ".yardoc" "_MTN" "__history" "_bdfcache.el" "_build" "_cgo_defun.c" "_cgo_gotypes.go" "_darcs" "_obj" "_sgbak" "_site" "_test" "_testmain.go" "_yardoc" "aclocal.m4" "auto-save-list" "autom4te.cache" "bin-debug" "bin-release" "blib" "build" "Build" "Build.bat" "COMMIT_EDITMSG" "cmake_install.cmake" "CMakeCache.txt" "CMakeFiles" "cover_db" "cscope.csd" "cscope.files" "cscope.inc" "cscope.lst" "cscope.out" "cscope.out.po" "cscope.tmplist" "CVS" "Debug" "debug" "depcomp" "DerivedData" "Desktop.ini" "ehthumbs.db" "GHI_ISSUE" "git-rebase-todo" "gwt-unitCache" "gwt_bree" "install-sh" "install_manifest.txt" "InstalledFiles" "Makefile.in" "Makefile.old" "MCVS" "META.yml" "MERGE_MSG" "minimal-session-saver-data.el" "MYMETA.yml" "nbbuild" "nbdist" "nosetests.xml" "nytprof" "nytprof.out" "perltidy.ERR" "pm_to_blib" "Profile" "profile" "RCS" "Release" "release" "SCCS" "Session.vim" "slprj" "SQUASH_MSG" "TAGS" "TAG_EDITMSG" "tags" "TestResult" "testresult" "Thumbs.db" "tmtags" "xcuserdata" "xhtml-loader.rnc" "{arch}" "~.dep" "~.dot" "~.nib" "~.plst" "test.out" "test_out" "test.output" "test_output" "doc" "coverage")))
+ '(haskell-process-type (quote cabal-repl))
  '(helm-buffers-fuzzy-matching t)
  '(helm-ff-auto-update-initial-value t)
+ '(helm-ff-skip-boring-files t)
  '(helm-quick-update t)
  '(ignoramus-file-basename-endings
    (quote
@@ -71,6 +74,9 @@
  '(merlin-use-auto-complete-mode nil)
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
  '(mu4e-compose-signature-auto-include nil)
+ '(mu4e-view-prefer-html t)
+ '(mu4e-view-show-addresses t)
+ '(mu4e-view-show-images t)
  '(nodejs-repl-command "~/.nvm/current/bin/node")
  '(org-agenda-files (quote ("~/org/wow.org" "~/org/uky.org")))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
@@ -168,7 +174,7 @@
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-pinned-packages (quote ((twittering-mode . "melpa"))))
  '(paradox-automatically-star nil)
- '(paradox-github-token t)
+ '(paradox-github-token t t)
  '(projectile-completion-system (quote helm))
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories
@@ -203,6 +209,8 @@
  '(tags-add-tables nil)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
+ '(undo-tree-auto-save-history t)
+ '(undo-tree-history-directory-alist (quote (("." . "~/.emacs.d/.undo-tree/"))))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(utop-command "utop -emacs")
  '(vc-annotate-background "#2B2B2B")

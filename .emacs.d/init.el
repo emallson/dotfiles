@@ -172,6 +172,7 @@ color...but terminal frames can't directly render this color)"
 (require 'helm-config)
 (require 'helm-grep)
 (package-require 'helm-projectile)
+(defalias 'helm--make-source 'helm-make-source)
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
@@ -413,25 +414,8 @@ the syntax class ')'."
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-ghc))
 
-;; ;;; ggtags
-;; (package-require 'ggtags)
-
-;; (defun ggtags-enable-in-c-land ()
-;;   "Enable `ggtags-mode` in C-style modes."
-;;   (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-;;     (ggtags-mode 1)))
-
-;; (add-hook 'c-mode-common-hook 'ggtags-enable-in-c-land)
-
 ;;; semantic
 (add-hook 'c-mode-hook 'semantic-mode)
-
-;;; python
-(package-require 'pymacs)
-(when (file-exists-p "/home/emallson/anaconda/bin/python")
-    (setq pymacs-python-command "/home/emallson/anaconda/bin/python")
-    (pymacs-load "ropemacs" "rope-" t)
-    (define-key ropemacs-local-keymap (kbd "C-c g") nil))
 
 ;;; sql stuff
 (add-hook 'sql-mode-hook 'sql-highlight-ansi-keywords)
@@ -443,6 +427,7 @@ the syntax class ')'."
 ;;; evil
 (package-require 'evil)
 (evil-mode 1)
+
 (defun evil-global-set-noninsert-key (key cmd)
   "Bind `KEY' to `CMD' in all non-insert evil states."
   (dolist (state '(normal motion visual))
@@ -467,6 +452,7 @@ the syntax class ')'."
 (add-to-list 'evil-emacs-state-modes 'help-mode)
 (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
 (add-to-list 'evil-emacs-state-modes 'flycheck-error-list-mode)
+(add-to-list 'evil-emacs-state-modes 'epa-info-mode)
 
 (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
 ;;; twittering-mode

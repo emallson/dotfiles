@@ -9,6 +9,7 @@ antigen bundle emallson/gulp-zsh-completion
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle autojump
+antigen bundle safe-paste       # todo: patch st or safe-paste to escape escape sequences in pasted text
 
 antigen theme gallois
 
