@@ -1,0 +1,9 @@
+nnoremap s <Up>
+nnoremap t <Down>
+nnoremap n <Right>
+nnoremap e <Left>
+
+nnoremap o :tabopen<Space>
+nnoremap O :open<Space>
+
+nmap Q :quit<CR>
