@@ -1,5 +1,5 @@
 [general]
-# ui = quiet
+ui = quiet
 accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu
 pythonfile = ~/.offlineimap.py
 
@@ -33,7 +33,7 @@ localfolders = ~/Mail/emallson@atlanis.net
 type = IMAP
 remotehost = mail.atlanis.net
 remoteport = 993
-remoteuser = get_authinfo("imap.atlanis.net", 993)["username"]
+remoteusereval = get_authinfo("imap.atlanis.net", 993)["username"]
 remotepasseval = get_authinfo("imap.atlanis.net", 993)["password"]
 ssl = yes
 cert_fingerprint = B9BE7AE1EFE0D07D7A0DCA48E400CF7A5B85D4D5
@@ -50,7 +50,7 @@ localfolders = ~/Mail/emallson@cs.uky.edu
 type = IMAP
 remotehost = mail.cs.uky.edu
 remoteport = 993
-remoteuser = get_authinfo("mail.cs.uky.edu", 993)["username"]
+remoteusereval = get_authinfo("mail.cs.uky.edu", 993)["username"]
 remotepasseval = get_authinfo("mail.cs.uky.edu", 993)["password"]
 ssl = yes
 cert_fingerprint=0E0A3D017E403A59671E0576216B0DB0094693DB
