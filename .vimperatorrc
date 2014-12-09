@@ -3,6 +3,9 @@ nnoremap t <Down>
 nnoremap n <Right>
 nnoremap e <Left>
 
+nnoremap r n
+nnoremap q r
+
 nnoremap o :tabopen<Space>
 nnoremap O :open<Space>
 

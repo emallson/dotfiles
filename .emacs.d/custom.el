@@ -18,6 +18,11 @@
  '(before-save-hook (quote (delete-trailing-whitespace)))
  '(browse-url-browser-function (quote browse-url-firefox))
  '(comment-auto-fill-only-comments t)
+ '(company-backends
+   (quote
+    (company-ghc merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
+                 (company-dabbrev-code company-gtags company-etags company-keywords)
+                 company-oddmuse company-files company-dabbrev)))
  '(compilation-read-command nil)
  '(create-lockfiles nil)
  '(custom-safe-themes
@@ -74,7 +79,8 @@
  '(merlin-use-auto-complete-mode nil)
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
  '(mu4e-compose-signature-auto-include nil)
- '(mu4e-view-prefer-html t)
+ '(mu4e-get-mail-command "offlineimap")
+ '(mu4e-view-prefer-html nil)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
  '(nodejs-repl-command "~/.nvm/current/bin/node")
