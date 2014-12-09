@@ -361,6 +361,15 @@ the syntax class ')'."
 
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
+; use C-c ' to go back to org mode from tangled file.
+(defun safe-enable-org-tangle-jump ()
+  "Bind `org-babel-tangle-jump-to-org' unless in `org-src-mode'."
+  (interactive)
+  (unless (bound-and-true-p org-src-mode)
+    (local-set-key (kbd "C-c '") 'org-babel-tangle-jump-to-org)))
+
+(add-hook 'prog-mode-hook 'safe-enable-org-tangle-jump)
+
 (package-require 'htmlize)
 
 ;; gnuplot - used by org mode

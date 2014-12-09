@@ -18,6 +18,7 @@
         evil-find-char
         evil-forward-char
         evil-forward-word-begin
+        evil-inner-paren
         evil-insert
         evil-next-line
         evil-numbers/inc-at-pt
@@ -58,11 +59,14 @@
       '(
         beginning-of-buffer
         describe-key
+        evil-append
         evil-ex
         evil-force-normal-state
         evil-normal-state
         helm-mini
         icicle-execute-extended-command
         org-export
+        org-export-dispatch
+        org-mouse-down-mouse
         undo-tree-visualizer-quit
         ))
