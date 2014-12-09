@@ -27,11 +27,13 @@ tmuxSessionCompl partial = do output <- readProcess "tmux" ["list-sessions", "-F
                               return $ filter (isInfixOf partial) $ splitOn "\n" output
 
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
-myKeymap = [("M-n", windows W.focusDown)
-           ,("M-S-n", windows W.swapDown)
-           ,("M-p", windows W.focusUp)
-           ,("M-S-p", windows W.swapUp)
+myKeymap = [("M-t", windows W.focusDown)
+           ,("M-S-t", windows W.swapDown)
+           ,("M-s", windows W.focusUp)
+           ,("M-S-s", windows W.swapUp)
            ,("M-S-m", windows W.swapMaster)
+           ,("M-S-n", sendMessage Expand)
+           ,("M-S-e", sendMessage Shrink)
            ,("M-k", kill)
            ,("M-r", spawn "dmenu_run")
            ,("M-b", runOrRaise "firefox" (className =? "Firefox"))
@@ -39,7 +41,7 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-S-c", inputPromptWithCompl defaultXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-C-c", inputPrompt defaultXPConfig "Session" ?+ tmuxCreateAttach)
            ,("M-e", raiseMaybe (spawn "emacsclient -c") (className =? "Emacs"))
-           ,("M-S-e", spawn "emacsclient -c")
+           ,("M-C-e", spawn "emacsclient -c")
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("C-S-q", io exitSuccess) -- emergency hatch while debugging mod3Mask
            ,("M-C-k", spawn "./.xmonad/switch-keymap.sh")
@@ -73,6 +75,8 @@ myConfig = ewmh defaultConfig {modMask = mod3Mask
                               , "M-j"
                               , "M-S-j"
                               , "M-p"
+                              , "M-h"
+                              , "M-l"
                               ]
                               `additionalKeysP`
                               myKeymap
