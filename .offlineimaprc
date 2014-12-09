@@ -1,0 +1,56 @@
+[general]
+# ui = quiet
+accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu
+pythonfile = ~/.offlineimap.py
+
+[Account emallson@archlinux.us]
+localrepository = emallson@archlinux.us:Local
+remoterepository = emallson@archlinux.us:Remote
+
+[Repository emallson@archlinux.us:Local]
+type = Maildir
+localfolders = ~/Mail/emallson@archlinux.us
+folderfilter = lambda f: f not in ['Drafts']
+
+[Repository emallson@archlinux.us:Remote]
+type = Gmail
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+nametrans = lambda f: re.sub('^\[Gmail\]/', '', f)
+
+remoteusereval = get_authinfo("imap.gmail.com", 993)["username"]
+remotepasseval = get_authinfo("imap.gmail.com", 993)["password"]
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account emallson@atlanis.net]
+localrepository = emallson@atlanis.net:Local
+remoterepository = emallson@atlanis.net:Remote
+
+[Repository emallson@atlanis.net:Local]
+type = Maildir
+localfolders = ~/Mail/emallson@atlanis.net
+
+[Repository emallson@atlanis.net:Remote]
+type = IMAP
+remotehost = mail.atlanis.net
+remoteport = 993
+remoteuser = get_authinfo("imap.atlanis.net", 993)["username"]
+remotepasseval = get_authinfo("imap.atlanis.net", 993)["password"]
+ssl = yes
+cert_fingerprint = B9BE7AE1EFE0D07D7A0DCA48E400CF7A5B85D4D5
+
+[Account emallson@cs.uky.edu]
+localrepository = emallson@cs.uky.edu:Local
+remoterepository = emallson@cs.uky.edu:Remote
+
+[Repository emallson@cs.uky.edu:Local]
+type = Maildir
+localfolders = ~/Mail/emallson@cs.uky.edu
+
+[Repository emallson@cs.uky.edu:Remote]
+type = IMAP
+remotehost = mail.cs.uky.edu
+remoteport = 993
+remoteuser = get_authinfo("mail.cs.uky.edu", 993)["username"]
+remotepasseval = get_authinfo("mail.cs.uky.edu", 993)["password"]
+ssl = yes
+cert_fingerprint=0E0A3D017E403A59671E0576216B0DB0094693DB
