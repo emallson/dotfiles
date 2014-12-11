@@ -1,0 +1,8 @@
+"xbacklight -dec 5"
+  XF86MonBrightnessDown
+"xbacklight -inc 5"
+  XF86MonBrightnessUp
+"pactl set-sink-volume 0 -- +5%"
+  XF86AudioRaiseVolume
+"pactl set-sink-volume 0 -- -5%"
+  XF86AudioLowerVolume
