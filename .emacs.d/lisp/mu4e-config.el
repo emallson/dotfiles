@@ -4,9 +4,9 @@
 (setq user-full-name "J David Smith")
 
 (setq mu4e-maildir       "~/Mail/"
-      mu4e-drafts-folder "/emallson@archlinux.us/Drafts"
-      mu4e-sent-folder   "/emallson@archlinux.us/[Gmail].Sent Mail"
-      mu4e-trash-folder  "/emallson@archlinux.us/[Gmail].Trash")
+      mu4e-drafts-folder "/Drafts"
+      mu4e-sent-folder   "/emallson@archlinux.us/Sent Mail"
+      mu4e-trash-folder  "/emallson@archlinux.us/Trash")
 
 (defvar mu4e-account-alist
   '(("emallson@archlinux.us"

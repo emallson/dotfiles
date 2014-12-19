@@ -457,6 +457,8 @@ the syntax class ')'."
 (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
 (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
 
+(evil-global-set-key 'insert (kbd "C-t") 'transpose-chars)
+
 (evil-define-key 'normal evil-paredit-mode-map "x" nil)
 
 (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)

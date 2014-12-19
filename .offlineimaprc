@@ -1,5 +1,4 @@
 [general]
-ui = quiet
 accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu
 pythonfile = ~/.offlineimap.py
 
@@ -11,6 +10,7 @@ remoterepository = emallson@archlinux.us:Remote
 type = Maildir
 localfolders = ~/Mail/emallson@archlinux.us
 folderfilter = lambda f: f not in ['Drafts']
+nametrans = lambda f: "[Gmail]/" + f if f in ["Starred", "Important", "Spam", "Trash", "All Mail", "Sent Mail"] else f
 
 [Repository emallson@archlinux.us:Remote]
 type = Gmail

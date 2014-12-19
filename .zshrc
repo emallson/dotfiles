@@ -1,3 +1,5 @@
+unset GREP_OPTIONS;
+
 source .zsh.d/antigen/antigen.zsh
 
 antigen use oh-my-zsh
@@ -29,6 +31,8 @@ function uva-11() {
 function anacondon() {
     PATH="$HOME/anaconda/bin:${PATH}";
 }
+
+alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 
 alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
