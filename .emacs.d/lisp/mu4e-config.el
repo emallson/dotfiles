@@ -4,7 +4,7 @@
 (setq user-full-name "J David Smith")
 
 (setq mu4e-maildir       "~/Mail/"
-      mu4e-drafts-folder "/Drafts"
+      mu4e-drafts-folder "/drafts"
       mu4e-sent-folder   "/emallson@archlinux.us/Sent Mail"
       mu4e-trash-folder  "/emallson@archlinux.us/Trash")
 
@@ -70,14 +70,11 @@
 (add-to-list 'mu4e-bookmarks
              '("flag:flagged" "Flagged" ?f))
 (add-to-list 'mu4e-bookmarks
-             '("maildir:\"/emallson@archlinux.us/[Gmail]/Important\" and flag:unread" "Important & Unread" ?I))
+             '("maildir:\"/emallson@archlinux.us/Important\" and flag:unread" "Important & Unread" ?I))
 (add-to-list 'mu4e-bookmarks
              '("maildir:\"/emallson@archlinux.us/INBOX\" or maildir:\"/emallson@atlanis.net/INBOX\" or maildir:\"/emallson@cs.uky.edu/INBOX\"" "Combined Inbox" ?i))
 
 (setq message-kill-buffer-on-exit t)
-
-(setq mu4e-html2text-command "w3m -T text/html")
-
 
 (add-hook 'mu4e-view-mode-hook 'epa-mail-verify)
 (defun epa-quit-info ()

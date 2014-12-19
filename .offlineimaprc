@@ -9,12 +9,12 @@ remoterepository = emallson@archlinux.us:Remote
 [Repository emallson@archlinux.us:Local]
 type = Maildir
 localfolders = ~/Mail/emallson@archlinux.us
-folderfilter = lambda f: f not in ['Drafts']
-nametrans = lambda f: "[Gmail]/" + f if f in ["Starred", "Important", "Spam", "Trash", "All Mail", "Sent Mail"] else f
+folderfilter = lambda f: f not in ['Drafts', 'atlanis.net - errors', 'david.smith@winckstudios.com']
+nametrans = lambda f: "[Gmail]/" + f if f in ['Important', 'Starred', 'Sent Mail', 'Spam', 'Trash', 'Drafts'] else f
 
 [Repository emallson@archlinux.us:Remote]
 type = Gmail
-folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail', '[Gmail]/Spam']
 nametrans = lambda f: re.sub('^\[Gmail\]/', '', f)
 
 remoteusereval = get_authinfo("imap.gmail.com", 993)["username"]

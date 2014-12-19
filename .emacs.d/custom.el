@@ -243,7 +243,8 @@
      (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3")
  '(web-mode-code-indent-offset 4)
- '(web-mode-enable-auto-pairing t))
+ '(web-mode-enable-auto-pairing t)
+ '(web-mode-markup-indent-offset 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
