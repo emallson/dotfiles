@@ -36,7 +36,7 @@
 
 (add-hook 'prog-mode-hook 'linum-mode)
 
-(set-default-font "Source Code Pro Light:size=15:antialias=true")
+(set-frame-font "Source Code Pro Light:size=15:antialias=true")
 (defadvice make-frame-command (after make-frame-change-background-color last activate)
   "Adjusts the background color for different frame types.
 Graphical (X) frames should have the theme color, while terminal
@@ -99,7 +99,8 @@ color...but terminal frames can't directly render this color)"
 
 (defun projectile-enable-unless-tramp ()
   "Enables `projectile-mode` unless in a TRAMP buffer."
-  (unless (tramp-tramp-file-p (buffer-file-name))
+  (unless (and (buffer-file-name)
+			   (file-remote-p (buffer-file-name)))
     (projectile-mode 1)))
 
 (add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
@@ -108,7 +109,7 @@ color...but terminal frames can't directly render this color)"
 (defun projectile-custom-test-suffix (project-type)
   "Get custom test suffixes based on `PROJECT-TYPE'."
   (cond
-   ((member project-type '(grunt npm)) "_spec")
+   ((member project-type '(gulp grunt npm)) "_spec")
    (t (projectile-test-suffix project-type))))
 
 ;;; grep tweaks
@@ -370,6 +371,14 @@ the syntax class ')'."
 
 (add-hook 'prog-mode-hook 'safe-enable-org-tangle-jump)
 
+;;; time clocking
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
+
+;;; capture
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+(define-key global-map (kbd "C-c c") 'org-capture)
+
 (package-require 'htmlize)
 
 ;; gnuplot - used by org mode
@@ -453,6 +462,7 @@ the syntax class ')'."
 (evil-global-set-noninsert-key "t" 'evil-next-line)
 (evil-global-set-noninsert-key "r" 'evil-search-next)
 (evil-global-set-noninsert-key "x" 'helm-M-x)
+(evil-global-set-noninsert-key "c" 'org-capture)
 
 (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
 (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
@@ -471,6 +481,7 @@ the syntax class ')'."
 (add-to-list 'evil-emacs-state-modes 'epa-info-mode)
 
 (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
+
 ;;; twittering-mode
 (package-require 'twittering-mode)
 (setq twittering-use-master-password t)

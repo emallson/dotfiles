@@ -1,6 +1,6 @@
 unset GREP_OPTIONS;
 
-source .zsh.d/antigen/antigen.zsh
+source ~/.zsh.d/antigen/antigen.zsh
 
 antigen use oh-my-zsh
 

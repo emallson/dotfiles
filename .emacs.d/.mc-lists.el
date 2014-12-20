@@ -12,9 +12,11 @@
         comment-dwim
         evil-backward-char
         evil-backward-word-begin
+        evil-copy-from-below
         evil-delete
         evil-delete-backward-char-and-join
         evil-delete-backward-word
+        evil-end-of-line
         evil-find-char
         evil-forward-char
         evil-forward-word-begin
@@ -63,6 +65,7 @@
         evil-ex
         evil-force-normal-state
         evil-normal-state
+        helm-M-x
         helm-mini
         icicle-execute-extended-command
         org-export
