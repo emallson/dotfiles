@@ -1,14 +1,13 @@
 ;;; init.el --- Configuration for emacs
 ;;; Commentary:
 ;;; Writing this to shut up Checkdoc
-;;; I'll be really pissed if I ever lose this
-;;; I should back it up, really.
 ;;; Code:
 
 ;;; no suspend-buffer
 (global-set-key (kbd "C-z") nil)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/.emacs.d/modules")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (require 'cl)
@@ -486,5 +485,8 @@ the syntax class ')'."
 (package-require 'twittering-mode)
 (setq twittering-use-master-password t)
 (setq twittering-oauth-invoke-browser t)
+
+;;; scheme stuff
+(require 'init-scheme)
 
 ;;; init.el ends here

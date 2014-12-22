@@ -32,6 +32,10 @@ function anacondon() {
     PATH="$HOME/anaconda/bin:${PATH}";
 }
 
+function clone() {
+    git clone git@github.com:$1;
+}
+
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 
 alias rs="redshift -l 38:-85"
