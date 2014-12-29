@@ -462,6 +462,7 @@ the syntax class ')'."
 (evil-global-set-noninsert-key "r" 'evil-search-next)
 (evil-global-set-noninsert-key "x" 'helm-M-x)
 (evil-global-set-noninsert-key "c" 'org-capture)
+(evil-global-set-noninsert-key (kbd "M-.") 'find-tag)
 
 (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
 (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
@@ -490,3 +491,4 @@ the syntax class ')'."
 (require 'init-scheme)
 
 ;;; init.el ends here
+(put 'narrow-to-page 'disabled nil)
