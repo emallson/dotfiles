@@ -37,6 +37,7 @@
  '(erc-autojoin-channels-alist
    (quote
     (("freenode" "#emacs" "#evil-mode" "#hoplon" "#haskell" "#xmonad" "#clojure"))))
+ '(erc-autojoin-mode nil)
  '(erc-autojoin-timing (quote ident))
  '(erc-modules
    (quote
@@ -254,7 +255,11 @@
  '(vc-annotate-very-old-color "#DC8CC3")
  '(web-mode-code-indent-offset 4)
  '(web-mode-enable-auto-pairing t)
- '(web-mode-markup-indent-offset 4))
+ '(web-mode-markup-indent-offset 4)
+ '(znc-servers
+   (quote
+    (("atlanis.net" 6464 t
+      ((freenode "emallson" nil)))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
