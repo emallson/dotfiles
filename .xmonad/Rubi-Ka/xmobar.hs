@@ -6,8 +6,10 @@ Config { commands = [ Run Wireless "wlp3s0" ["-t", "<essid> <quality>"
                     , Run Battery [] 600
                     , Run Date "%H:%M on %d %B" "date" 600
                     , Run StdinReader
+                    , Run MPD ["-t"
+                              ,"<state>: <title>, <artist> (<album>) [<lapsed>/<length>]"] 10
                     ]
-       , template = "%StdinReader% }{ %wlp3s0wi% | %battery% | %date%"
+       , template = "%StdinReader% } %mpd% { %wlp3s0wi% | %battery% | %date%"
        , bgColor = "#202020"
        , position = Bottom
        , alignSep = "}{"

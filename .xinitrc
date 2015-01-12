@@ -13,9 +13,10 @@ xrdb .Xresources
 xset -b
 xsetroot -cursor_name left_ptr
 
-xkbcomp .keycomp.xkb $DISPLAY
+xkbcomp ~/.keycomp.xkb $DISPLAY
 
 pulseaudio --start &
 xbindkeys
 eval `cat ~/.fehbg`
-exec /home/emallson/.cabal/bin/xmonad
+source .profile
+exec xmonad

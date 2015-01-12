@@ -488,5 +488,6 @@ the syntax class ')'."
 
 ;;; scheme stuff
 (require 'init-scheme)
+(require 'init-desktop)
 
 ;;; init.el ends here
