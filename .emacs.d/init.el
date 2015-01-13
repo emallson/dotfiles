@@ -401,7 +401,7 @@ the syntax class ')'."
 
 ;;; ocaml stuff
 (package-require 'tuareg)
-(require 'merlin)
+(require 'merlin nil t)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'merlin-company-backend))
 (package-require 'utop)
@@ -425,7 +425,9 @@ the syntax class ')'."
 (desktop-save-mode 0)
 
 ;;; mail!
-(require 'mu4e-config nil t)
+(require 'mu4e nil t)
+(if (fboundp 'mu4e)
+    (require 'mu4e-config nil t))
 
 ;;; haskell
 (package-require 'haskell-mode)
@@ -489,7 +491,6 @@ the syntax class ')'."
 
 ;;; scheme stuff
 (require 'init-scheme)
-(require 'init-desktop)
 
 ;;; init.el ends here
 (put 'narrow-to-page 'disabled nil)

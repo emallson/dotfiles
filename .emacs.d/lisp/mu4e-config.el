@@ -1,4 +1,3 @@
-(require 'mu4e)
 (require 'smtpmail)
 
 (setq user-full-name "J David Smith")
