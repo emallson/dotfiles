@@ -6,6 +6,7 @@
 ;;; no suspend-buffer
 (global-set-key (kbd "C-z") nil)
 
+(add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'load-path "~/.emacs.d/modules")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -491,6 +492,9 @@ the syntax class ')'."
 
 ;;; scheme stuff
 (require 'init-scheme)
+
+;;; systemd stuff
+(require 'init-systemd)
 
 ;;; init.el ends here
 (put 'narrow-to-page 'disabled nil)

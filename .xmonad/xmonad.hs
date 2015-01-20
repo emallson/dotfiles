@@ -36,7 +36,7 @@ myKeymap = [("M-t", windows W.focusDown)
            ,("M-S-e", sendMessage Shrink)
            ,("M-k", kill)
            ,("M-r", spawn "dmenu_run")
-           ,("M-b", runOrRaise "firefox" (className =? "Firefox"))
+           ,("M-b", runOrRaise "chromium" (className =? "Chromium"))
            ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", inputPromptWithCompl defaultXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-C-c", inputPrompt defaultXPConfig "Session" ?+ tmuxCreateAttach)
@@ -86,7 +86,7 @@ emallsonPP = defaultPP {ppOrder = \(ws:_:_:_) -> [ws]}
 
 xmobarCmd :: IO String
 xmobarCmd = do hostName <- getHostName
-               return $ "~/.cabal/bin/xmobar ~/.xmonad/" ++ hostName ++ "/xmobar.hs"
+               return $ "xmobar ~/.xmonad/" ++ hostName ++ "/xmobar.hs"
 
 pipeLog :: IO String -> PP -> XConfig l -> IO (XConfig l)
 pipeLog cmdIO pp conf = do

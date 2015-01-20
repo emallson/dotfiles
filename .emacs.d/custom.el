@@ -16,7 +16,7 @@
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups/"))))
  '(before-save-hook (quote (delete-trailing-whitespace)))
- '(browse-url-browser-function (quote browse-url-firefox))
+ '(browse-url-browser-function (quote browse-url-chromium))
  '(comment-auto-fill-only-comments t)
  '(company-backends
    (quote
@@ -88,8 +88,9 @@
  '(mu4e-view-prefer-html nil)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
- '(nodejs-repl-command "~/.nvm/current/bin/node")
- '(org-agenda-files (quote ("~/org/grad.org" "~/org/wow.org" "~/org/uky.org")))
+ '(org-agenda-files
+   (quote
+    ("~/org/notes.org" "~/org/grad.org" "~/org/wow.org" "~/org/uky.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
  '(org-clock-idle-time 30)
@@ -259,7 +260,7 @@
  '(znc-servers
    (quote
     (("atlanis.net" 6464 t
-      ((freenode "emallson" nil)))))))
+      ((freenode "emallson" "")))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

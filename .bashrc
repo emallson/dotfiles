@@ -29,8 +29,6 @@ function display_git_branch() {
 
 PS1='[\j \A $PREFIX\w$(display_git_branch)]\$ '
 
-source /usr/share/git/completion/git-completion.bash
-
 function uva() {
     g++ -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
 }

@@ -7,3 +7,4 @@ xkbcomp ~/.keycomp.xkb $DISPLAY
 xbindkeys
 eval `cat ~/.fehbg`
 source .profile
+emacs --daemon &
