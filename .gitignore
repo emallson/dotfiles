@@ -11,7 +11,7 @@
 .ICEauthority
 .Xauthority
 .emacs.d/auto-save-list/
-.local
+# .local
 .gimp-2.8
 .m2
 .lyrics
