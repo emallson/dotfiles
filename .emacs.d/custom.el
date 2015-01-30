@@ -163,6 +163,7 @@
    (quote
     ("pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")))
  '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "+"))))
+ '(org-pretty-entities t)
  '(org-src-fontify-natively t)
  '(org-src-lang-modes
    (quote

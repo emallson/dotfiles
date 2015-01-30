@@ -49,5 +49,37 @@ alias stop='sudo systemctl stop'
 alias em='emacsclient -nw -c'
 alias wem='emacsclient -c'
 
+function ns() {
+    if [[ -z "$1" ]]; then
+        nix-shell --command zsh --pure;
+    elif [[ -a "$1" ]]; then
+        nix-shell --command zsh --pure "$1";
+    else
+        nix-shell --command zsh --pure ~/.nixpkgs/envs/$1.nix;
+    fi
+}
+
+function nix_env_status() {
+    if [[ -n "$name" && -z "$NIX_MYENV_NAME" ]]; then NIX_MYENV_NAME=$name; fi
+
+    if [[ -n "$NIX_MYENV_NAME" ]]; then
+        echo "%{$fg[blue]%}[$NIX_MYENV_NAME]%b";
+    else
+        echo "";
+    fi
+}
+
+function le() {
+    load-env-$1;
+}
+
+function _le() {
+    reply=($(nix-env -q | grep env- | gawk 'match($0, /env-(.+)/, m) { print m[1]; }'));
+}
+
+compctl -K _le le;
+
+PS1="$(nix_env_status)$PS1"
+
 # fix colors
 TERM=xterm-256color

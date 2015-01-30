@@ -48,6 +48,7 @@ myKeymap = [("M-t", windows W.focusDown)
            ,("M-S-l", sendMessage ToggleStruts)
            ,("M-=", sendMessage (IncMasterN 1))
            ,("M--", sendMessage (IncMasterN (-1)))
+           ,("M-.", withFocused $ windows . W.sink) -- Push window back into tiling
            ]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
@@ -77,6 +78,9 @@ myConfig = ewmh defaultConfig {modMask = mod3Mask
                               , "M-p"
                               , "M-h"
                               , "M-l"
+                              , "<XF86AudioRaiseVolume>"
+                              , "<XF86AudioLowerVolume>"
+                              , "<XF86AudioMute>"
                               ]
                               `additionalKeysP`
                               myKeymap

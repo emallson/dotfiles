@@ -2,9 +2,15 @@
   XF86MonBrightnessDown
 "xbacklight -inc 5"
   XF86MonBrightnessUp
-"pactl set-sink-volume 0 -- +5%"
+"amixer -q sset Master 2+"
   XF86AudioRaiseVolume
-"pactl set-sink-volume 0 -- -5%"
+"amixer -q sset Master 2-"
   XF86AudioLowerVolume
-"pactl set-sink-mute 0 toggle"
+"amixer -q sset Master toggle-mute"
   XF86AudioMute
+"mpc next"
+  XF86AudioNext
+"mpc prev"
+  XF86AudioPrev
+"mpc toggle"
+  XF86AudioPlay

@@ -496,5 +496,10 @@ the syntax class ')'."
 ;;; systemd stuff
 (require 'init-systemd)
 
+;;; nixos-env setup
+(require 'nixos-env)
+(add-hook 'js2-mode-hook (lambda ()
+                           (nixos-env-apply "node" nil)))
+
 ;;; init.el ends here
 (put 'narrow-to-page 'disabled nil)
