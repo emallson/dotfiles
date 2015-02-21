@@ -14,6 +14,6 @@ PATH="/opt/MATLAB/R2014a/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/bin:$PATH"
 export NVM_DIR="/home/emallson/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export NIX_PATH=local-pkgs=$HOME/Code/nixpkgs;
+export NIX_PATH=local-pkgs=$HOME/Code/nixpkgs:$NIX_PATH;
 
 systemctl --user import-environment PATH

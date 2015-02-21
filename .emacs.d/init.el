@@ -501,5 +501,11 @@ the syntax class ')'."
 (add-hook 'js2-mode-hook (lambda ()
                            (nixos-env-apply "node" nil)))
 
-;;; init.el ends here
+(add-hook 'clojure-mode-hook (lambda ()
+                               (nixos-env-apply "clojure" nil)))
+
+;;; python stuff
+(require 'init-python)
+
 (put 'narrow-to-page 'disabled nil)
+;;; init.el ends here

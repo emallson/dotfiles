@@ -20,12 +20,11 @@
     (make-local-variable 'process-environment)
     (make-local-variable 'exec-path))
   (setq process-environment
-        (append (with-temp-buffer
-                  (shell-command (concat "load-env-" env-name " env") t)
-                  (rest (split-string (buffer-string) "\n" t)))
-                process-environment))
+        (with-temp-buffer
+          (shell-command (concat "load-env-" env-name " env | grep -v 'http_proxy'") t)
+          (rest (split-string (buffer-string) "\n" t))))
   (setq exec-path
-        (append (split-string (getenv "PATH") ":" t) exec-path)))
+        (split-string (getenv "PATH") ":" t)))
 
 (provide 'nixos-env)
 

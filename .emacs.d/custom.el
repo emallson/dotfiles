@@ -93,6 +93,11 @@
     ("~/org/notes.org" "~/org/grad.org" "~/org/wow.org" "~/org/uky.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
+ '(org-capture-templates
+   (quote
+    (("h" "Thought" item
+      (file+headline "~/org/notes.org" "Thoughts")
+      ""))))
  '(org-clock-idle-time 30)
  '(org-clock-in-resume t)
  '(org-clock-into-drawer t)
@@ -150,8 +155,7 @@
      ("" "hyperref" nil)
      "\\tolerance=1000"
      ("" "microtype" nil)
-     ("" "lmodern" nil)
-     ("" "minted" t))))
+     ("" "lmodern" nil))))
  '(org-latex-listings (quote minted))
  '(org-latex-logfiles-extensions
    (quote
@@ -193,7 +197,7 @@
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-pinned-packages (quote ((twittering-mode . "melpa"))))
  '(paradox-automatically-star nil)
- '(paradox-github-token t t)
+ '(paradox-github-token t)
  '(projectile-completion-system (quote helm))
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-directories
@@ -209,6 +213,7 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
+ '(sml/mode-width 5)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(sp-autoescape-string-quote nil)
