@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        TeX-insert-backslash
         backward-sexp
         bibtex-next-field
         c-electric-delete-forward

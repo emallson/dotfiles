@@ -1,3 +1,4 @@
+#!/bin/zsh
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
     [ -x "$f" ] && . "$f"
@@ -5,18 +6,19 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-if [ "$(hostname)" = "Vorringia" ]; then
-    xrandr --output DVI-I-1 --auto --output DVI-I-2 --auto --right-of DVI-I-1;
-fi
-
 xrdb .Xresources
 xset -b
 xsetroot -cursor_name left_ptr
 
-xkbcomp ~/.keycomp.xkb $DISPLAY
+xkbcomp ~/.keycomp.xkb $DISPLAY 2> /dev/null
 
-pulseaudio --start &
 xbindkeys
-eval `cat ~/.fehbg`
-source .profile
-exec xmonad
+sh ~/.fehbg &
+
+DISP_NUM=${DISPLAY/:/}
+systemctl --user start redshift@$DISP_NUM touchegg@$DISP_NUM
+
+sshfs -o reconnect amos.csr.uky.edu: ~/Remotes/csr &
+sshfs -o reconnect vulture.csr.uky.edu:/u/vul-d1/scratch/emallson ~/Remotes/scratch/vulture &
+
+exec xmonad >& .xmonad/out.log

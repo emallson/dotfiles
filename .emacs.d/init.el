@@ -6,7 +6,7 @@
 ;;; no suspend-buffer
 (global-set-key (kbd "C-z") nil)
 
-(add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'load-path "~/.emacs.d/modules")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -36,7 +36,6 @@
 
 (add-hook 'prog-mode-hook 'linum-mode)
 
-(set-frame-font "Source Code Pro Light:size=15:antialias=true")
 (defadvice make-frame-command (after make-frame-change-background-color last activate)
   "Adjusts the background color for different frame types.
 Graphical (X) frames should have the theme color, while terminal
@@ -394,7 +393,13 @@ the syntax class ')'."
 
 ;; paradox
 (package-require 'paradox)
-(setq paradox-github-token "6b29de76c9e601977d611044edd285d6cc67d48a")
+(defun load-paradox-github-token ()
+  "Load the github token for paradox when needed."
+  (unless (boundp 'paradox-github-token)
+    (with-temp-buffer
+      (insert-file-contents "~/.emacs.d/paradox.token.gpg")
+      (setq paradox-github-token (buffer-string)))))
+(add-hook 'paradox-menu-mode-hook #'load-paradox-github-token)
 
 ;; god-mode
 (package-require 'god-mode)
@@ -445,10 +450,6 @@ the syntax class ')'."
 ;;; sql stuff
 (add-hook 'sql-mode-hook 'sql-highlight-ansi-keywords)
 
-;;; un-disabled fns
-(put 'scroll-left 'disabled nil)
-(put 'upcase-region 'disabled nil)
-
 ;;; evil
 (package-require 'evil)
 (evil-mode 1)
@@ -474,21 +475,27 @@ the syntax class ')'."
 
 (evil-define-key 'normal evil-paredit-mode-map "x" nil)
 
-(add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
-(add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
-(add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
-(add-to-list 'evil-emacs-state-modes 'woman-mode)
-(add-to-list 'evil-emacs-state-modes 'help-mode)
-(add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
-(add-to-list 'evil-emacs-state-modes 'flycheck-error-list-mode)
-(add-to-list 'evil-emacs-state-modes 'epa-info-mode)
+(dolist (mode '(mu4e-main-mode
+                mu4e-headers-mode
+                mu4e-view-mode
+                woman-mode
+                help-mode
+                cider-stacktrace-mode
+                flycheck-error-list-mode
+                epa-info-mode
+                paradox-menu-mode
+                image-mode))
+  (add-to-list 'evil-emacs-state-modes mode))
 
 (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
 
 ;;; twittering-mode
 (package-require 'twittering-mode)
+(add-to-list 'twittering-mode-hook #'twittering-icon-mode)
 (setq twittering-use-master-password t)
 (setq twittering-oauth-invoke-browser t)
+(define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
+(define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)
 
 ;;; scheme stuff
 (require 'init-scheme)
@@ -496,16 +503,20 @@ the syntax class ')'."
 ;;; systemd stuff
 (require 'init-systemd)
 
-;;; nixos-env setup
-(require 'nixos-env)
-(add-hook 'js2-mode-hook (lambda ()
-                           (nixos-env-apply "node" nil)))
-
-(add-hook 'clojure-mode-hook (lambda ()
-                               (nixos-env-apply "clojure" nil)))
-
 ;;; python stuff
 (require 'init-python)
 
+;;; beginnings of el-get setup
+(require 'init-el-get)
+
+;;; major-mode-dedication
+(require 'init-mmd)
+
+;;; install el-get packages
+(finalize-el-get)
+
+;;; un-disabled fns
+(put 'scroll-left 'disabled nil)
+(put 'upcase-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 ;;; init.el ends here

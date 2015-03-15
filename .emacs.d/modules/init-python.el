@@ -5,22 +5,7 @@
 ;;;
 ;;; Code:
 
-;;; Switch to the environment I spend most of my time working in.
-(require 'nixos-env)
-
-(add-hook 'python-mode-hook (lambda ()
-                              (nixos-env-apply "cv-python" nil)))
-
-;;; Install + Configure elpy
-(package-require 'elpy)
-
-(when (require 'elpy nil t)
-  (elpy-enable))
-
-(setq elpy-rpc-backend "jedi")
-
-(add-hook 'elpy-mode-hook (lambda ()
-                            (nixos-env-apply "cv-python" nil)))
+(add-hook 'python-mode 'pyvenv-mode)
 
 (provide 'init-python)
 ;;; init-python.el ends here

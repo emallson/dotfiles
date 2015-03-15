@@ -33,6 +33,11 @@
  '(display-battery-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edit-server-new-frame nil)
+ '(elpy-interactive-python-command "ipython")
+ '(elpy-modules
+   (quote
+    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-rpc-python-command "python2")
  '(erc-auto-set-away nil)
  '(erc-autojoin-channels-alist
    (quote
@@ -85,7 +90,7 @@
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-get-mail-command "offlineimap")
- '(mu4e-view-prefer-html nil)
+ '(mu4e-view-prefer-html t)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
  '(org-agenda-files
@@ -162,12 +167,13 @@
     ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "bbl" "blg" "pyg")))
  '(org-latex-pdf-process
    (quote
-    ("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")))
+    ("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "biber %b" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")))
  '(org-latex-to-pdf-process
    (quote
     ("pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")))
  '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "+"))))
  '(org-pretty-entities t)
+ '(org-pretty-entities-include-sub-superscripts nil)
  '(org-src-fontify-natively t)
  '(org-src-lang-modes
    (quote
@@ -204,11 +210,17 @@
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv" "node_modules" "ppm-venv")))
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
+ '(projectile-tags-command "ctags -Re -f \"%s\" %s")
  '(projectile-test-suffix-function (quote projectile-custom-test-suffix))
  '(quack-fontify-style (quote emacs))
  '(reb-re-syntax (quote string))
  '(ropemacs-guess-project t)
- '(safe-local-variable-values (quote ((require-final-newline))))
+ '(safe-local-variable-values
+   (quote
+    ((org-src-preserve-indentation . t)
+     (pyvenv-activate . "~/Code/CrossTraining/venv")
+     (pyvenv-activate . "./venv")
+     (require-final-newline))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
@@ -234,6 +246,7 @@
  '(tags-add-tables nil)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
+ '(twittering-use-icon-storage t)
  '(undo-tree-auto-save-history t)
  '(undo-tree-history-directory-alist (quote (("." . "~/.emacs.d/.undo-tree/"))))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
@@ -262,7 +275,12 @@
  '(vc-annotate-very-old-color "#DC8CC3")
  '(web-mode-code-indent-offset 4)
  '(web-mode-enable-auto-pairing t)
+ '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 4)
+ '(winner-boring-buffers
+   (quote
+    ("*Completions*" "*helm M-x*" "*helm mini*" "*Helm Find Files*")))
+ '(winner-mode t)
  '(znc-servers
    (quote
     (("atlanis.net" 6464 t
@@ -272,6 +290,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 113 :width normal :foundry "adobe" :family "Source Code Pro"))))
  '(company-tooltip-annotation ((t (:inherit company-tooltip-common))))
  '(company-tooltip-common ((t (:background "#303030" :foreground "#9FBF9F"))))
  '(company-tooltip-common-selection ((t (:background "#2A2A2A" :foreground "#9FBF9F"))))
