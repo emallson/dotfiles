@@ -13,13 +13,7 @@
 (package-require 'quack)
 
 ;;; paredit is mandatory!
-(add-hook 'scheme-mode-hook 'enable-paredit-mode)
-
-(add-hook 'scheme-mode-hook (lambda ()
-                              (nixos-env-apply "l2p")))
-
-(add-hook 'geiser-repl-mode-hook (lambda ()
-                                   (nixos-env-apply "l2p")))
+(add-hook 'scheme-mode-hook #'enable-paredit-mode)
 
 ;;; enable nixos env
 

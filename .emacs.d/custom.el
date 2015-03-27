@@ -57,6 +57,9 @@
  '(fortran-minimum-statement-indent-fixed 8)
  '(fringe-mode 0 nil (fringe))
  '(geiser-default-implementation (quote racket))
+ '(geiser-racket-extra-keywords
+   (quote
+    ("provide" "require" "unless" "when" "with-handlers" "define:" "lambda:" "let:" "option")))
  '(gnus-init-file "~/.emacs.d/gnus.el")
  '(grep-find-ignored-directories
    (quote
@@ -96,7 +99,7 @@
  '(org-agenda-files
    (quote
     ("~/org/notes.org" "~/org/grad.org" "~/org/wow.org" "~/org/uky.org")))
- '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t))))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t) (python . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
  '(org-capture-templates
    (quote
@@ -247,6 +250,7 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(twittering-use-icon-storage t)
+ '(twittering-use-master-password t)
  '(undo-tree-auto-save-history t)
  '(undo-tree-history-directory-alist (quote (("." . "~/.emacs.d/.undo-tree/"))))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
@@ -284,7 +288,7 @@
  '(znc-servers
    (quote
     (("atlanis.net" 6464 t
-      ((freenode "emallson" "")))))))
+      ((freenode "emallson" nil)))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

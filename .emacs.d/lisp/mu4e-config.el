@@ -1,4 +1,5 @@
 (require 'smtpmail)
+(require 'mu4e-contrib)
 
 (setq user-full-name "J David Smith")
 
@@ -81,5 +82,7 @@
     (unless (null window)
       (delete-window window))))
 (advice-add 'mu4e~view-quit-buffer :after 'epa-quit-info)
+
+(setq mu4e-html2text-command 'mu4e-shr2text)
 
 (provide 'mu4e-config)

@@ -6,11 +6,11 @@ Xft.hinting:    true
 Xft.hintstyle:  hintfull
 
 xterm*termName: xterm-256color
+xterm*faceName: Source Code Pro Light:size=13:antialias=true
+URxvt*font: xft:Source Code Pro Light:size=13:antialias=true
 
 *foreground: rgb:dc/dc/cc
 *background: rgb:20/20/20
-xterm*faceName: Source Code Pro Light:size=13:antialias=true
-URxvt*font: xft:Source Code Pro Light:size=13:antialias=true
 *color0: rgb:20/20/20
 *color1: rgb:e8/93/93
 *color2: rgb:9e/ce/9e
@@ -31,21 +31,5 @@ URxvt*font: xft:Source Code Pro Light:size=13:antialias=true
 *colorIT: rgb:dc/dc/cc
 *colorUL: rgb:dc/dc/cc
 
-URxvt*.scrollBar: false
-URxvt*cursorColor: rgb:dc/dc/cc
-URxvt*cursorBlink: true
-URxvt*preeditType: OverTheSpot,Root
-
-URxvt.perl-ext-common: default,tabbedex,vtwheel
-URxvt.tabbed.tabbar-fg: 2
-URxvt.tabbed.tabbar-bg: 0
-URxvt.tabbed.tab-fg:    3
-URxvt.tabbed.tab-bg:    0
-
-URxvt.iso14755: false
-URxvt.iso14755_52: false
-
 Xcursor.theme: ComixCursors-Slim-White
 Xcursor.size: 16
-
-Emacs.font: Source Code Pro Light:size=15:antialias=true

@@ -11,6 +11,7 @@
         c-electric-semi&comma
         c-electric-star
         comment-dwim
+        delete-horizontal-space
         evil-backward-char
         evil-backward-word-begin
         evil-copy-from-below
@@ -43,7 +44,11 @@
         paredit-forward
         paredit-forward-delete
         paredit-forward-kill-word
+        paredit-forward-slurp-sexp
         paredit-kill
+        paredit-open-round
+        paredit-raise-sexp
+        paredit-splice-sexp-killing-backward
         prolog-electric-underscore
         sgml-slash
         shm/del
