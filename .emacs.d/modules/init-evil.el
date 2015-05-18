@@ -41,7 +41,8 @@
                 flycheck-error-list-mode
                 epa-info-mode
                 paradox-menu-mode
-                image-mode))
+                image-mode
+                emms-browser-mode))
   (add-to-list 'evil-emacs-state-modes mode))
 
 (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
@@ -53,14 +54,15 @@
 
 
 ; kill buffer with :k
-
-(add-to-list 'evil-ex-commands '("kill" . kill-this-buffer))
-(add-to-list 'evil-ex-commands '("k" . "kill"))
+(evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
 
 ; tangle buffer with :t
+(evil-ex-define-cmd "t[angle]" #'org-babel-tangle)
 
-(add-to-list 'evil-ex-commands '("tangle" . org-babel-tangle))
-(add-to-list 'evil-ex-commands '("t" . "tangle"))
+(require 'evil-paredit)
+(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'evil-paredit-mode)
 
 (provide 'init-evil)
 ;;; init-evil.el ends here

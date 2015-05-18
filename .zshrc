@@ -47,7 +47,11 @@ alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 
 alias em='emacsclient -nw -c'
-alias wem='emacsclient -c'
+
+function wem() {
+    emacsclient -c "$@" &
+    disown %+;
+}
 
 function line() {
     head -n $1 $2 | tail -n 1;
@@ -55,3 +59,7 @@ function line() {
 
 # fix colors
 TERM=xterm-256color
+
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+autoload -Uz compinit
+compinit

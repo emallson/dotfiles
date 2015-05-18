@@ -6,16 +6,15 @@
 ;;;
 ;;; Code:
 
-(require 'nixos-env)
-
 ;;; install repl and highlighting stuff for racket/guile
-(package-require 'geiser)
-(package-require 'quack)
+(add-to-list 'modules:el-get-packages 'geiser)
+(add-to-list 'modules:el-get-packages 'quack)
 
 ;;; paredit is mandatory!
-(add-hook 'scheme-mode-hook #'enable-paredit-mode)
-
-;;; enable nixos env
+(eval-after-load 'geiser-mode
+  (progn
+	(add-hook 'scheme-mode-hook #'enable-paredit-mode)
+	(add-hook 'geiser-repl-mode-hook #'enable-paredit-mode)))
 
 (provide 'init-scheme)
 ;;; scheme.el ends here

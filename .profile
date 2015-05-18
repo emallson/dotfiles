@@ -6,12 +6,16 @@ else
 fi
 
 export CHROME_BIN=chromium;
-export PATH="/opt/MATLAB/R2014a/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH"
+export PATH="/opt/MATLAB/R2014a/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH";
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 export NVM_DIR="/home/emallson/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+eval `dircolors ~/.dircolors`;
+
+export BOOT_JVM_OPTIONS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none'
 
 systemctl --user import-environment PATH

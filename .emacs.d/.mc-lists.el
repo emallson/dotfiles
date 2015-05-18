@@ -56,6 +56,7 @@
         sp--self-insert-command
         sp-backward-delete-char
         sp-delete-char
+        sp-forward-slurp-sexp
         sp-kill-hybrid-sexp
         sp-kill-word
         tern-ac-dot-complete

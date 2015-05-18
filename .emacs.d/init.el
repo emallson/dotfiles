@@ -23,6 +23,25 @@
                                      (interactive)
                                      (mouse-yank-primary (point))))
 
+
+;;; beginnings of el-get setup
+(require 'init-el-get)
+
+;;; scheme stuff
+(require 'init-scheme)
+
+;;; systemd stuff
+(require 'init-systemd)
+
+;;; python stuff
+(require 'init-python)
+
+;;; And znc
+(require 'init-znc)
+
+;;; install el-get packages
+(finalize-el-get)
+
 ;; elpa/melpa/marmalade packages
 (defvar package-refreshed nil
   "Used by `package-require' to determine whether to refresh package contents.")
@@ -55,6 +74,12 @@ color...but terminal frames can't directly render this color)"
 
 ; tramp
 (package-require 'tramp)
+
+; disable vc on remote files
+(setq vc-ignore-dir-regexp
+      (format "\\(%s\\)\\|\\(%s\\)"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
 
 ; wdired
 (setq-default wdired-allow-to-change-permissions t)
@@ -153,6 +178,7 @@ color...but terminal frames can't directly render this color)"
 
 ; magit
 (package-require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ; multiple-cursors
 (package-require 'multiple-cursors)
@@ -238,11 +264,6 @@ color...but terminal frames can't directly render this color)"
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 
-(require 'evil-paredit)
-(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
-(add-hook 'lisp-mode-hook 'evil-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'evil-paredit-mode)
-
 ;; slime
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
@@ -263,7 +284,7 @@ color...but terminal frames can't directly render this color)"
 
 ;; yasnippet
 (package-require 'yasnippet)
-(yas-global-mode 1)
+;;; (yas-global-mode 1)
 
 ;; ignoramus
 (package-require 'ignoramus)
@@ -353,6 +374,10 @@ the syntax class ')'."
      (global-set-key (kbd "C-c a a") 'org-agenda-list)
      (global-set-key (kbd "C-c a t") 'org-todo-list)
      (global-set-key (kbd "C-c a m") 'org-tags-view)))
+
+(package-require 'ob-prolog)
+(eval-after-load "org"
+  '(require 'ob-prolog))
 
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
@@ -450,34 +475,18 @@ the syntax class ')'."
 
 ;;; twittering-mode
 (package-require 'twittering-mode)
-(add-to-list 'twittering-mode-hook #'twittering-icon-mode)
-(setq twittering-use-master-password t)
-(setq twittering-oauth-invoke-browser t)
-(define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
-(define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)
-
-;;; scheme stuff
-(require 'init-scheme)
-
-;;; systemd stuff
-(require 'init-systemd)
-
-;;; python stuff
-(require 'init-python)
-
-;;; beginnings of el-get setup
-(require 'init-el-get)
-
-;;; major-mode-dedication
-; (require 'init-mmd)
-
-(require 'init-znc)
-
-;;; install el-get packages
-(finalize-el-get)
+(require 'twittering-mode)
+(eval-after-load 'twittering-mode
+  (progn
+    (add-hook 'twittering-mode-hook #'twittering-icon-mode)
+    (setq twittering-use-master-password t)
+    (setq twittering-oauth-invoke-browser t)
+    (define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
+    (define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)))
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
-(put 'upcase-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)

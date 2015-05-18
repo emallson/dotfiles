@@ -19,7 +19,8 @@ nametrans = lambda f: re.sub('^\[Gmail\]/', '', f)
 
 remoteusereval = get_authinfo("imap.gmail.com", 993)["username"]
 remotepasseval = get_authinfo("imap.gmail.com", 993)["password"]
-sslcacertfile = /etc/ssl/certs/ca-bundle.trust.crt
+#sslcacertfile = /etc/ssl/certs/ca-bundle.trust.crt
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 [Account emallson@atlanis.net]
 localrepository = emallson@atlanis.net:Local

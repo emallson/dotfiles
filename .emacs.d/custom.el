@@ -27,17 +27,23 @@
  '(create-lockfiles nil)
  '(custom-safe-themes
    (quote
-    ("c5a044ba03d43a725bd79700087dea813abcb6beb6be08c7eb3303ed90782482" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "3a9ff11d1337a00ca267f1d94dd4a8cdcee083014a9ef13d6c25bb11a9eac199" "e88e253e38a442679ebd43cbd75d56f0659f568881cb6977527f0b0bd7e03080" "b621af558778c09cd767d8bc3923552b1066cad5f398fb3ed6abf029dde69ffa" "3090af8bd70378df5c78fdcbdf20539eaccac7d0f3d948bd0f0a3245e59b82bc" "e5e0e4e20697cd7c2a8ab900246db214241a826d5348e0cd943b0aadc57d6170" "26cec1daa06ecf8191983cfbe8a4b33115529111093c7d4b3b19b37e2c54c625" "729372c7d16866ab00ae494ebcd9f5c9f91477e0adffec585e170bdab107361c" "5d65ef430d457bcf697f2dc2c3de3f270a7b6709f48cc96184dc286b84805240" "a14fa334282295971b68538b2d64593472a5dd09534dd48f3db748e534d10377" "9fc8b10d1bb9ff26507114013a9283c49ac1e09a5b67a12755ec67bedb18fc98" "6bbe1f9067adbc38752fc2b1e9ead7b660b0fc92034a52cb09843413ecd311ed" "1c2253db4f3c34e54cad751372ba54c0eb114fb7f6a4a4fb9c44d1f250bf5416" "22b0cb305c407fe7220501c46e0bc36c34dc10138f8c61dee72079340cd838f5" "3c7d756bfd56e4fe67baecbe1e972fea7c5374b7457839d179e73823d6d9f2ac" default)))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "c5a044ba03d43a725bd79700087dea813abcb6beb6be08c7eb3303ed90782482" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "3a9ff11d1337a00ca267f1d94dd4a8cdcee083014a9ef13d6c25bb11a9eac199" "e88e253e38a442679ebd43cbd75d56f0659f568881cb6977527f0b0bd7e03080" "b621af558778c09cd767d8bc3923552b1066cad5f398fb3ed6abf029dde69ffa" "3090af8bd70378df5c78fdcbdf20539eaccac7d0f3d948bd0f0a3245e59b82bc" "e5e0e4e20697cd7c2a8ab900246db214241a826d5348e0cd943b0aadc57d6170" "26cec1daa06ecf8191983cfbe8a4b33115529111093c7d4b3b19b37e2c54c625" "729372c7d16866ab00ae494ebcd9f5c9f91477e0adffec585e170bdab107361c" "5d65ef430d457bcf697f2dc2c3de3f270a7b6709f48cc96184dc286b84805240" "a14fa334282295971b68538b2d64593472a5dd09534dd48f3db748e534d10377" "9fc8b10d1bb9ff26507114013a9283c49ac1e09a5b67a12755ec67bedb18fc98" "6bbe1f9067adbc38752fc2b1e9ead7b660b0fc92034a52cb09843413ecd311ed" "1c2253db4f3c34e54cad751372ba54c0eb114fb7f6a4a4fb9c44d1f250bf5416" "22b0cb305c407fe7220501c46e0bc36c34dc10138f8c61dee72079340cd838f5" "3c7d756bfd56e4fe67baecbe1e972fea7c5374b7457839d179e73823d6d9f2ac" default)))
  '(desktop-path (quote ("~/.emacs.d/desktop/" "~/.emacs.d/" "~")))
  '(dirtrack-list (quote ("\\[\\(.*\\)\\]" 1)))
  '(display-battery-mode t)
+ '(doc-view-scale-internally nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edit-server-new-frame nil)
+ '(el-get-notify-type (quote message))
  '(elpy-interactive-python-command "ipython")
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-rpc-backend "jedi")
  '(elpy-rpc-python-command "python2")
+ '(emms-mode-line-mode-line-function (quote emms-mode-line-icon-function))
+ '(emms-playlist-default-major-mode (quote emms-mark-mode))
+ '(emms-source-file-default-directory "~/Music/")
  '(erc-auto-set-away nil)
  '(erc-autojoin-channels-alist
    (quote
@@ -96,9 +102,7 @@
  '(mu4e-view-prefer-html t)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
- '(org-agenda-files
-   (quote
-    ("~/org/notes.org" "~/org/grad.org" "~/org/wow.org" "~/org/uky.org")))
+ '(org-agenda-files (quote ("~/org/notes.org" "~/org/wow.org" "~/org/uky.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t) (python . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
  '(org-capture-templates
@@ -113,6 +117,7 @@
  '(org-drawers
    (quote
     ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "CONTEXT" "HIDDEN")))
+ '(org-export-allow-bind-keywords t)
  '(org-export-date-timestamp-format "%d %B %Y")
  '(org-export-html-protect-char-alist (quote (("<" . "&lt;") (">" . "&gt;"))))
  '(org-export-latex-default-packages-alist
@@ -175,6 +180,9 @@
    (quote
     ("pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")))
  '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "+"))))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-pretty-entities t)
  '(org-pretty-entities-include-sub-superscripts nil)
  '(org-src-fontify-natively t)
@@ -194,7 +202,6 @@
      ("js" . js2)
      ("dot" . graphviz-dot))))
  '(org-src-window-setup (quote other-window))
- '(org-tags-column -115)
  '(org-time-stamp-custom-formats (quote ("<%a, %d %B %Y>" . "<%a, %d %B %Y at %H:%M>")))
  '(org-todo-keywords (quote ((sequence "TODO" "DOING" "|" "DONE" "FAIL"))))
  '(package-archives
@@ -220,7 +227,11 @@
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
    (quote
-    ((org-src-preserve-indentation . t)
+    ((pyvenv-activate . "./venv/")
+     (org-babel-use-quick-and-dirty-noweb-expansion . t)
+     (org-latex-pdf-process "pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")
+     (org-latex-pdf-process "pdflatex -interaction nonstopmode %o %f" "bibtex %b" "pdflatex -interaction nonstopmode %o %f" "pdflatex -interaction nonstopmode %o %f")
+     (org-src-preserve-indentation . t)
      (pyvenv-activate . "~/Code/CrossTraining/venv")
      (pyvenv-activate . "./venv")
      (require-final-newline))))
@@ -232,11 +243,11 @@
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(sp-autoescape-string-quote nil)
+ '(sp-base-key-bindings (quote paredit))
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay nil)
  '(sp-highlight-wrap-tag-overlay nil)
  '(sp-hybrid-kill-entire-symbol (quote sp-point-in-string))
- '(sp-hybrid-kill-excessive-whitespace nil)
  '(sublimity-scroll-drift-length 6)
  '(tab-stop-list
    (loop with i = 0 do
@@ -280,7 +291,7 @@
  '(web-mode-code-indent-offset 4)
  '(web-mode-enable-auto-pairing t)
  '(web-mode-enable-auto-quoting nil)
- '(web-mode-markup-indent-offset 4)
+ '(web-mode-markup-indent-offset 2)
  '(winner-boring-buffers
    (quote
     ("*Completions*" "*helm M-x*" "*helm mini*" "*Helm Find Files*")))

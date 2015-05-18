@@ -22,6 +22,7 @@
 
 (defun finalize-el-get (&optional packages)
   "Called at the end of configuration to initialize `PACKAGES'."
+  (interactive)
   (if (null packages)
       (el-get 'sync modules:el-get-packages)
     (el-get 'sync packages)))
