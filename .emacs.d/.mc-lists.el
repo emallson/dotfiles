@@ -22,6 +22,7 @@
         evil-find-char
         evil-forward-char
         evil-forward-word-begin
+        evil-indent
         evil-inner-paren
         evil-insert
         evil-next-line

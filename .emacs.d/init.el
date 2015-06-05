@@ -92,7 +92,8 @@ color...but terminal frames can't directly render this color)"
      (define-key hs-minor-mode-map (kbd "C-c s h") 'hs-hide-block)
      (define-key hs-minor-mode-map (kbd "C-c s s") 'hs-show-block)
      (define-key hs-minor-mode-map (kbd "C-c s a") 'hs-hide-all)
-     (define-key hs-minor-mode-map (kbd "C-c s A") 'hs-show-all)))
+     (define-key hs-minor-mode-map (kbd "C-c s A") 'hs-show-all)
+     (define-key hs-minor-mode-map (kbd "C-c h")   'hs-toggle-hiding)))
 ;; (add-hook 'js3-mode-hook #'hs-minor-mode)
 
 ; flyspell
@@ -303,9 +304,24 @@ color...but terminal frames can't directly render this color)"
 (define-key js2-mode-map (kbd "RET") 'js2-line-break)
 (add-hook 'js2-mode-hook 'subword-mode)
 
+(defun js2-align-var-node (&optional node)
+  "Align a multi-line var node (`NODE' or a parent)."
+  (interactive)
+  (let ((node (if (null node)
+                  (js2-node-at-point)
+                node)))
+    (if (js2-var-decl-node-p node)
+        (align-regexp (js2-node-abs-pos node)
+                      (js2-node-abs-end node)
+                      "\\(\\s-*\\)=")
+      (unless (null (js2-node-parent node))
+        (js2-align-var-node (js2-node-parent node))))))
+
+(define-key js2-mode-map (kbd "C-c l") #'js2-align-var-node)
+
 ;;; tern
-(package-require 'tern)
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+;; (package-require 'tern)
+;; (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
 (package-require 'company-tern)
 (eval-after-load 'company
@@ -484,9 +500,15 @@ the syntax class ')'."
     (define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
     (define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)))
 
+;;; NaRe
+
+(el-get-bundle gist:4a65592d94885d217b34:narrow-reindent
+  (require 'narrow-reindent)
+  (add-hook 'prog-mode-hook #'narrow-reindent-mode))
+
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
-;;; init.el ends here
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+;;; init.el ends here

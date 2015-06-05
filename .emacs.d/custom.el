@@ -44,6 +44,7 @@
  '(emms-mode-line-mode-line-function (quote emms-mode-line-icon-function))
  '(emms-playlist-default-major-mode (quote emms-mark-mode))
  '(emms-source-file-default-directory "~/Music/")
+ '(erc-accidental-paste-threshold-seconds 0.25)
  '(erc-auto-set-away nil)
  '(erc-autojoin-channels-alist
    (quote
@@ -56,7 +57,10 @@
  '(erc-nick "Atlanis")
  '(erc-prompt-for-nickserv-password nil)
  '(erc-prompt-for-password nil)
- '(evil-want-fine-undo t)
+ '(erc-track-faces-priority-list
+   (quote
+    (erc-error-face erc-current-nick-face erc-keyword-face erc-pal-face erc-dangerous-host-face erc-prompt-face)))
+ '(erc-track-priority-faces-only (quote all))
  '(explicit-shell-file-name "/usr/bin/zsh")
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
@@ -227,7 +231,8 @@
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
    (quote
-    ((pyvenv-activate . "./venv/")
+    ((flycheck-mode)
+     (pyvenv-activate . "./venv/")
      (org-babel-use-quick-and-dirty-noweb-expansion . t)
      (org-latex-pdf-process "pdflatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction nonstopmode -output-directory %o %f" "pdflatex -interaction nonstopmode -output-directory %o %f")
      (org-latex-pdf-process "pdflatex -interaction nonstopmode %o %f" "bibtex %b" "pdflatex -interaction nonstopmode %o %f" "pdflatex -interaction nonstopmode %o %f")
@@ -305,7 +310,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 113 :width normal :foundry "adobe" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 133 :width normal :foundry "adobe" :family "Source Code Pro"))))
  '(company-tooltip-annotation ((t (:inherit company-tooltip-common))))
  '(company-tooltip-common ((t (:background "#303030" :foreground "#9FBF9F"))))
  '(company-tooltip-common-selection ((t (:background "#2A2A2A" :foreground "#9FBF9F"))))
