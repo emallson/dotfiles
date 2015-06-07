@@ -45,7 +45,7 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-S-t", sendMessage Shrink)
            ,("M-k", kill)
            ,("M-r", spawn "dmenu_run")
-           ,("M-b", runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+           ,("M-b", runOrRaise "chromium" (className =? "Chromium"))
            ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", inputPromptWithCompl myXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-C-c", inputPrompt myXPConfig "Session" ?+ tmuxCreateAttach)
@@ -59,7 +59,7 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-C-S-g", strutsOn [U])
            ,("M-=", sendMessage (IncMasterN 1))
            ,("M--", sendMessage (IncMasterN (-1)))
-           ,("M-.", withFocused $ windows . W.sink) -- Push window back into tiling
+           ,("M-S-.", withFocused $ windows . W.sink) -- Push window back into tiling
            ,("M-w", sendMessage NextLayout)
            -- ,("M-S-w", setLayout $ XMonad.layoutHook myConfig)
            ]
@@ -107,11 +107,14 @@ xmobarCmd :: IO String
 xmobarCmd = do hostName <- getHostName
                return $ "/home/emallson/.cabal/bin/xmobar /home/emallson/.xmonad/" ++ hostName ++ "/xmobar.hs"
 
-xmb cmdIO pp kfn conf = do
-  cmd <- cmdIO
-  statusBar cmd pp kfn conf
-
-myToggleStrutsKey XConfig{modMask = modm} = (modm .|. shiftMask, xK_l)
+pipeLog :: IO String -> PP -> XConfig l -> IO (XConfig l)
+pipeLog cmdIO pp conf = do
+    cmd <- cmdIO
+    pipe <- spawnPipe cmd
+    return $ conf
+           {logHook = do
+                         logHook conf
+                         dynamicLogWithPP =<< workspaceNamesPP (pp {ppOutput = hPutStrLn pipe})}
 
 main :: IO ()
-main = xmonad =<< (xmb xmobarCmd emallsonPP myToggleStrutsKey myConfig)
+main = xmonad =<< pipeLog xmobarCmd emallsonPP myConfig

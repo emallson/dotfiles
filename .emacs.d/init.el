@@ -322,10 +322,17 @@ color...but terminal frames can't directly render this color)"
 ;;; tern
 ;; (package-require 'tern)
 ;; (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(el-get-bundle! emallson/tern
+  :load "emacs/tern.el"
+  (add-hook 'js2-mode-hook #'tern-mode)
+  (setq tern-command '("tern")))
 
-(package-require 'company-tern)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-tern))
+(el-get-bundle company-tern
+  (add-to-list 'company-backends #'company-tern))
+
+;; (package-require 'company-tern)
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-tern))
 
 ;; web-mode
 (package-require 'web-mode)

@@ -310,7 +310,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 133 :width normal :foundry "adobe" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 113 :width normal :foundry "adobe" :family "Source Code Pro"))))
  '(company-tooltip-annotation ((t (:inherit company-tooltip-common))))
  '(company-tooltip-common ((t (:background "#303030" :foreground "#9FBF9F"))))
  '(company-tooltip-common-selection ((t (:background "#2A2A2A" :foreground "#9FBF9F"))))
