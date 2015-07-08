@@ -4,8 +4,9 @@ Config { commands = [  Run Battery [] 600
                      , Run DiskU [("/", "<used>/<size>"), ("/home", "<used>/<size>")]
                                  ["-L", "50", "-H", "75", "-m", "1", "-p", "3",
                                   "--normal", "#F0DFAF", "--high", "#CC9393", "--low", "#7F9F7F"] 20
+                     , Run Network "eth0" ["-S", "True", "-t", "<dev>: <rx> / <tx>"] 20
                      ]
-        , template = "%StdinReader% | %disku% } { %battery% | %date%"
+        , template = "%StdinReader% | %disku% } { %eth0% | %battery% | %date%"
         , bgColor = "#202020"
         , position = Bottom
         , alignSep = "}{"

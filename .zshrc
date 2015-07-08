@@ -46,7 +46,15 @@ alias start='sudo systemctl start'
 alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 
-alias em='emacsclient -nw -c'
+alias em='emacsclient -t'
+
+function sudo() {
+    if [[ "$1" = "em" ]]; then
+        em "/sudo::${@: (($#-2)),-1}"
+    else
+        /usr/bin/sudo $@
+    fi
+}
 
 function wem() {
     emacsclient -c "$@" &

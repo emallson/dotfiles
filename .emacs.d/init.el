@@ -27,6 +27,9 @@
 ;;; beginnings of el-get setup
 (require 'init-el-get)
 
+;;; org-mode
+(require 'init-org)
+
 ;;; scheme stuff
 (require 'init-scheme)
 
@@ -36,11 +39,49 @@
 ;;; python stuff
 (require 'init-python)
 
+;; js
+(require 'init-js)
+
+;;; clojure
+(require 'init-clojure)
+
 ;;; And znc
 (require 'init-znc)
 
+;;; NaRe
+
+;; (el-get-bundle gist:4a65592d94885d217b34:narrow-reindent
+;;   (require 'narrow-reindent)
+;;   (add-hook 'prog-mode-hook #'narrow-reindent-mode))
+
+;;; evil
+(require 'init-evil)
+
+;;; twittering-mode
+;; (add-to-list 'modules:el-get-packages 'twittering-mode)
+;; (eval-after-load "twittering-mode"
+;;   (progn
+;;     (add-hook 'twittering-mode-hook #'twittering-icon-mode)
+;;     (setq twittering-use-master-password t)
+;;     (setq twittering-oauth-invoke-browser t)
+;;     (define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
+;;     (define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)))
+
+;;; eclim (java)
+
+(el-get-bundle! popup
+  (el-get-bundle! eclim
+    (setenv "JAVA" "/usr/bin/java")
+    (setenv "JAVA_HOME" nil)
+    (require 'eclimd)
+    (add-hook 'java-mode-hook #'eclim-mode)
+    (require 'company-emacs-eclim)
+    (company-emacs-eclim-setup)))
+
 ;;; install el-get packages
 (finalize-el-get)
+
+(setup-evil)
 
 ;; elpa/melpa/marmalade packages
 (defvar package-refreshed nil
@@ -125,7 +166,7 @@ color...but terminal frames can't directly render this color)"
 (defun projectile-enable-unless-tramp ()
   "Enables `projectile-mode` unless in a TRAMP buffer."
   (unless (and (buffer-file-name)
-			   (file-remote-p (buffer-file-name)))
+               (file-remote-p (buffer-file-name)))
     (projectile-mode 1)))
 
 (add-hook 'prog-mode-hook 'projectile-enable-unless-tramp)
@@ -201,8 +242,6 @@ color...but terminal frames can't directly render this color)"
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x b") 'helm-mini)
 
-;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
 ;; ace-jump-mode
 (package-require 'ace-jump-mode)
 (eval-after-load "ace-jump-mode"
@@ -215,45 +254,6 @@ color...but terminal frames can't directly render this color)"
 ;;; trying company-mode
 (package-require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-
-;; clojure stuff
-(package-require 'clojure-mode)
-(require 'clojure-mode)
-(add-to-list 'auto-mode-alist '("\\.cljs?.hl\\'" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
-
-;;; indentation for compojure
-(define-clojure-indent
-  (defroutes 'defun)
-  (GET 2)
-  (POST 2)
-  (PUT 2)
-  (DELETE 2)
-  (HEAD 2)
-  (ANY 2)
-  (context 2)
-  (loop-tpl 2)
-  (page 'defun)
-  (let-realised 'defun)
-  (when-realised 'defun)
-  (waitp 'defun)
-  (ann-record 'defun)
-  (db-do-commands 'defun))
-
-(eval-after-load 'clojure-mode
-  '(progn
-     (define-key clojure-mode-map (kbd "RET") 'paredit-newline)))
-
-(package-require 'cider)
-(require 'cider-mode)
-(unless (boundp 'cider-mode-hook)
-  (message "Oops! cider-mode-hook is unbound!")
-  (defvar cider-mode-hook nil
-    "Hook that is run when `cider-mode' is activated."))
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(eval-after-load 'cider
-  '(define-key cider-repl-mode-map (kbd "RET") 'cider-repl-return))
-(setq nrepl-hide-special-buffers t)
 
 ;; paredit
 (package-require 'paredit)
@@ -291,49 +291,6 @@ color...but terminal frames can't directly render this color)"
 (package-require 'ignoramus)
 (ignoramus-setup)
 
-;; js
-(package-require 'js2-mode)
-(package-require 'nodejs-repl)
-(require 'nodejs-repl-eval)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(define-key js2-mode-map (kbd "C-c M-j") 'nodejs-repl)
-(define-key js2-mode-map (kbd "C-x C-e") 'nodejs-repl-eval-dwim)
-(define-key js2-mode-map (kbd "C-x M-e") 'nodejs-repl-eval-function)
-(define-key js2-mode-map (kbd "C-x C-M-e") 'nodejs-repl-eval-buffer)
-(define-key js2-mode-map (kbd "M-RET") 'js2-line-break)
-(define-key js2-mode-map (kbd "RET") 'js2-line-break)
-(add-hook 'js2-mode-hook 'subword-mode)
-
-(defun js2-align-var-node (&optional node)
-  "Align a multi-line var node (`NODE' or a parent)."
-  (interactive)
-  (let ((node (if (null node)
-                  (js2-node-at-point)
-                node)))
-    (if (js2-var-decl-node-p node)
-        (align-regexp (js2-node-abs-pos node)
-                      (js2-node-abs-end node)
-                      "\\(\\s-*\\)=")
-      (unless (null (js2-node-parent node))
-        (js2-align-var-node (js2-node-parent node))))))
-
-(define-key js2-mode-map (kbd "C-c l") #'js2-align-var-node)
-
-;;; tern
-;; (package-require 'tern)
-;; (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(el-get-bundle! emallson/tern
-  :load "emacs/tern.el"
-  (add-hook 'js2-mode-hook #'tern-mode)
-  (setq tern-command '("tern")))
-
-(el-get-bundle company-tern
-  (add-to-list 'company-backends #'company-tern))
-
-;; (package-require 'company-tern)
-;; (eval-after-load 'company
-;;   '(add-to-list 'company-backends 'company-tern))
-
 ;; web-mode
 (package-require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
@@ -356,23 +313,7 @@ color...but terminal frames can't directly render this color)"
 (package-require 'smartparens)
 (require 'smartparens-config)
 (add-hook 'js2-mode-hook 'smartparens-strict-mode)
-(eval-after-load 'smartparens-strict-mode
-  '(progn
-     (define-key smartparens-strict-mode-map (kbd "C-<right>") 'sp-slurp-hybrid-sexp)
-     (define-key smartparens-strict-mode-map (kbd "M-r") 'sp-raise-sexp)))
-
-
-;; shows the matching paren in the minibuffer when it is off-screen
-(defadvice show-paren-function (after show-matching-paren-offscreen activate)
-  "Show matching paren with context in the minibuffer if it is off-screen.
-Has no effect if the character before point is not of
-the syntax class ')'."
-  (interactive)
-  (let* ((cb (char-before (point)))
-         (matching-text (and cb
-                             (char-equal (char-syntax cb) ?\) )
-                             (blink-matching-open))))
-    (when matching-text (message matching-text))))
+;;; TODO: smartparens hybrid keys for JS
 
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c m") 'magit-status)
@@ -382,71 +323,11 @@ the syntax class ')'."
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c M-r") 'replace-regexp)
 
-
-;; org mode
-(package-require 'org)
-(eval-after-load "org"
-  '(progn
-     (org-defkey org-mode-map (kbd "C-c s d") 'org-demote-subtree)
-     (org-defkey org-mode-map (kbd "C-c s p") 'org-promote-subtree)
-     (org-defkey org-mode-map (kbd "C-c d") 'org-do-demote)
-     (org-defkey org-mode-map (kbd "C-c SPC") nil)
-     (org-defkey org-mode-map (kbd "C-c a l") 'org-timeline)
-     (org-defkey org-mode-map (kbd "C-c C-x t") 'org-set-tags)
-     (org-defkey org-mode-map (kbd "C-x C-e") 'org-emphasize)
-     (global-set-key (kbd "C-c a a") 'org-agenda-list)
-     (global-set-key (kbd "C-c a t") 'org-todo-list)
-     (global-set-key (kbd "C-c a m") 'org-tags-view)))
-
-(package-require 'ob-prolog)
-(eval-after-load "org"
-  '(require 'ob-prolog))
-
-(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
-
-; use C-c ' to go back to org mode from tangled file.
-(defun safe-enable-org-tangle-jump ()
-  "Bind `org-babel-tangle-jump-to-org' unless in `org-src-mode'."
-  (interactive)
-  (unless (bound-and-true-p org-src-mode)
-    (local-set-key (kbd "C-c '") 'org-babel-tangle-jump-to-org)))
-
-(add-hook 'prog-mode-hook 'safe-enable-org-tangle-jump)
-
-;;; time clocking
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
-
-;;; capture
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(define-key global-map (kbd "C-c c") 'org-capture)
-
-(package-require 'htmlize)
-
-;; gnuplot - used by org mode
-(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
-(setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
-
 ;; mode line stuff
 (setq sml/theme 'respectful)
 (package-require 'smart-mode-line)
 (sml/setup)
 (column-number-mode)
-
-;; paradox
-(package-require 'paradox)
-(defun load-paradox-github-token ()
-  "Load the github token for paradox when needed."
-  (unless (boundp 'paradox-github-token)
-    (with-temp-buffer
-      (insert-file-contents "~/.emacs.d/paradox.token.gpg")
-      (setq paradox-github-token (buffer-string)))))
-(add-hook 'paradox-menu-mode-hook #'load-paradox-github-token)
-
-;; god-mode
-(package-require 'god-mode)
-(global-set-key (kbd "C-x g") 'god-mode)
 
 ;;; ocaml stuff
 (package-require 'tuareg)
@@ -466,8 +347,9 @@ the syntax class ')'."
 (add-to-list 'load-path "~/.emacs.d/matlab/")
 (autoload 'matlab-mode "matlab")
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-(load-library "matlab-load")
-(matlab-cedet-setup)
+(eval-after-load "matlab"
+  '(progn (load-library "matlab-load")
+          (matlab-cedet-setup)))
 
 ;;; desktop-save-mode
 (setq desktop-dirname "~/")
@@ -493,29 +375,47 @@ the syntax class ')'."
 ;;; sql stuff
 (add-hook 'sql-mode-hook 'sql-highlight-ansi-keywords)
 
-;;; evil
-(require 'init-evil)
-
-;;; twittering-mode
-(package-require 'twittering-mode)
-(require 'twittering-mode)
-(eval-after-load 'twittering-mode
-  (progn
-    (add-hook 'twittering-mode-hook #'twittering-icon-mode)
-    (setq twittering-use-master-password t)
-    (setq twittering-oauth-invoke-browser t)
-    (define-key twittering-mode-map (kbd "s") #'twittering-goto-previous-status)
-    (define-key twittering-mode-map (kbd "t") #'twittering-goto-next-status)))
-
-;;; NaRe
-
-(el-get-bundle gist:4a65592d94885d217b34:narrow-reindent
-  (require 'narrow-reindent)
-  (add-hook 'prog-mode-hook #'narrow-reindent-mode))
+;;; prolog
+(defun prolog-inferior-next-solution ()
+  (interactive)
+  (comint-send-string nil ";")
+  (comint-send-input))
+(eval-after-load "prolog"
+  '(define-key prolog-inferior-mode-map (kbd "C-n") #'prolog-inferior-next-solution))
 
 ;;; un-disabled fns
 (put 'scroll-left 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+;;; pretty Control-L characters (overlay)
+(defun overlay-control-l ()
+  (font-lock-add-keywords
+   nil
+   `((,page-delimiter ;; variable with the regexp (usually "^\f" or "^^L")
+      0
+      (prog1 nil
+        ;; hide ^L
+        (compose-region (match-beginning 0) (match-end 0) "")
+        ;; make an overlay (like in hl-line)
+        (let ((pdl (make-overlay (line-beginning-position)
+                                 (line-beginning-position 2))))
+          ;; :background has to be different from the background color
+          ;; gray1 here is just a little different from black
+          (overlay-put pdl 'face '(:underline "#6F8F6F" :background "#303030"))
+          (overlay-put pdl 'modification-hooks
+                       ;; these arguments are received from modification-hooks
+                       '((lambda (overlay after-p begin end &optional length)
+                           (delete-overlay overlay))))
+          (overlay-put pdl 'insert-in-front-hooks
+                       '((lambda (overlay after-p begin end &optional length)
+                           (delete-overlay overlay)))))) t))))
+(add-hook 'after-change-major-mode-hook #'overlay-control-l)
+
+;;; temp location for rainbow identifiers
+(defun rainbow-identifiers-js2-filter (beg end)
+  (and
+   ;; (or (not (equal (buffer-substring-no-properties (- beg 1) beg) ".")))
+   (js2-name-node-p (js2-node-at-point beg))))
 ;;; init.el ends here

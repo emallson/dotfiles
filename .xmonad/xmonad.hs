@@ -1,4 +1,6 @@
 -- -*- flycheck-mode: nil -*-
+module XMonadConfig where
+
 import XMonad
 import Data.List
 import Data.List.Split
@@ -10,6 +12,7 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleWS (toggleOrView)
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WorkspaceNames (renameWorkspace, workspaceNamesPP, getWorkspaceNames)
+import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -45,7 +48,8 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-S-t", sendMessage Shrink)
            ,("M-k", kill)
            ,("M-r", spawn "dmenu_run")
-           ,("M-b", runOrRaise "chromium" (className =? "Chromium"))
+           ,("M-b", runOrRaise "chromium-browser" (className =? "Chromium-Browser"))
+           ,("M-C-b", spawn "chromium-browser")
            ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", inputPromptWithCompl myXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-C-c", inputPrompt myXPConfig "Session" ?+ tmuxCreateAttach)
@@ -54,14 +58,12 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("C-S-q", io exitSuccess) -- emergency hatch while debugging mod3Mask
            ,("M-C-k", spawn "./.xmonad/switch-keymap.sh")
-           ,("M-S-l", sendMessage ToggleStruts)
-           ,("M-S-g", strutsOff [U])
-           ,("M-C-S-g", strutsOn [U])
+           ,("M-S-l", sendMessage $ ToggleStrut D)
+           ,("M-S-g", sendMessage $ ToggleStrut U)
            ,("M-=", sendMessage (IncMasterN 1))
            ,("M--", sendMessage (IncMasterN (-1)))
            ,("M-S-.", withFocused $ windows . W.sink) -- Push window back into tiling
            ,("M-w", sendMessage NextLayout)
-           -- ,("M-S-w", setLayout $ XMonad.layoutHook myConfig)
            ]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
@@ -73,7 +75,7 @@ myKeymap = [("M-n", windows W.focusDown)
              , (otherModMasks, action) <- [("", toggleOrView)
                                           ,("S-", windows . W.shift)]]
 
-myLayoutHook = avoidStrutsOn [L] $ simpleTabbed ||| layoutHook defaultConfig
+myLayoutHook = avoidStrutsOn [D] $ simpleTabbed ||| layoutHook defaultConfig
 
 myConfig = ewmh defaultConfig {modMask = mod5Mask
                               , terminal = "st -e tmux attach"
@@ -81,7 +83,7 @@ myConfig = ewmh defaultConfig {modMask = mod5Mask
                               , clickJustFocuses = False
                               , normalBorderColor = "#202020"
                               , focusedBorderColor = "#404040"
-                              , startupHook = return () >> checkKeymap myConfig myKeymap
+                              , startupHook = setWMName "LG3D"
                               , manageHook = manageHook defaultConfig <+> manageDocks
                               , layoutHook = myLayoutHook
                               }

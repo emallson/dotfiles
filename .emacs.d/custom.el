@@ -32,6 +32,10 @@
  '(dirtrack-list (quote ("\\[\\(.*\\)\\]" 1)))
  '(display-battery-mode t)
  '(doc-view-scale-internally nil)
+ '(eclim-eclipse-dirs
+   (quote
+    ("~/software/eclipse" "/Applications/eclipse" "/usr/lib/eclipse" "/usr/local/lib/eclipse" "/usr/share/eclipse")))
+ '(eclim-executable "~/software/eclipse/eclim")
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edit-server-new-frame nil)
  '(el-get-notify-type (quote message))
@@ -64,6 +68,7 @@
  '(explicit-shell-file-name "/usr/bin/zsh")
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
+ '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
  '(fringe-mode 0 nil (fringe))
  '(geiser-default-implementation (quote racket))
@@ -106,7 +111,7 @@
  '(mu4e-view-prefer-html t)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
- '(org-agenda-files (quote ("~/org/notes.org" "~/org/wow.org" "~/org/uky.org")))
+ '(org-agenda-files (quote ("~/org/work.org" "~/org/notes.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t) (python . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
  '(org-capture-templates
@@ -226,7 +231,17 @@
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
  '(projectile-tags-command "ctags -Re -f \"%s\" %s")
  '(projectile-test-suffix-function (quote projectile-custom-test-suffix))
+ '(prolog-system (quote swi))
  '(quack-fontify-style (quote emacs))
+ '(rainbow-identifiers-choose-face-function (quote rainbow-identifiers-cie-l*a*b*-choose-face))
+ '(rainbow-identifiers-cie-l*a*b*-lightness 80)
+ '(rainbow-identifiers-cie-l*a*b*-saturation 25)
+ '(rainbow-identifiers-faces-to-override
+   (quote
+    (js2-function-call js2-function-param js2-external-variable font-lock-variable-name-face font-lock-function-name-face)))
+ '(rainbow-identifiers-filter-functions
+   (quote
+    (rainbow-identifiers-face-overridable rainbow-identifiers-js2-filter)))
  '(reb-re-syntax (quote string))
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
@@ -242,7 +257,7 @@
      (require-final-newline))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
- '(show-paren-mode t)
+ '(show-paren-mode nil)
  '(show-trailing-whitespace nil)
  '(sml/mode-width 5)
  '(smtpmail-smtp-server "smtp.gmail.com")
@@ -297,6 +312,7 @@
  '(web-mode-enable-auto-pairing t)
  '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 2)
+ '(whitespace-global-modes (quote (not erc-mode)))
  '(winner-boring-buffers
    (quote
     ("*Completions*" "*helm M-x*" "*helm mini*" "*Helm Find Files*")))
@@ -310,11 +326,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 113 :width normal :foundry "adobe" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 136 :width normal :foundry "adobe" :family "Source Code Pro"))))
  '(company-tooltip-annotation ((t (:inherit company-tooltip-common))))
  '(company-tooltip-common ((t (:background "#303030" :foreground "#9FBF9F"))))
  '(company-tooltip-common-selection ((t (:background "#2A2A2A" :foreground "#9FBF9F"))))
  '(italic ((t (:slant italic))))
+ '(linum ((t (:background "#202020" :foreground "#9FBF9F" :underline nil))))
  '(mode-line ((t (:background "#202020" :foreground "#8FB28F" :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#383838" :foreground "#5F7F5F" :box nil :weight light))))
  '(org-checkbox ((t (:inherit bold :background "#202020" :foreground "#ECECDC" :box nil))))

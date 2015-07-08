@@ -17,19 +17,19 @@
                      :after (progn
                               (mmd-install))))
 
-(defun mmd-setup-mail ()
-  "Dedicate a window to mail stuff."
-  (let* ((mail-frame (make-frame '((name . "Mail"))))
-         (mail-window (frame-first-window mail-frame)))
-    (mapcar (lambda (f)
-              (mmd-add-major-mode-window-dedication
-               f mail-window))
-            '(mu4e-main-mode
-              mu4e-headers-mode
-              mu4e-view-mode
-              mu4e-compose-mode))))
+;; (defun mmd-setup-mail ()
+;;   "Dedicate a window to mail stuff."
+;;   (let* ((mail-frame (make-frame '((name . "Mail"))))
+;;          (mail-window (frame-first-window mail-frame)))
+;;     (mapcar (lambda (f)
+;;               (mmd-add-major-mode-window-dedication
+;;                f mail-window))
+;;             '(mu4e-main-mode
+;;               mu4e-headers-mode
+;;               mu4e-view-mode
+;;               mu4e-compose-mode))))
 
-(el-get-bundle major-mode-dedication)
+(add-to-list 'modules:el-get-packages 'major-mode-dedication)
 
 (provide 'init-mmd)
 ;;; init-mmd.el ends here
