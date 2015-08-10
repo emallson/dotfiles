@@ -10,7 +10,7 @@ xrdb .Xresources
 xset -b
 xsetroot -cursor_name left_ptr
 
-xkbcomp ~/.keycomp.xkb $DISPLAY 2> /dev/null
+setxkbmap -option control:nocaps -option compose:prsc
 
 xbindkeys
 sh ~/.fehbg &
@@ -23,4 +23,5 @@ sshfs -o reconnect vulture.csr.uky.edu:/u/vul-d1/scratch/emallson ~/Remotes/scra
 
 xautolock -locker "i3lock -n" -time 5 -secure &
 
-exec i3 -V >> ~/.i3log-$(date +'%F-%k-%M-%S') 2>&1
+# exec i3 -V >> ~/.i3log-$(date +'%F-%k-%M-%S') 2>&1
+exec xmonad

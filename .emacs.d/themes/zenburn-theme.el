@@ -31,6 +31,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (deftheme zenburn "The Zenburn color theme")
 
 ;;; Color Palette
@@ -59,7 +61,7 @@
   "Scale `COLOR' by `DIFF'."
   (if diff
       (let* ((amount (* 16 (if (= (length diff) 3)
-                               (* (signum (string-to-number diff))
+                               (* (cl-signum (string-to-number diff))
                                   (/ 10.0 16.0)) ; 05 -> 10/16 -- this is just how the color scale works
                              (string-to-number diff))))
              (color-list (color-decomp color)))
@@ -77,7 +79,7 @@
 
 (defun make-zenburn-color-alist (name base-color diff-list)
   "Make a color alist for type `NAME' with colors based on `BASE-COLOR' varying by `DIFF-LIST'."
-  (mapcar* 'cons
+  (cl-mapcar 'cons
    (mapcar (apply-partially 'make-color-name "zenburn" name) diff-list)
    (mapcar (apply-partially 'color-scale base-color) diff-list)))
 

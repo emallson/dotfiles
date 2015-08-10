@@ -36,6 +36,7 @@
         indent-for-tab-command
         kill-region
         markdown-exdent-or-delete
+        org-backward-sentence
         org-beginning-of-line
         org-delete-char
         org-end-of-line
