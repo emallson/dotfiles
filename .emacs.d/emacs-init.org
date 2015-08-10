@@ -125,7 +125,9 @@
         :mode "\\.js$"
         :config
         (add-hook 'js2-mode-hook #'subword-mode)
-        (add-hook 'js2-mode-hook #'tern-mode))
+        (add-hook 'js2-mode-hook #'tern-mode)
+        (bind-key "RET" #'js2-line-break js2-mode-map)
+        (bind-key "M-RET" #'js2-line-break js2-mode-map))
     #+END_SRC
 *** HTML & Friends
 
@@ -183,10 +185,27 @@
         (add-to-list 'load-path "~/Code/racer/editors/emacs")
         (setq racer-rust-src-path "~/Code/racer/rust/src")
         (setq racer-cmd "~/Code/racer/target/release/racer")
-        (require 'racer)
-        (add-hook 'rust-mode-hook #'racer-activate)
-        (bind-key "M-." #'racer-find-definition rust-mode-map)
-        (bind-key "TAB" #'racer-complete-or-indent rust-mode-map))
+        (when (require 'racer nil t)
+          (add-hook 'rust-mode-hook #'racer-activate)
+          (bind-key "M-." #'racer-find-definition rust-mode-map)
+          (bind-key "TAB" #'racer-complete-or-indent rust-mode-map)))
+    #+END_SRC
+
+*** Markdown
+
+    Not a language per sé, but whatever.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package markdown-mode
+        :mode "\\.md$")
+    #+END_SRC
+
+*** Docker
+
+    Used for editing =Dockerfile='s.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package dockerfile-mode)
     #+END_SRC
 ** Utility Modes
 *** =helm=
