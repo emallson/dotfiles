@@ -4,3 +4,5 @@
 [core]
 	editor = emacsclient -c
 	excludesfile = ~/.gitignore_global
+[push]
+	default = matching

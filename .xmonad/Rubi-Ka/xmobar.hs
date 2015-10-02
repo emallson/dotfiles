@@ -1,4 +1,5 @@
-Config { commands = [ Run Wireless "wlp3s0" ["-t", "<essid> <quality>"
+Config { commands = [ Run Com "netctl-auto" ["current"] "wifi-profile" 600
+                    , Run Wireless "wlp3s0" ["-t", "<quality>"
                                             ,"-n", "#F0DFAF"
                                             ,"-h", "#7F9F7F"
                                             ,"-l", "#CC9393"]
@@ -12,7 +13,7 @@ Config { commands = [ Run Wireless "wlp3s0" ["-t", "<essid> <quality>"
                                 ["-L", "50", "-H", "75", "-m", "1", "-p", "3",
                                  "--normal", "#F0DFAF", "--high", "#CC9393", "--low", "#7F9F7F"] 20
                     ]
-       , template = "%StdinReader% | %disku% } %mpd% { %wlp3s0wi% | %battery% | %date%"
+       , template = "%StdinReader% | %disku% } %mpd% { %wifi-profile% %wlp3s0wi% | %battery% | %date%"
        , bgColor = "#202020"
        , position = Bottom
        , alignSep = "}{"

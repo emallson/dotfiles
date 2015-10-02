@@ -1,5 +1,5 @@
 -- -*- flycheck-mode: nil -*-
-module XMonadConfig where
+module Main where
 
 import XMonad
 import Data.List
@@ -48,12 +48,12 @@ myKeymap = [("M-n", windows W.focusDown)
            ,("M-S-t", sendMessage Shrink)
            ,("M-k", kill)
            ,("M-r", spawn "dmenu_run")
-           ,("M-b", runOrRaise "chromium-browser" (className =? "Chromium-Browser"))
-           ,("M-C-b", spawn "chromium-browser")
-           ,("M-c", raiseMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
+           ,("M-b", raiseNextMaybe (spawn "chromium") (className =? "Chromium"))
+           ,("M-C-b", spawn "chromium")
+           ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", inputPromptWithCompl myXPConfig "Session" tmuxSessionCompl ?+ tmuxAttach)
            ,("M-C-c", inputPrompt myXPConfig "Session" ?+ tmuxCreateAttach)
-           ,("M-<Space>", raiseMaybe (spawn "emacsclient -c") (className =? "Emacs"))
+           ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
            ,("M-C-<Space>", spawn "emacsclient -c")
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("C-S-q", io exitSuccess) -- emergency hatch while debugging mod3Mask
@@ -83,7 +83,7 @@ myConfig = ewmh defaultConfig {modMask = mod5Mask
                               , clickJustFocuses = False
                               , normalBorderColor = "#202020"
                               , focusedBorderColor = "#404040"
-                              , startupHook = setWMName "LG3D"
+                              , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                               , manageHook = manageHook defaultConfig <+> manageDocks
                               , layoutHook = myLayoutHook
                               }

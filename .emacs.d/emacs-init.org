@@ -6,6 +6,8 @@
    #+BEGIN_SRC emacs-lisp
      (require 'cask "~/.cask/cask.el")
      (cask-initialize)
+     (require 'pallet)
+     (pallet-mode t)
    #+END_SRC
 ** req-package
    Use =req-package= to define package dependencies (including automagical
@@ -125,9 +127,7 @@
         :mode "\\.js$"
         :config
         (add-hook 'js2-mode-hook #'subword-mode)
-        (add-hook 'js2-mode-hook #'tern-mode)
-        (bind-key "RET" #'js2-line-break js2-mode-map)
-        (bind-key "M-RET" #'js2-line-break js2-mode-map))
+        (add-hook 'js2-mode-hook #'tern-mode))
     #+END_SRC
 *** HTML & Friends
 
@@ -185,27 +185,45 @@
         (add-to-list 'load-path "~/Code/racer/editors/emacs")
         (setq racer-rust-src-path "~/Code/racer/rust/src")
         (setq racer-cmd "~/Code/racer/target/release/racer")
-        (when (require 'racer nil t)
-          (add-hook 'rust-mode-hook #'racer-activate)
-          (bind-key "M-." #'racer-find-definition rust-mode-map)
-          (bind-key "TAB" #'racer-complete-or-indent rust-mode-map)))
+        (require 'racer)
+        (add-hook 'rust-mode-hook #'racer-activate)
+        (bind-key "M-." #'racer-find-definition rust-mode-map)
+        (bind-key "TAB" #'racer-complete-or-indent rust-mode-map))
     #+END_SRC
 
-*** Markdown
-
-    Not a language per sé, but whatever.
+*** Clojure
 
     #+BEGIN_SRC emacs-lisp
-      (req-package markdown-mode
-        :mode "\\.md$")
+      (req-package clojure-mode
+        :mode "\\.(clj|cljs|boot)$")
+      (req-package cider
+        :init
+        (add-hook 'clojure-mode-hook #'cider-mode))
     #+END_SRC
 
-*** Docker
-
-    Used for editing =Dockerfile='s.
+*** Pixie
 
     #+BEGIN_SRC emacs-lisp
-      (req-package dockerfile-mode)
+      (req-package pixie-mode)
+
+    #+END_SRC
+
+*** Haskell
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package haskell-mode
+        :config
+        (add-hook 'haskell-mode-hook #'structured-haskell-mode))
+
+      (req-package structured-haskell-mode
+        :require haskell-mode)
+    #+END_SRC
+
+*** C/C++
+
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'c-mode-hook #'semantic-mode)
+      (add-hook 'c++-mode-hook #'semantic-mode)
     #+END_SRC
 ** Utility Modes
 *** =helm=
@@ -356,32 +374,14 @@
     (req-package org)
     #+END_SRC
 
-*** Eclim
-
-    #+BEGIN_SRC emacs-lisp
-      (req-package eclim
-        :require popup
-        :init
-        (setenv "JAVA" "/usr/bin/java")
-        (setenv "JAVA_HOME" nil)
-        (add-hook 'java-mode-hook #'eclim-mode)
-        :config
-        (require 'eclimd)
-        (require 'company-emacs-eclim)
-        (company-emacs-eclim-setup))
-    #+END_SRC
-
-*** smartparens
+*** =smartparens=
 
     #+BEGIN_SRC emacs-lisp
       (req-package smartparens
         :init
-        (add-hook 'js2-mode-hook #'smartparens-strict-mode)
-        (add-hook 'java-mode-hook #'smartparens-strict-mode)
-        :config
-        (require 'smartparens-config)
-        (bind-key "C-<right>" #'sp-slurp-hybrid-sexp smartparens-strict-mode-map)
-        (bind-key "C-k" #'sp-kill-hybrid-sexp smartparens-strict-mode-map))
+        (add-hook 'js2-mode #'smartparens-strict-mode)
+        (add-hook 'c-mode #'smartparens-strict-mode)
+        (add-hook 'c++-mode #'smartparens-strict-mode))
     #+END_SRC
 * Miscellaneous Customizations
 ** Mouse Paste Behavior
@@ -482,13 +482,25 @@
 ** Blog Org Project
 
    #+BEGIN_SRC emacs-lisp
+     (defun org-element-export-ast (project filename target-directory)
+       (let ((dest-filename (concat
+                             target-directory
+                             (file-name-base filename)
+                             ".ast")))
+         (with-output-to-temp-buffer "*Org AST Output*"
+           (with-current-buffer (find-file-noselect filename)
+             (princ (pp-to-string (org-element-parse-buffer)))))
+         (with-current-buffer "*Org AST Output*"
+           (write-file dest-filename))))
+
      (setq org-publish-project-alist
-                  '("blog"
+                  '(("blog"
                     :base-directory "~/org-blog/posts/"
                     :recursive t
                     :publishing-directory "~/org-blog-publish/posts/"
                     :publishing-function org-tufte-export-as-html
                     :section-numbers nil
+                    :with-title t
                     :with-toc nil
                     :auto-sitemap t
                     :sitemap-sort-files anti-chronologically
@@ -503,8 +515,25 @@
                                 (content "article" "content")
                                 (postamble "div" "postamble"))
                     :html-container "section"
-                    :html-preamble "<div><a href=\"/\">Home</a> &middot; <a href=\"./\">Blog</a></div>"
-                    :html-postamble nil))
+                    :html-preamble "<div><a href=\"/\">Home</a> &middot; <a href=\"./\">Blog</a> &middot; <a href=\"./rss.xml\">RSS Feed</a></div>"
+                    :html-postamble nil)
+                    ("blog-ast"
+                     :base-directory "~/org-blog/posts/"
+                     :recursive t
+                     :publishing-directory "~/org-blog-publish/ast/"
+                     :publishing-function org-element-export-ast)
+                    ("blog-hexo"
+                     :base-directory "~/org-blog/posts/"
+                     :recursive t
+                     :publishing-directory "~/org-blog-publish/hexo/"
+                     :publishing-function ox-hexo-export-as-md)
+                    ("blog-rss"
+                     :base-directory "~/org-blog/posts/"
+                     :base-extension "org"
+                     :publishing-directory "~/org-blog-publish/rss-posts/"
+                     :publishing-function org-rss-publish-to-rss ; nicht so gut
+                     :html-link-home "https://atlanis.net"
+                     :html-link-use-abs-url t)))
    #+END_SRC
 
 ** systemd
@@ -516,6 +545,13 @@
      (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
    #+END_SRC
 
+** mu4e
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'load-path "~/.emacs.d/")
+     (require 'mu4e)
+     (require 'mu4e-config)
+   #+END_SRC
 * Finalé
 
   Let =req-package= scurry off and do all the hard work.

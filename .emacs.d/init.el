@@ -6,8 +6,8 @@
 ;; process. So your config org file should not be named "init.org".
 
 ;; Initialize cask to get the correct version of org-mode
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
+;; (require 'cask "~/.cask/cask.el")
+;; (cask-initialize)
 
 (require 'ob-tangle)
 (org-babel-load-file

@@ -29,7 +29,23 @@ function uva-11() {
 }
 
 function anacondon() {
-    PATH="$HOME/anaconda/bin:${PATH}";
+    PATH="$HOME/.anaconda3/bin:${PATH}";
+}
+
+function conda() {
+    if ! [[ "$PATH" =~ ".anaconda3" ]]; then
+       anacondon;
+    fi
+
+    if [[ "$1" = "activate" ]]; then
+        source "$HOME/.anaconda3/envs/$2/bin/activate" "$2"
+    elif [[ "$1" = "deactivate" ]]; then
+        shift
+        . deactivate
+        anacondon
+    else
+        "$HOME/.anaconda3/bin/conda" $@
+    fi
 }
 
 function clone() {
