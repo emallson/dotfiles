@@ -8,6 +8,11 @@
 static char font[] = "Source Code Pro Light:size=13:antialias=true:autohint=true:dpi=96";
 static int borderpx = 2;
 static char shell[] = "/bin/zsh";
+static char *utmp = NULL;
+static char stty_args[] = "stty raw -echo -iexten echonl";
+
+/* identification sequence returned in DA and DECID */
+static char vtiden[] = "\033[?6c";
 
 /* Kerning / character bounding-box mutlipliers */
 float cwscale = 1.0;
@@ -36,6 +41,11 @@ static unsigned int actionfps = 30;
  * attribute.
  */
 static unsigned int blinktimeout = 800;
+
+/*
+ * thickness of underline and bar cursors
+ */
+static unsigned int cursorthickness = 2;
 
 /*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
@@ -126,10 +136,13 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ MODKEY|ShiftMask,     XK_Prior,       xzoom,          {.i = +1} },
-	{ MODKEY|ShiftMask,     XK_Next,        xzoom,          {.i = -1} },
+	{ MODKEY|ShiftMask,     XK_Prior,       xzoom,          {.f = +1} },
+	{ MODKEY|ShiftMask,     XK_Next,        xzoom,          {.f = -1} },
+	{ MODKEY|ShiftMask,     XK_Home,        xzoomreset,     {.f =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ MODKEY|ShiftMask,     XK_Insert,      clippaste,      {.i =  0} },
+	{ MODKEY|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
+	{ MODKEY|ShiftMask,     XK_V,           clippaste,      {.i =  0} },
 	{ MODKEY,               XK_Num_Lock,    numlock,        {.i =  0} },
 };
 
@@ -169,6 +182,11 @@ static KeySym mappedkeys[] = { -1 };
  * numlock (Mod2Mask) and keyboard layout (XK_SWITCH_MOD) are ignored.
  */
 static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
+
+/* Override mouse-select while mask is active (when MODE_MOUSE is set).
+ * Note that if you want to use ShiftMask with selmasks, set this to an other
+ * modifier, set to 0 to not use it. */
+static uint forceselmod = ShiftMask;
 
 static Key key[] = {
 	/* keysym           mask            string      appkey appcursor crlf */
