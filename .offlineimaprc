@@ -1,5 +1,5 @@
 [general]
-accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu
+accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu, emallson@ufl.edu
 pythonfile = ~/.offlineimap.py
 
 [Account emallson@archlinux.us]
@@ -55,3 +55,20 @@ remoteusereval = get_authinfo("mail.cs.uky.edu", 993)["username"]
 remotepasseval = get_authinfo("mail.cs.uky.edu", 993)["password"]
 ssl = yes
 cert_fingerprint=0E0A3D017E403A59671E0576216B0DB0094693DB
+
+[Account emallson@ufl.edu]
+localrepository = emallson@ufl.edu:Local
+remoterepository = emallson@ufl.edu:Remote
+
+[Repository emallson@ufl.edu:Local]
+type = Maildir
+localfolders = ~/Mail/emallson@ufl.edu
+
+[Repository emallson@ufl.edu:Remote]
+type = IMAP
+remotehost = mail.office365.com
+remoteport = 993
+remoteusereval = get_authinfo("mail.office365.com", 993)["username"]
+remotepasseval = get_authinfo("mail.office365.com", 993)["password"]
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
