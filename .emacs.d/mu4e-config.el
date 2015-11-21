@@ -3,16 +3,21 @@
 
 (setq user-full-name "J David Smith")
 
+(defmacro mu4e-make-folder-from-message-function (subdir)
+  `(lambda (msg)
+     (f-join
+      (f-dirname (mu4e-message-field msg :maildir))
+      ,subdir)))
+
 (setq mu4e-maildir       "~/Mail/"
       mu4e-drafts-folder "/drafts"
       mu4e-sent-folder   "/emallson@archlinux.us/Sent Mail"
-      mu4e-trash-folder  "/emallson@archlinux.us/Trash")
+      mu4e-trash-folder  (mu4e-make-folder-from-message-function "Trash"))
 
 (defvar mu4e-account-alist
   '(("emallson@archlinux.us"
      (mu4e-sent-folder "/emallson@archlinux.us/Sent Mail")
      (mu4e-drafts-folder "/emallson@archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
-     (mu4e-trash-folder "/emallson@archlinux.us/Trash")
      (user-mail-address "emallson@archlinux.us")
      (smtpmail-default-smtp-server "smtp.gmail.com")
      (smtpmail-smtp-server "smtp.gmail.com")
@@ -21,7 +26,6 @@
     ("emallson@atlanis.net"
      (mu4e-sent-folder "/emallson@atlanis.net/Sent")
      (mu4e-drafts-folder "/emallson@atlanis.net/Drafts")
-     (mu4e-trash-folder "/emallson@atlanis.net/Trash")
      (user-mail-address "emallson@atlanis.net")
      (smtpmail-default-smtp-server "smtp.atlanis.net")
      (smtpmail-smtp-server "smtp.atlanis.net")
@@ -30,7 +34,6 @@
     ("emallson@cs.uky.edu"
      (mu4e-sent-folder "/emallson@cs.uky.edu/Sent")
      (mu4e-drafts-folder "/emallson@cs.uky.edu/Drafts")
-     (mu4e-trash-folder "/emallson@cs.uky.edu/Trash")
      (user-mail-address "emallson@cs.uky.edu")
      (smtpmail-default-smtp-server "mail.cs.uky.edu")
      (smtpmail-smtp-server "mail.cs.uky.edu")
@@ -39,7 +42,6 @@
     ("emallson@ufl.edu"
      (mu4e-sent-folder "/emallson@ufl.edu/Sent")
      (mu4e-drafts-folder "/emallson@ufl.edu/Drafts")
-     (mu4e-trash-folder "/emallson@ufl.edu/Trash")
      (user-mail-address "emallson@ufl.edu")
      (smtpmail-default-smtp-server "smtp.office365.com")
      (smtpmail-smtp-server "smtp.office365.com")
