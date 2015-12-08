@@ -65,17 +65,14 @@ alias stop='sudo systemctl stop'
 alias em='emacsclient -t'
 
 function sudo() {
-    if [[ "$1" = "em" ]]; then
-        em "/sudo::${@: (($#-2)),-1}"
-    else
-        /usr/bin/sudo $@
-    fi
+   if [[ "$1" = "em" ]]; then
+       em "/sudo::${@: (($#-2)),-1}"
+   else
+       /usr/bin/sudo $@
+   fi
 }
 
-function wem() {
-    emacsclient -c "$@" &
-    disown %+;
-}
+alias wem='emacsclient -nc'
 
 function line() {
     head -n $1 $2 | tail -n 1;

@@ -77,7 +77,7 @@ myKeymap = [("M-n", windows W.focusDown)
 
 myLayoutHook = avoidStrutsOn [D] $ simpleTabbed ||| layoutHook defaultConfig
 
-myConfig = ewmh defaultConfig {modMask = mod5Mask
+myConfig = ewmh defaultConfig {modMask = mod4Mask
                               , terminal = "st -e tmux attach"
                               , focusFollowsMouse = False
                               , clickJustFocuses = False
@@ -107,7 +107,7 @@ emallsonPP = defaultPP {ppOrder = \(ws:_:_:_) -> [ws]}
 
 xmobarCmd :: IO String
 xmobarCmd = do hostName <- getHostName
-               return $ "/home/emallson/.cabal/bin/xmobar /home/emallson/.xmonad/" ++ hostName ++ "/xmobar.hs"
+               return $ "xmobar /home/emallson/.xmonad/" ++ hostName ++ "/xmobar.hs"
 
 pipeLog :: IO String -> PP -> XConfig l -> IO (XConfig l)
 pipeLog cmdIO pp conf = do

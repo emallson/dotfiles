@@ -14,6 +14,7 @@
         delete-horizontal-space
         evil-backward-char
         evil-backward-word-begin
+        evil-beginning-of-line
         evil-copy-from-below
         evil-delete
         evil-delete-backward-char-and-join
@@ -52,6 +53,7 @@
         paredit-raise-sexp
         paredit-splice-sexp-killing-backward
         prolog-electric-underscore
+        python-nav-backward-block
         sgml-slash
         shm/del
         shm/space
