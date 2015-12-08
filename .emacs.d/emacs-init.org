@@ -381,7 +381,22 @@
         :init
         (add-hook 'js2-mode #'smartparens-strict-mode)
         (add-hook 'c-mode #'smartparens-strict-mode)
-        (add-hook 'c++-mode #'smartparens-strict-mode))
+        (add-hook 'c++-mode #'smartparens-strict-mode)
+        (add-hook 'python-mode #'smartparens-strict-mode))
+    #+END_SRC
+*** =emms=
+
+    Hooking =emms= into mpd so that I can actually view my library.
+    Not a huge fan of =emms= in general, but it is better than going
+    through =mpc= all the time.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package emms
+        :config
+        (require 'emms-player-mpd)
+        (emms-all)
+        (add-to-list 'emms-info-functions #'emms-info-mpd)
+        (add-to-list 'emms-player-list #'emms-player-mpd))
     #+END_SRC
 * Miscellaneous Customizations
 ** Mouse Paste Behavior
@@ -573,12 +588,11 @@
 
        (setq mu4e-maildir       "~/Mail/"
              mu4e-drafts-folder "/drafts"
-             mu4e-sent-folder   "/emallson@archlinux.us/Sent Mail"
+             mu4e-sent-folder   (mu4e-make-folder-from-message-function "Sent")
              mu4e-trash-folder  (mu4e-make-folder-from-message-function "Trash"))
 
        (defvar mu4e-account-alist
          '(("emallson@archlinux.us"
-            (mu4e-sent-folder "/emallson@archlinux.us/Sent Mail")
             (mu4e-drafts-folder "/emallson@archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
             (user-mail-address "emallson@archlinux.us")
             (smtpmail-default-smtp-server "smtp.gmail.com")
@@ -586,7 +600,6 @@
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
            ("emallson@atlanis.net"
-            (mu4e-sent-folder "/emallson@atlanis.net/Sent")
             (mu4e-drafts-folder "/emallson@atlanis.net/Drafts")
             (user-mail-address "emallson@atlanis.net")
             (smtpmail-default-smtp-server "smtp.atlanis.net")
@@ -594,7 +607,6 @@
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
            ("emallson@cs.uky.edu"
-            (mu4e-sent-folder "/emallson@cs.uky.edu/Sent")
             (mu4e-drafts-folder "/emallson@cs.uky.edu/Drafts")
             (user-mail-address "emallson@cs.uky.edu")
             (smtpmail-default-smtp-server "mail.cs.uky.edu")
@@ -602,7 +614,6 @@
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
            ("emallson@ufl.edu"
-            (mu4e-sent-folder "/emallson@ufl.edu/Sent")
             (mu4e-drafts-folder "/emallson@ufl.edu/Drafts")
             (user-mail-address "emallson@ufl.edu")
             (smtpmail-default-smtp-server "smtp.office365.com")
@@ -634,7 +645,6 @@
 
        (setq mu4e-maildir-shortcuts
              '(("/emallson@archlinux.us/INBOX" . ?i)
-               ("/emallson@archlinux.us/Sent Mail" . ?s)
                ("/emallson@atlanis.net/INBOX" . ?a)
                ("/emallson@cs.uky.edu/INBOX" . ?c)
                ("/emallson@ufl.edu/INBOX" . ?u)))

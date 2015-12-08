@@ -18,6 +18,7 @@
 (depends-on "edn")
 (depends-on "el-get")
 (depends-on "elpy")
+(depends-on "emms")
 (depends-on "epl")
 (depends-on "evil")
 (depends-on "evil-numbers")

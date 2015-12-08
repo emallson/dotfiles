@@ -1,6 +1,8 @@
 [general]
 accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu, emallson@ufl.edu
 pythonfile = ~/.offlineimap.py
+fsync = False
+maxsyncaccounts = 5
 
 [Account emallson@archlinux.us]
 localrepository = emallson@archlinux.us:Local
@@ -9,13 +11,15 @@ remoterepository = emallson@archlinux.us:Remote
 [Repository emallson@archlinux.us:Local]
 type = Maildir
 localfolders = ~/Mail/emallson@archlinux.us
-folderfilter = lambda f: f not in ['Drafts', 'atlanis.net - errors', 'david.smith@winckstudios.com']
+folderfilter = lambda f: f not in ['Drafts', 'atlanis.net - errors', 'david.smith@winckstudios.com', 'Blender']
 nametrans = lambda f: "[Gmail]/" + f if f in ['Important', 'Starred', 'Sent Mail', 'Spam', 'Trash', 'Drafts'] else f
+maxconnections = 3
 
 [Repository emallson@archlinux.us:Remote]
 type = Gmail
 folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail', '[Gmail]/Spam']
 nametrans = lambda f: re.sub('^\[Gmail\]/', '', f)
+maxconnections = 3
 
 remoteusereval = get_authinfo("imap.gmail.com", 993)["username"]
 remotepasseval = get_authinfo("imap.gmail.com", 993)["password"]
@@ -38,6 +42,7 @@ remoteusereval = get_authinfo("imap.atlanis.net", 993)["username"]
 remotepasseval = get_authinfo("imap.atlanis.net", 993)["password"]
 ssl = yes
 cert_fingerprint = B9BE7AE1EFE0D07D7A0DCA48E400CF7A5B85D4D5
+maxconnections = 3
 
 [Account emallson@cs.uky.edu]
 localrepository = emallson@cs.uky.edu:Local
@@ -55,6 +60,7 @@ remoteusereval = get_authinfo("mail.cs.uky.edu", 993)["username"]
 remotepasseval = get_authinfo("mail.cs.uky.edu", 993)["password"]
 ssl = yes
 cert_fingerprint=0E0A3D017E403A59671E0576216B0DB0094693DB
+maxconnections = 3
 
 [Account emallson@ufl.edu]
 localrepository = emallson@ufl.edu:Local
@@ -63,6 +69,7 @@ remoterepository = emallson@ufl.edu:Remote
 [Repository emallson@ufl.edu:Local]
 type = Maildir
 localfolders = ~/Mail/emallson@ufl.edu
+nametrans = rsub({"Sent Items": "Sent", "Deleted Items": "Trash"})
 
 [Repository emallson@ufl.edu:Remote]
 type = IMAP
@@ -72,3 +79,6 @@ remoteusereval = get_authinfo("mail.office365.com", 993)["username"]
 remotepasseval = get_authinfo("mail.office365.com", 993)["password"]
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+maxconnections = 3
+nametrans = sub({"Sent Items": "Sent", "Deleted Items": "Trash"})
+folderfilter = ignore(["Junk Email"])
