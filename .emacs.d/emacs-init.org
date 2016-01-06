@@ -584,17 +584,21 @@
          (string-match "<\\(.+\\)>" header)
          (match-string 1 header))
 
-       (defmacro mu4e-make-folder-from-message-function (subdir)
-         `(lambda (msg)
-            (f-join
-             mu4e-maildir
-             (mu4e-address-from-header (message-field-value "From"))
-             ,subdir)))
+       (defun mu4e-sent-folder ()
+         (f-join
+          mu4e-maildir
+          (mu4e-address-from-header (message-field-value "From"))
+          "Sent"))
+
+       (defun mu4e-trash-folder (msg)
+         (f-join
+          (f-dirname (mu4e-message-field msg :maildir))
+          "Trash"))
 
        (setq mu4e-maildir       "~/Mail/"
              mu4e-drafts-folder "/drafts"
-             mu4e-sent-folder   (mu4e-make-folder-from-message-function "Sent")
-             mu4e-trash-folder  (mu4e-make-folder-from-message-function "Trash"))
+             mu4e-sent-folder   #'mu4e-sent-folder
+             mu4e-trash-folder  #'mu4e-trash-folder)
 
        (defvar mu4e-account-alist
          '(("emallson@archlinux.us"
