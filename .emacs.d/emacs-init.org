@@ -580,10 +580,15 @@
 
        (setq user-full-name "J David Smith")
 
+       (defun mu4e-address-from-header (header)
+         (string-match "<\\(.+\\)>" header)
+         (match-string 1 header))
+
        (defmacro mu4e-make-folder-from-message-function (subdir)
          `(lambda (msg)
             (f-join
-             (f-dirname (mu4e-message-field msg :maildir))
+             mu4e-maildir
+             (mu4e-address-from-header (message-field-value "From"))
              ,subdir)))
 
        (setq mu4e-maildir       "~/Mail/"
@@ -641,7 +646,11 @@
 
        (add-hook 'mu4e-compose-pre-hook 'mu4e-on-compose-set-account)
 
-       (setq mu4e-sent-messages-behavior 'delete)
+       (defun mu4e-behavior-delete-when-gmail ()
+         (if (string= (message-sendmail-envelope-from) "emallson@archlinux.us")
+             'delete 'sent))
+
+       (setq mu4e-sent-messages-behavior #'mu4e-behavior-delete-when-gmail)
 
        (setq mu4e-maildir-shortcuts
              '(("/emallson@archlinux.us/INBOX" . ?i)
