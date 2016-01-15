@@ -1,0 +1,16 @@
+"xbacklight -dec 5"
+  XF86MonBrightnessDown
+"xbacklight -inc 5"
+  XF86MonBrightnessUp
+"pactl-running.sh 'pactl set-sink-volume SINK +5%'"
+  XF86AudioRaiseVolume
+"pactl-running.sh 'pactl set-sink-volume SINK -5%'"
+  XF86AudioLowerVolume
+"pactl-running.sh 'pactl set-sink-mute SINK toggle'"
+  XF86AudioMute
+"mpc next"
+  XF86AudioNext
+"mpc prev"
+  XF86AudioPrev
+"mpc toggle"
+  XF86AudioPlay

@@ -1,0 +1,35 @@
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.lcdfilter:  lcddefault
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
+
+xterm*termName: xterm-256color
+xterm*faceName: Source Code Pro Light:size=13:antialias=true
+URxvt*font: xft:Source Code Pro Light:size=13:antialias=true
+
+*foreground: rgb:dc/dc/cc
+*background: rgb:20/20/20
+*color0: rgb:20/20/20
+*color1: rgb:e8/93/93
+*color2: rgb:9e/ce/9e
+*color3: rgb:f0/df/af
+*color4: rgb:8c/d0/d3
+*color5: rgb:c0/be/d1
+*color6: rgb:df/af/8f
+*color7: rgb:ef/ef/ef
+*color8: rgb:7f/9f/7f
+*color9: rgb:e8/93/93
+*color10: rgb:9e/ce/9e
+*color11: rgb:f0/df/af
+*color12: rgb:8c/d0/d3
+*color13: rgb:c0/be/d1
+*color14: rgb:df/af/8f
+*color15: rgb:ee/ee/ec
+*colorBD: rgb:dc/dc/cc
+*colorIT: rgb:dc/dc/cc
+*colorUL: rgb:dc/dc/cc
+
+Xcursor.theme: ComixCursors-Slim-White
+Xcursor.size: 16

@@ -1,0 +1,6 @@
+[Service]
+ExecStart=/usr/bin/redshift -l 38:-85
+Environment=DISPLAY=:%i
+
+[Install]
+WantedBy=default.target

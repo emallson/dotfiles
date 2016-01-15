@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Berge \Vertex
+# key: Ver
+# --
+\Vertex{$1}$0

@@ -1,0 +1,7 @@
+# git stuff
+\.gitignore
+\.git
+
+# emacs backups
+.+~
+\#.*\#

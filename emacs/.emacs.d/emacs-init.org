@@ -1,0 +1,687 @@
+* Packaging & Custom
+  Following the style from
+  [[https://github.com/jhenahan/emacs.d/blob/master/emacs-init.org]]
+** Cask
+   Set up cask.
+   #+BEGIN_SRC emacs-lisp
+     (require 'cask "~/.cask/cask.el")
+     (cask-initialize)
+     (require 'pallet)
+     (pallet-mode t)
+   #+END_SRC
+** req-package
+   Use =req-package= to define package dependencies (including automagical
+   autoloads)
+   #+BEGIN_SRC emacs-lisp
+     (require 'req-package)
+     (put 'req-package 'lisp-indent-function 'defun)
+     (put 'req-package-force 'lisp-indent-function 'defun)
+   #+END_SRC
+** el-get
+
+   =el-get= because melpa is not the universe (though it's pretty close).
+   #+BEGIN_SRC emacs-lisp
+     (req-package el-get
+       :init
+       (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get/el-get/recipes"))
+   #+END_SRC
+
+** custom.el
+   Use a separate custom file for settings because nobody wants that in
+   =init.el=.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq custom-file "~/.emacs.d/custom.el")
+     (load custom-file)
+   #+END_SRC
+
+* Theme
+
+** Colors
+   I have a custom (heavily modified) zenburn that I use. Load that.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+     (load-theme 'zenburn t)
+   #+END_SRC
+
+** Modeline
+
+   I use =smart-mode-line= because Powerline clashes with the smooth, flat look
+   I have going on.
+
+   #+BEGIN_SRC emacs-lisp
+     (req-package smart-mode-line
+       :init
+       (setq sml/theme 'respectful)
+       (sml/setup)
+       (column-number-mode))
+   #+END_SRC
+* Modes
+** Evil Modes
+*** Evil's Root
+
+    Evil is love. Evil is life. All hail Evil.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package evil
+        :require (undo-tree ace-jump-mode)
+        :ensure evil
+        :init
+        (evil-mode 1)
+        (dolist (mode '(mu4e-main-mode
+                        mu4e-headers-mode
+                        mu4e-view-mode
+                        woman-mode
+                        help-mode
+                        cider-stacktrace-mode
+                        flycheck-error-list-mode
+                        epa-info-mode
+                        paradox-menu-mode
+                        image-mode
+                        emms-browser-mode))
+          (add-to-list 'evil-emacs-state-modes mode))
+        (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
+        :config
+        (progn
+          ;; utility fn to bind motion keys
+          (defun evil-global-set-noninsert-key (key cmd)
+            "Bind `KEY' to `CMD' in all non-insert evil states."
+            (dolist (state '(normal motion visual))
+              (evil-global-set-key state key cmd)))
+          ;; colemak motion bindings
+          (evil-global-set-noninsert-key "e" #'evil-backward-char)
+          (evil-global-set-noninsert-key "n" #'evil-forward-char)
+          (evil-global-set-noninsert-key "s" #'evil-previous-line)
+          (evil-global-set-noninsert-key "t" #'evil-next-line)
+          (evil-global-set-noninsert-key "l" #'evil-find-char-to)
+          (evil-global-set-noninsert-key "L" #'evil-find-char-to-backward)
+          (evil-global-set-noninsert-key "r" #'evil-search-next)
+
+          (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
+          (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
+
+          (evil-global-set-key 'insert (kbd "C-t") 'transpose-chars)
+
+          ;; (evil-define-key 'normal evil-paredit-mode-map "x" nil)
+          ;; additional extended commands
+          (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
+          (evil-ex-define-cmd "t[angle]" #'org-babel-tangle)))
+    #+END_SRC
+*** =evil-surround=
+
+    Trying evil-surround as an alternative to evil-paredit
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package evil-surround
+        :init (global-evil-surround-mode 1))
+    #+END_SRC
+** Language Modes
+*** JavaScript
+
+    =js2-mode= is the end-all be-all of javascript support.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package js2-mode
+        :require (yasnippet tern)
+        :mode "\\.js$"
+        :config
+        (add-hook 'js2-mode-hook #'subword-mode)
+        (add-hook 'js2-mode-hook #'tern-mode))
+    #+END_SRC
+*** HTML & Friends
+
+    =web-mode= has some questionable backend code and -- in my opinion -- bites
+    off more than it can chew. But in terms of HTML modes, it is exceptional.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package web-mode
+        :mode "\\.html?$")
+    #+END_SRC
+
+*** Scheme (Racket)
+
+    =geiser= provides REPL and doc support in scheme buffers, while
+    =quack= gives enhanced support for Racket.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package geiser
+        :config
+        (add-hook 'scheme-mode-hook #'enable-paredit-mode)
+        (add-hook 'geiser-repl-mode-hook #'enable-paredit-mode))
+
+      (req-package quack)
+    #+END_SRC
+
+*** Python
+
+    Python was such a pain in the ass to figure out. I finally drank
+    the kool-aid and installed elpy, which as it happens provides
+    company support.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package elpy
+        :init
+        (add-hook 'python-mode-hook #'elpy-mode)
+        :config
+        (elpy-enable))
+    #+END_SRC
+
+*** Rust
+
+    Rust is a cool language ^.^ It has decent emacs support too!
+
+    =rust-mode= is what you'd expect. =racer= provides completion
+    support. Unfortunately, =racer= depends on having the original
+    rust source, a custom rust binary, and a matching version of
+    =racer.el= available so I'm not using =req-package= for it at this
+    time. I might put together a =racer-git= el-get recipe for it
+    that'll handle pulling all of that down, but I'll deal with that
+    later.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package rust-mode
+        :config
+        (add-to-list 'load-path "~/Code/racer/editors/emacs")
+        (setq racer-rust-src-path "~/Code/racer/rust/src")
+        (setq racer-cmd "~/Code/racer/target/release/racer")
+        (require 'racer)
+        (add-hook 'rust-mode-hook #'racer-activate)
+        (bind-key "M-." #'racer-find-definition rust-mode-map)
+        (bind-key "TAB" #'racer-complete-or-indent rust-mode-map))
+    #+END_SRC
+
+*** Clojure
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package clojure-mode
+        :mode "\\.(clj|cljs|boot)$")
+      (req-package cider
+        :init
+        (add-hook 'clojure-mode-hook #'cider-mode))
+    #+END_SRC
+
+*** Pixie
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package pixie-mode)
+
+    #+END_SRC
+
+*** Haskell
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package haskell-mode
+        :config
+        (add-hook 'haskell-mode-hook #'structured-haskell-mode))
+
+      (req-package shm ; structured-haskell-mode
+        :require haskell-mode)
+    #+END_SRC
+
+*** C/C++
+
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'c-mode-hook #'semantic-mode)
+      (add-hook 'c++-mode-hook #'semantic-mode)
+    #+END_SRC
+** Utility Modes
+*** =helm=
+
+    You know why you're using helm.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package helm
+        :diminish (helm-mode . "")
+        :bind (("M-x" . helm-M-x)
+               ("C-x C-f" . helm-find-files)
+               ("M-y" . helm-show-kill-ring)
+               ("C-x b" . helm-mini))
+        :init
+        (require 'helm-config)
+        :config
+        (helm-mode 1))
+    #+END_SRC
+
+*** =tramp=
+
+    Remote file editing ftw
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package tramp
+        :config
+        (setq vc-ignore-dir-regexp
+            (format "\\(%s\\)\\|\\(%s\\)"
+                    vc-ignore-dir-regexp
+                    tramp-file-name-regexp)))
+    #+END_SRC
+
+*** =hideshow=
+
+    =hideshow= provides fairly universal code-folding
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'prog-mode-hook 'hs-minor-mode)
+      (with-eval-after-load "hideshow"
+        (bind-key "C-c s h" #'hs-hide-block hs-minor-mode-map)
+        (bind-key "C-c s s" #'hs-show-block hs-minor-mode-map)
+        (bind-key "C-c s a" #'hs-hide-all hs-minor-mode-map)
+        (bind-key "C-c s A" #'hs-show-all hs-minor-mode-map)
+        (bind-key "C-c h" #'hs-toggle-hiding hs-minor-mode-map))
+    #+END_SRC
+
+*** =flyspell=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package flyspell
+        :init
+        (add-hook 'text-mode-hook #'flyspell-mode)
+        (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+    #+END_SRC
+
+*** =flycheck=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package flycheck
+        :init
+        (add-hook 'prog-mode-hook #'flycheck-mode))
+    #+END_SRC
+
+*** =auto-fill-mode=
+
+    Fit text to 80 columns. Because that's the kind of world we live in.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'text-mode-hook #'turn-on-auto-fill)
+    #+END_SRC
+
+*** =projectile=
+
+    Projectile: project management for those that wish to remain above the
+    depraved.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package projectile
+        :require helm-projectile
+        :init
+        (defun projectile-enable-unless-tramp ()
+          "Enables `projectile-mode` unless in a TRAMP buffer."
+          (unless (and (buffer-file-name)
+                       (file-remote-p (buffer-file-name)))
+            (projectile-mode 1)))
+
+        (add-hook 'prog-mode-hook #'projectile-enable-unless-tramp)
+        :config
+        (setq tags-revert-without-query t)
+        (defun projectile-custom-test-suffix (project-type)
+          "Get custom test suffixes based on `PROJECT-TYPE'."
+          (cond
+           ((member project-type '(gulp grunt npm)) "_spec")
+           (t (projectile-test-suffix project-type)))))
+    #+END_SRC
+
+*** =magit=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package magit
+        :bind ("C-c m" . magit-status))
+    #+END_SRC
+
+*** =multiple-cursors=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package multiple-cursors
+        :bind (("C-c L" . mc/edit-lines)
+               ("C-c N" . mc/mark-next-like-this)
+               ("C-c P" . mc/mark-previous-like-this)
+               ("C-c A" . mc/mark-all-like-this)))
+    #+END_SRC
+
+*** =company-mode=
+
+    Autocompletion. Not a fan of =auto-complete-mode=.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package company
+        :init
+        (add-hook 'after-init-hook #'global-company-mode))
+    #+END_SRC
+
+*** =paredit=
+
+    The ultimate in parenthetical editing!
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package paredit
+        :init
+        (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+        (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+        (add-hook 'lisp-mode-hook #'enable-paredit-mode)
+        (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+        (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+        (add-hook 'cider-repl-mode-hook #'enable-paredit-mode))
+    #+END_SRC
+
+*** =yasnippet=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package yasnippet
+        :init (add-hook 'prog-mode-hook #'yas-minor-mode))
+    #+END_SRC
+
+*** =org-mode=
+
+    #+BEGIN_SRC emacs-lisp
+    (req-package org)
+    #+END_SRC
+
+*** =smartparens=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package smartparens
+        :init
+        (add-hook 'js2-mode #'smartparens-strict-mode)
+        (add-hook 'c-mode #'smartparens-strict-mode)
+        (add-hook 'c++-mode #'smartparens-strict-mode)
+        (add-hook 'python-mode #'smartparens-strict-mode))
+    #+END_SRC
+*** =emms=
+
+    Hooking =emms= into mpd so that I can actually view my library.
+    Not a huge fan of =emms= in general, but it is better than going
+    through =mpc= all the time.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package emms
+        :config
+        (require 'emms-player-mpd)
+        (emms-all)
+        (add-to-list 'emms-info-functions #'emms-info-mpd)
+        (add-to-list 'emms-player-list #'emms-player-mpd))
+    #+END_SRC
+* Miscellaneous Customizations
+** Mouse Paste Behavior
+   I want =S-<insert>= to behave like most other Linux programs.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq mouse-yank-at-point t)
+     (global-set-key (kbd "S-<insert>") (lambda ()
+                                          (interactive)
+                                          (mouse-yank-primary (point))))
+   #+END_SRC
+
+** Unfill Paragraph
+
+   Sometimes filling to column 80 isn't what one wants.
+
+   #+BEGIN_SRC emacs-lisp
+     (defun unfill-paragraph ()
+       "Undo `fill-paragraph'."
+       (interactive)
+       (let ((fill-column (point-max)))
+         (fill-paragraph nil)))
+
+     (bind-key "M-Q" #'unfill-paragraph)
+   #+END_SRC
+
+** Revert All Buffers
+
+   #+BEGIN_SRC emacs-lisp
+     (defun revert-all-buffers ()
+       "Reverts all unmodified file buffers."
+       (interactive)
+       (dolist (buf (buffer-list))
+         (with-current-buffer buf
+           (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
+             (revert-buffer t t t))))
+       (message "Refreshed all unmodified file buffers."))
+
+     (bind-key "C-c C-r" #'revert-all-buffers)
+   #+END_SRC
+
+** Uniquify
+
+   Automagically prefix multiple files with the same name with their containing
+   directories. This is the alternative to "A<2>" "A<3>", etc.
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'uniquify)
+   #+END_SRC
+
+** Indentation
+
+   4 spaces. Speak not of tabs within these walls.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default indent-tabs-mode nil)
+     (setq tab-width 4)
+   #+END_SRC
+
+** Startup Screen
+
+   Disable the emacs welcome screen.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default inhibit-startup-screen t)
+   #+END_SRC
+
+** =*scratch*=
+
+   Set =*scratch*= to have an empty message by default.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq initial-scratch-message "")
+   #+END_SRC
+
+** Replace Strings
+
+   #+BEGIN_SRC emacs-lisp
+     (bind-key "C-c r" #'replace-regexp)
+     (bind-key "C-c M-r" #'replace-regexp)     ; legacy binding because I'm likely to hit it
+   #+END_SRC
+
+** Compilation
+
+   #+BEGIN_SRC emacs-lisp
+     (bind-key "C-c c" #'compile)
+   #+END_SRC
+
+** Un-disabled fns
+
+   #+BEGIN_SRC emacs-lisp
+     (put 'scroll-left 'disabled nil)
+     (put 'narrow-to-page 'disabled nil)
+     (put 'upcase-region 'disabled nil)
+     (put 'downcase-region 'disabled nil)
+   #+END_SRC
+
+** Blog Org Project
+
+   #+BEGIN_SRC emacs-lisp
+     (defun org-element-export-ast (project filename target-directory)
+       (let ((dest-filename (concat
+                             target-directory
+                             (file-name-base filename)
+                             ".ast")))
+         (with-output-to-temp-buffer "*Org AST Output*"
+           (with-current-buffer (find-file-noselect filename)
+             (princ (pp-to-string (org-element-parse-buffer)))))
+         (with-current-buffer "*Org AST Output*"
+           (write-file dest-filename))))
+
+     (setq org-publish-project-alist
+                  '(("blog"
+                    :base-directory "~/org-blog/posts/"
+                    :recursive t
+                    :publishing-directory "~/org-blog-publish/posts/"
+                    :publishing-function org-tufte-export-as-html
+                    :section-numbers nil
+                    :with-title t
+                    :with-toc nil
+                    :auto-sitemap t
+                    :sitemap-sort-files anti-chronologically
+                    :sitemap-filename "index.html"
+                    :sitemap-title "Blog Posts"
+                    :html-head-include-default-style nil
+                    :html-head-include-scripts nil
+                    :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../resources/tufte.css\"/>
+     <link rel=\"stylesheet\" type=\"text/css\" href=\"../resources/htmlize-solarized-light.css\"/>"
+                    :html-html5-fancy t
+                    :html-divs ((preamble "div" "preamble")
+                                (content "article" "content")
+                                (postamble "div" "postamble"))
+                    :html-container "section"
+                    :html-preamble "<div><a href=\"/\">Home</a> &middot; <a href=\"./\">Blog</a> &middot; <a href=\"./rss.xml\">RSS Feed</a></div>"
+                    :html-postamble nil)
+                    ("blog-ast"
+                     :base-directory "~/org-blog/posts/"
+                     :recursive t
+                     :publishing-directory "~/org-blog-publish/ast/"
+                     :publishing-function org-element-export-ast)
+                    ("blog-hexo"
+                     :base-directory "~/org-blog/posts/"
+                     :recursive t
+                     :publishing-directory "~/org-blog-publish/hexo/"
+                     :publishing-function ox-hexo-export-as-md)
+                    ("blog-rss"
+                     :base-directory "~/org-blog/posts/"
+                     :base-extension "org"
+                     :publishing-directory "~/org-blog-publish/rss-posts/"
+                     :publishing-function org-rss-publish-to-rss ; nicht so gut
+                     :html-link-home "https://atlanis.net"
+                     :html-link-use-abs-url t)))
+   #+END_SRC
+
+** systemd
+
+   systemd has like a bajillion file extensions, all of which are
+   =conf-unix-mode=.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
+   #+END_SRC
+
+** mu4e
+
+   mu4e is a pretty good mail system built on =mu=, a tool to search
+   local Maildirs. It's very fast (which is awesome) and also has
+   decent support for threading and multiple accounts.
+
+   #+BEGIN_SRC emacs-lisp
+     (autoload 'mu4e "mu4e"
+       "If mu4e is not running yet, start it. Then, show the the main
+     window, unless BACKGROUND (prefix-argument) is non-nil."
+       t)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (with-eval-after-load 'mu4e
+       (require 'smtpmail)
+       (require 'mu4e-contrib)
+
+       (setq user-full-name "J David Smith")
+
+       (defun mu4e-address-from-header (header)
+         (string-match "<\\(.+\\)>" header)
+         (match-string 1 header))
+
+       (defun mu4e-sent-folder (msg)
+         (f-join
+          "/"
+          (mu4e-address-from-header (message-field-value "From"))
+          "Sent"))
+
+       (defun mu4e-trash-folder (msg)
+         (f-join
+          (f-dirname (mu4e-message-field msg :maildir))
+          "Trash"))
+
+       (setq mu4e-maildir       "~/Mail/"
+             mu4e-drafts-folder "/drafts"
+             mu4e-sent-folder   #'mu4e-sent-folder
+             mu4e-trash-folder  #'mu4e-trash-folder)
+
+       (defvar mu4e-account-alist
+         '(("emallson@archlinux.us"
+            (mu4e-drafts-folder "/emallson@archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
+            (user-mail-address "emallson@archlinux.us")
+            (smtpmail-default-smtp-server "smtp.gmail.com")
+            (smtpmail-smtp-server "smtp.gmail.com")
+            (smtpmail-stream-type starttls)
+            (smtpmail-smtp-service 587))
+           ("emallson@atlanis.net"
+            (mu4e-drafts-folder "/emallson@atlanis.net/Drafts")
+            (user-mail-address "emallson@atlanis.net")
+            (smtpmail-default-smtp-server "smtp.atlanis.net")
+            (smtpmail-smtp-server "smtp.atlanis.net")
+            (smtpmail-stream-type starttls)
+            (smtpmail-smtp-service 587))
+           ("emallson@cs.uky.edu"
+            (mu4e-drafts-folder "/emallson@cs.uky.edu/Drafts")
+            (user-mail-address "emallson@cs.uky.edu")
+            (smtpmail-default-smtp-server "mail.cs.uky.edu")
+            (smtpmail-smtp-server "mail.cs.uky.edu")
+            (smtpmail-stream-type starttls)
+            (smtpmail-smtp-service 587))
+           ("emallson@ufl.edu"
+            (mu4e-drafts-folder "/emallson@ufl.edu/Drafts")
+            (user-mail-address "emallson@ufl.edu")
+            (smtpmail-default-smtp-server "smtp.office365.com")
+            (smtpmail-smtp-server "smtp.office365.com")
+            (smtpmail-stream-type starttls)
+            (smtpmail-smtp-service 587))))
+
+       (defun mu4e-on-compose-set-account ()
+         "Set the account to use when composing a message."
+         (let* ((account
+                 (if mu4e-compose-parent-message
+                     (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                       (string-match "/\\(.*?\\)/" maildir)
+                       (match-string 1 maildir))
+                   (completing-read (format "Compose with account: (%s) "
+                                            (mapconcat 'car mu4e-account-alist " "))
+                                    (mapcar 'car mu4e-account-alist)
+                                    nil t nil nil (caar mu4e-account-alist))))
+                (account-vars (cdr (assoc account mu4e-account-alist))))
+           (if account-vars
+               (mapc (lambda (var)
+                       (set (car var) (cadr var)))
+                     account-vars)
+             (error "No email account found"))))
+
+       (add-hook 'mu4e-compose-pre-hook 'mu4e-on-compose-set-account)
+
+       (defun mu4e-behavior-delete-when-gmail ()
+         (if (string= (message-sendmail-envelope-from) "emallson@archlinux.us")
+             'delete 'sent))
+
+       (setq mu4e-sent-messages-behavior #'mu4e-behavior-delete-when-gmail)
+
+       (setq mu4e-maildir-shortcuts
+             '(("/emallson@archlinux.us/INBOX" . ?i)
+               ("/emallson@atlanis.net/INBOX" . ?a)
+               ("/emallson@cs.uky.edu/INBOX" . ?c)
+               ("/emallson@ufl.edu/INBOX" . ?u)))
+
+       (setq message-send-mail-function 'smtpmail-send-it)
+
+       (add-to-list 'mu4e-bookmarks
+                    '("flag:flagged" "Flagged" ?f))
+       (add-to-list 'mu4e-bookmarks
+                    '("maildir:\"/emallson@archlinux.us/Important\" and flag:unread" "Important & Unread" ?I))
+       (add-to-list 'mu4e-bookmarks
+                    '("maildir:\"/emallson@archlinux.us/INBOX\" or maildir:\"/emallson@atlanis.net/INBOX\" or maildir:\"/emallson@cs.uky.edu/INBOX\" or maildir:\"/emallson@ufl.edu/INBOX\"" "Combined Inbox" ?i))
+
+       (add-to-list 'mu4e-view-actions
+                    '("open in browser" . mu4e-action-view-in-browser) t)
+
+       (setq message-kill-buffer-on-exit t)
+
+       (setq mu4e-html2text-command 'mu4e-shr2text))
+   #+END_SRC
+* Finalé
+
+  Let =req-package= scurry off and do all the hard work.
+
+  #+BEGIN_SRC emacs-lisp
+    (req-package-finish)
+  #+END_SRC
