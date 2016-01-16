@@ -357,8 +357,8 @@
         (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
         (add-hook 'lisp-mode-hook #'enable-paredit-mode)
         (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-        (add-hook 'clojure-mode-hook #'enable-paredit-mode)
-        (add-hook 'cider-repl-mode-hook #'enable-paredit-mode))
+        ;trying moving clojure stuff to smartparens
+        )
     #+END_SRC
 
 *** =yasnippet=
@@ -379,10 +379,21 @@
     #+BEGIN_SRC emacs-lisp
       (req-package smartparens
         :init
-        (add-hook 'js2-mode #'smartparens-strict-mode)
-        (add-hook 'c-mode #'smartparens-strict-mode)
-        (add-hook 'c++-mode #'smartparens-strict-mode)
-        (add-hook 'python-mode #'smartparens-strict-mode))
+        (add-hook 'js2-mode-hook #'smartparens-strict-mode)
+        (add-hook 'c-mode-hook #'smartparens-strict-mode)
+        (add-hook 'c++-mode-hook #'smartparens-strict-mode)
+        (add-hook 'python-mode-hook #'smartparens-strict-mode)
+        (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+        (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+        (sp-local-pair '(clojure-mode cider-repl-mode) "'" nil :actions nil))
+    #+END_SRC
+
+    And =evil= integration:
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package evil-smartparens
+        :init
+        (add-hook 'smartparens-strict-mode-hook #'evil-smartparens-mode))
     #+END_SRC
 *** =emms=
 
@@ -586,7 +597,7 @@
 
        (defun mu4e-sent-folder (msg)
          (f-join
-          "/"
+          mu4e-maildir
           (mu4e-address-from-header (message-field-value "From"))
           "Sent"))
 
