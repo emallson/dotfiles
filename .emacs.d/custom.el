@@ -17,6 +17,7 @@
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups/"))))
  '(before-save-hook (quote (delete-trailing-whitespace)))
  '(browse-url-browser-function (quote browse-url-chromium))
+ '(cider-boot-parameters "cider repl -s wait")
  '(comment-auto-fill-only-comments t)
  '(company-backends
    (quote
@@ -110,9 +111,13 @@
  '(merlin-command "/usr/bin/ocamlmerlin")
  '(merlin-use-auto-complete-mode nil)
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
+ '(mu4e-compose-dont-reply-to-self t)
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-confirm-quit nil)
  '(mu4e-get-mail-command "offlineimap")
+ '(mu4e-user-mail-address-list
+   (quote
+    ("emallson@archlinux.us" "emallson@cs.uky.edu" "emallson@atlanis.net" "emallson@ufl.edu" "jdsmith@cise.ufl.edu" "aemallson@uky.edu")))
  '(mu4e-view-prefer-html t)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
