@@ -168,6 +168,10 @@
  '(org-export-pdf-logfiles
    (quote
     ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "blg" "pyg")))
+ '(org-format-latex-options
+   (quote
+    (:foreground default :background default :scale 1.1 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-htmlize-output-type (quote css))
  '(org-html-preamble-format (quote (("en" "<h3>%a</h3>"))))
  '(org-latex-default-packages-alist

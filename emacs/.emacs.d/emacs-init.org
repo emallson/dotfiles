@@ -215,8 +215,13 @@
         :config
         (add-hook 'haskell-mode-hook #'structured-haskell-mode))
 
+      (defun evil-disable-auto-indent ()
+        (setq-local evil-auto-indent nil))
+
       (req-package shm ; structured-haskell-mode
-        :require haskell-mode)
+        :require haskell-mode
+        :config
+        (add-hook 'structured-haskell-mode-hook #'evil-disable-auto-indent))
     #+END_SRC
 
 *** C/C++

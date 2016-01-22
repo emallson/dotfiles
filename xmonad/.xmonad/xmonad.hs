@@ -28,6 +28,10 @@ import XMonad.Layout.BinarySpacePartition
 import XMonad.Actions.Navigation2D
 import XMonad.Layout.BorderResize
 
+-- minimize
+import XMonad.Layout.Minimize
+import XMonad.Layout.BoringWindows
+
 tmuxAttach :: String -> X ()
 tmuxAttach session = spawn ("st -e tmux attach -t " ++ session)
 
@@ -51,7 +55,7 @@ tmuxAttachPrompt :: XPConfig -> X ()
 tmuxAttachPrompt c = do
                  mkXPrompt Tmux c tmuxSessionCompl tmuxAttach
 
-myLayoutHook = avoidStruts $ borderResize $ mkToggle (single FULL) emptyBSP
+myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) emptyBSP
 
 myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("M-C-e", sendMessage $ ExpandTowards L)
@@ -73,8 +77,12 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("M-S-l", sendMessage ToggleStruts)
            ,("M-w", sendMessage NextLayout)
            ,("M-l", spawn "i3lock")
+           ,("M-.", switchLayer)
            ,("M-S-.", withFocused $ windows . W.sink)
            ,("M-<Backspace>", sendMessage $ Toggle FULL)
+           ,("M-,", renameWorkspace defaultXPConfig)
+           ,("M-m", withFocused minimizeWindow)
+           ,("M-S-m", sendMessage RestoreNextMinimizedWin)
            -- program binds
            ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
            ,("M-S-c", tmuxAttachPrompt def)
