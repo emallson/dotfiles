@@ -78,6 +78,10 @@ function line() {
     head -n $1 $2 | tail -n 1;
 }
 
+function k {
+    k2pdfopt $1 -dev kp3 -j -1 -jf -1 0.75 -mode 2col -n -x -ls- -m 0,1in,0,1in -bp- -o $2
+}
+
 # fix colors
 TERM=xterm-256color
 
