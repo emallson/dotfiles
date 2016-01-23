@@ -36,12 +36,12 @@ localfolders = ~/Mail/emallson@atlanis.net
 
 [Repository emallson@atlanis.net:Remote]
 type = IMAP
-remotehost = mail.atlanis.net
+remotehost = atlanis.net
 remoteport = 993
 remoteusereval = get_authinfo("imap.atlanis.net", 993)["username"]
 remotepasseval = get_authinfo("imap.atlanis.net", 993)["password"]
 ssl = yes
-cert_fingerprint = B9BE7AE1EFE0D07D7A0DCA48E400CF7A5B85D4D5
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 maxconnections = 3
 
 [Account emallson@cs.uky.edu]
@@ -59,7 +59,7 @@ remoteport = 993
 remoteusereval = get_authinfo("mail.cs.uky.edu", 993)["username"]
 remotepasseval = get_authinfo("mail.cs.uky.edu", 993)["password"]
 ssl = yes
-cert_fingerprint=0E0A3D017E403A59671E0576216B0DB0094693DB
+cert_fingerprint = 0e0a3d017e403a59671e0576216b0db0094693db
 maxconnections = 3
 
 [Account emallson@ufl.edu]
