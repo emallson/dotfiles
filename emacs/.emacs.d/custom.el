@@ -24,6 +24,7 @@
     (company-ghc merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
                  (company-dabbrev-code company-gtags company-etags company-keywords)
                  company-oddmuse company-files company-dabbrev)))
+ '(company-global-modes (quote (not scala-mode)))
  '(compilation-read-command nil)
  '(create-lockfiles nil)
  '(custom-safe-themes
@@ -272,6 +273,8 @@
      (pyvenv-activate . "~/Code/CrossTraining/venv")
      (pyvenv-activate . "./venv")
      (require-final-newline))))
+ '(scala-indent:align-parameters t)
+ '(scala-indent:default-run-on-strategy 0)
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)

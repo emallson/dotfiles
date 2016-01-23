@@ -62,7 +62,6 @@
 (depends-on "rust-mode")
 (depends-on "s")
 (depends-on "sbt-mode")
-(depends-on "scala-mode")
 (depends-on "shm")
 (depends-on "shut-up")
 (depends-on "smart-mode-line")
