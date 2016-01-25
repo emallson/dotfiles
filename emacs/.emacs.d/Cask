@@ -12,6 +12,7 @@
 (depends-on "cask")
 (depends-on "cider")
 (depends-on "clojure-mode")
+(depends-on "cmake-mode")
 (depends-on "company")
 (depends-on "dash")
 (depends-on "diminish")
