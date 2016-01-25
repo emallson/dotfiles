@@ -645,7 +645,14 @@
             (smtpmail-default-smtp-server "smtp.office365.com")
             (smtpmail-smtp-server "smtp.office365.com")
             (smtpmail-stream-type starttls)
-            (smtpmail-smtp-service 587))))
+            (smtpmail-smtp-service 587))
+           ("jdsmith@cise.ufl.edu"
+            (mu4e-drafts-folder "/jdsmith@cise.ufl.edu/Drafts")
+            (user-mail-address "jdsmith@cise.ufl.edu")
+            (smtpmail-default-smtp-server "mail.cise.ufl.edu")
+            (smtpmail-smtp-server "mail.cise.ufl.edu")
+            (smtpmail-stream-type ssl)
+            (smtpmail-smtp-service 465))))
 
        (defun mu4e-on-compose-set-account ()
          "Set the account to use when composing a message."
@@ -687,6 +694,9 @@
                     '("maildir:\"/emallson@archlinux.us/Important\" and flag:unread" "Important & Unread" ?I))
        (add-to-list 'mu4e-bookmarks
                     '("maildir:\"/emallson@archlinux.us/INBOX\" or maildir:\"/emallson@atlanis.net/INBOX\" or maildir:\"/emallson@cs.uky.edu/INBOX\" or maildir:\"/emallson@ufl.edu/INBOX\"" "Combined Inbox" ?i))
+
+       (add-to-list 'mu4e-bookmarks
+                    '("maildir:\"/emallson@ufl.edu/TA*\"" "TA Classes" ?c))
 
        (add-to-list 'mu4e-view-actions
                     '("open in browser" . mu4e-action-view-in-browser) t)

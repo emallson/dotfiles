@@ -24,7 +24,6 @@
     (company-ghc merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
                  (company-dabbrev-code company-gtags company-etags company-keywords)
                  company-oddmuse company-files company-dabbrev)))
- '(company-global-modes (quote (not scala-mode)))
  '(compilation-read-command nil)
  '(create-lockfiles nil)
  '(custom-safe-themes
@@ -112,6 +111,7 @@
  '(merlin-command "/usr/bin/ocamlmerlin")
  '(merlin-use-auto-complete-mode nil)
  '(mpc-browser-tags (quote (Artist|Composer|Performer Album|Playlist)))
+ '(mu4e-completing-read-function (quote helm--completing-read-default))
  '(mu4e-compose-dont-reply-to-self t)
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-confirm-quit nil)
@@ -273,8 +273,6 @@
      (pyvenv-activate . "~/Code/CrossTraining/venv")
      (pyvenv-activate . "./venv")
      (require-final-newline))))
- '(scala-indent:align-parameters t)
- '(scala-indent:default-run-on-strategy 0)
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)

@@ -1,5 +1,6 @@
+# -*- mode: conf-unix -*-
 [general]
-accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu, emallson@ufl.edu
+accounts = emallson@archlinux.us, emallson@atlanis.net, emallson@cs.uky.edu, emallson@ufl.edu, jdsmith@cise.ufl.edu
 pythonfile = ~/.offlineimap.py
 fsync = False
 maxsyncaccounts = 5
@@ -82,3 +83,21 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 maxconnections = 3
 nametrans = sub({"Sent Items": "Sent", "Deleted Items": "Trash"})
 folderfilter = ignore(["Junk Email"])
+
+[Account jdsmith@cise.ufl.edu]
+localrepository = jdsmith@cise.ufl.edu:Local
+remoterepository = jdsmith@cise.ufl.edu:Remote
+
+[Repository jdsmith@cise.ufl.edu:Local]
+type = Maildir
+localfolders = ~/Mail/jdsmith@cise.ufl.edu
+
+[Repository jdsmith@cise.ufl.edu:Remote]
+type = IMAP
+remotehost = mail.cise.ufl.edu
+remoteport = 993
+remoteusereval = get_authinfo("mail.cise.ufl.edu", 993)["username"]
+remotepasseval = get_authinfo("mail.cise.ufl.edu", 993)["password"]
+ssl = yes
+cert_fingerprint = e3b12e69400601ea18bf33b3440f07f1e5267957
+maxconnections = 3
