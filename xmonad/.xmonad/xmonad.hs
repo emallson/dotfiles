@@ -108,6 +108,7 @@ myConfig = ewmh def { modMask = mod4Mask
                 , normalBorderColor = "#202020"
                 , focusedBorderColor = "#404040"
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
+                , handleEventHook = docksEventHook
                 , manageHook = manageHook def <+> composeAll
                                [className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
