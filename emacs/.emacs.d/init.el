@@ -9,6 +9,8 @@
 ;; (require 'cask "~/.cask/cask.el")
 ;; (cask-initialize)
 
+(setq vc-follow-symlinks t)
+
 (require 'ob-tangle)
 (org-babel-load-file
  (expand-file-name "emacs-init.org"

@@ -229,6 +229,16 @@
     #+BEGIN_SRC emacs-lisp
       (add-hook 'c-mode-hook #'semantic-mode)
       (add-hook 'c++-mode-hook #'semantic-mode)
+      (add-hook 'c-mode-hook #'ede-minor-mode)
+    #+END_SRC
+
+    Add a project...
+    #+BEGIN_SRC emacs-lisp
+      (with-eval-after-load 'ede
+        (ede-cpp-root-project "Gram"
+                              :name "Gram"
+                              :file "~/Code/gram/Makefile"
+                              :system-include-path '("/usr/include/guile/2.0/")))
     #+END_SRC
 ** Utility Modes
 *** =helm=
@@ -603,7 +613,7 @@
 
        (defun mu4e-sent-folder (msg)
          (f-join
-          mu4e-maildir
+          "/"
           (mu4e-address-from-header (message-field-value "From"))
           "Sent"))
 
@@ -704,6 +714,52 @@
        (setq message-kill-buffer-on-exit t)
 
        (setq mu4e-html2text-command 'mu4e-shr2text))
+   #+END_SRC
+* Monkey Patches
+** semantic-c-do-lex-if
+
+   <2016-01-24 Sun>
+   #+BEGIN_SRC emacs-lisp
+     (with-eval-after-load 'semantic/bovine/c
+       (defun semantic-c-do-lex-if ()
+         "Handle lexical CPP if statements.
+     Enables a takeover of some hideif functions, then uses hideif to
+     evaluate the #if expression and enables us to make decisions on which
+     code to parse."
+         ;; Enable our advice, and use hideif to parse.
+         (let* ((semantic-c-takeover-hideif nil)
+                (hif-ifx-regexp (concat hif-cpp-prefix "\\(elif\\|if\\(n?def\\)?\\)[ \t]+"))
+                (parsedtokelist
+                 (condition-case nil
+                     ;; This is imperfect, so always assume on error.
+                     (hif-canonicalize)
+                   (error nil))))
+
+           (let ((eval-form (eval parsedtokelist)))
+             (if (or (not eval-form)
+                     (and (numberp eval-form)
+                          (equal eval-form 0)));; ifdef line resulted in false
+
+                 ;; The if indicates to skip this preprocessor section
+                 (let ((pt nil))
+                   (semantic-push-parser-warning (format "Skip %s" (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
+                                                 (point-at-bol) (point-at-eol))
+                   (beginning-of-line)
+                   (setq pt (point))
+                   ;; This skips only a section of a conditional.  Once that section
+                   ;; is opened, encountering any new #else or related conditional
+                   ;; should be skipped.
+                   (semantic-c-skip-conditional-section)
+                   (setq semantic-lex-end-point (point))
+
+                   ;; @TODO -somewhere around here, we also need to skip
+                   ;; other sections of the conditional.
+
+                   nil)
+               ;; Else, don't ignore it, but do handle the internals.
+               (end-of-line)
+               (setq semantic-lex-end-point (point))
+               nil)))))
    #+END_SRC
 * Finalé
 

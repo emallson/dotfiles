@@ -2,7 +2,7 @@
 Description=SpiderOak Backup/Sync Service
 
 [Service]
-ExecStart=/usr/bin/SpiderOak --headless --enable-schedule --verbose
+ExecStart=/usr/bin/SpiderOakONE --headless --enable-schedule --verbose
 
 [Install]
 WantedBy=default.target
