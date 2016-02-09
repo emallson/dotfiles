@@ -10,7 +10,7 @@ import Data.List
 
 import XMonad
 import qualified XMonad.StackSet as W
-import XMonad.Actions.CycleWS (toggleOrView)
+import XMonad.Actions.CycleWS (toggleOrDoSkip)
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.SetWMName
@@ -100,7 +100,7 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ++
            [(otherModMasks ++ "M-" ++ key, action tag)
             | (tag, key) <- let ws = map show [0..9] in zip ws ws
-            , (otherModMasks, action) <- [("", toggleOrView)
+            , (otherModMasks, action) <- [("", toggleOrDoSkip ["NSP"] W.view)
                                          ,("S-", windows . W.shift)]]
 
 myConfig = ewmh def { modMask = mod4Mask
