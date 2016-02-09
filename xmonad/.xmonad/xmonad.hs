@@ -19,6 +19,8 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.EZConfig (additionalKeysP, removeKeysP, checkKeymap)
 import XMonad.Util.Run
+import XMonad.Util.Scratchpad
+import XMonad.Util.WorkspaceCompare (getSortByIndex)
 import XMonad.Prompt
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
@@ -70,12 +72,11 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("C-S-q", io exitSuccess)
            ,("M-S-p", sendMessage FocusParent)
            ,("M-v", sendMessage SelectNode)
-           ,("M-<Return>", sendMessage MoveNode)
-           ,("M-<Esc>", sendMessage Rotate)
+           ,("M-S-v", sendMessage MoveNode)
+           ,("M-w", sendMessage Rotate)
            ,("M-a", sendMessage Balance)
            ,("M-S-a", sendMessage Equalize)
            ,("M-S-l", sendMessage ToggleStruts)
-           ,("M-w", sendMessage NextLayout)
            ,("M-l", spawn "i3lock")
            ,("M-.", switchLayer)
            ,("M-S-.", withFocused $ windows . W.sink)
@@ -90,7 +91,8 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("M-b", raiseNextMaybe (spawn "chromium") (className =? "chromium"))
            ,("M-C-b", spawn "chromium")
            ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
-           ,("M-C-<Space>", spawn "emacsclient -c")]
+           ,("M-C-<Space>", spawn "emacsclient -c")
+           ,("M-<Return>", scratchpadSpawnActionCustom "st -c scratchpad -e tmux attach -t scratch")]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
             | (tag, key) <- zip [0..] ["z", "x"]
@@ -102,7 +104,7 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
                                          ,("S-", windows . W.shift)]]
 
 myConfig = ewmh def { modMask = mod4Mask
-                , terminal = "st -e tmux attach"
+                , terminal = "st"
                 , focusFollowsMouse = False
                 , clickJustFocuses = False
                 , normalBorderColor = "#202020"
@@ -110,7 +112,8 @@ myConfig = ewmh def { modMask = mod4Mask
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                 , handleEventHook = docksEventHook
                 , manageHook = manageHook def <+> composeAll
-                               [className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
+                               [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
+                               ,className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}
                 `removeKeysP`
@@ -140,8 +143,8 @@ pipeLog cmdIO pp conf = do
     pipe <- spawnPipe cmd
     return $ conf
            {logHook = do
-                         logHook conf
-                         dynamicLogWithPP =<< workspaceNamesPP (pp {ppOutput = hPutStrLn pipe})}
+                         dynamicLogWithPP =<< workspaceNamesPP (pp {ppOutput = hPutStrLn pipe
+                                                                   ,ppSort = fmap (.scratchpadFilterOutWorkspace) getSortByIndex })}
 
 main :: IO ()
 main = xmonad =<< pipeLog xmobarCmd emallsonPP (navigation2DP

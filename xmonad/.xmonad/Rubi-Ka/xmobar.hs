@@ -17,5 +17,5 @@ Config { commands = [ Run Com "netctl-auto" ["current"] "wifi-profile" 600
        , bgColor = "#202020"
        , position = Bottom
        , alignSep = "}{"
-       , font = "xft:Source Code Pro light:size=9:antialias=true"
+       , font = "xft:Source Code Pro:size=9:antialias=true"
        , allDesktops = True}
