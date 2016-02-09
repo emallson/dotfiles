@@ -72,6 +72,7 @@
  '(explicit-shell-file-name "/usr/bin/zsh")
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
+ '(flycheck-perl-include-path (quote ("/home/emallson/perl5/lib/perl5/")))
  '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
  '(fringe-mode 0 nil (fringe))
@@ -174,7 +175,8 @@
     (:foreground default :background default :scale 1.1 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-htmlize-output-type (quote css))
- '(org-html-preamble-format (quote (("en" "<h3>%a</h3>"))))
+ '(org-html-postamble nil)
+ '(org-html-preamble-format (quote (("en" "<h4>Last Modified: %C</h4>"))))
  '(org-latex-default-packages-alist
    (quote
     (("AUTO" "inputenc" t)
@@ -281,6 +283,8 @@
  '(sentence-end-double-space nil)
  '(show-paren-mode nil)
  '(show-trailing-whitespace nil)
+ '(shr-color-visible-distance-min 20)
+ '(shr-color-visible-luminance-min 80)
  '(sml/mode-width 5)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
@@ -348,7 +352,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :foundry "adobe" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#202020" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "adobe" :family "Source Code Pro"))))
  '(company-tooltip-annotation ((t (:inherit company-tooltip-common))))
  '(company-tooltip-common ((t (:background "#303030" :foreground "#9FBF9F"))))
  '(company-tooltip-common-selection ((t (:background "#2A2A2A" :foreground "#9FBF9F"))))

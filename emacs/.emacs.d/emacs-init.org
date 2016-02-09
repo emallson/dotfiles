@@ -110,7 +110,7 @@
     #+END_SRC
 *** =evil-surround=
 
-    Trying evil-surround as an alternative to evil-paredit
+    Surround ALL the things!
 
     #+BEGIN_SRC emacs-lisp
       (req-package evil-surround
@@ -425,6 +425,21 @@
         (add-to-list 'emms-info-functions #'emms-info-mpd)
         (add-to-list 'emms-player-list #'emms-player-mpd))
     #+END_SRC
+*** =markdown-mode=
+
+    My markdown settings finally got to the point that merely having
+    it installed is no longer enough. I want to enable =pandoc-mode=
+    when in Markdown mode 99% of the time, and also want to disable
+    underscores for italics because most of my references use _ to
+    delimit fields.
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package markdown-mode
+        :require pandoc-mode
+        :config
+        (add-hook 'markdown-mode-hook #'pandoc-mode)
+        (setq markdown-regex-italic "\\(?:^\\|[^\\]\\)\\(\\([*]\\)\\([^ \n    \\]\\|[^ \n ]\\(?:.\\|\n[^\n]\\)*?[^\\ ]\\)\\(\\2\\)\\)"))
+    #+END_SRC
 * Miscellaneous Customizations
 ** Mouse Paste Behavior
    I want =S-<insert>= to behave like most other Linux programs.
@@ -519,63 +534,6 @@
      (put 'narrow-to-page 'disabled nil)
      (put 'upcase-region 'disabled nil)
      (put 'downcase-region 'disabled nil)
-   #+END_SRC
-
-** Blog Org Project
-
-   #+BEGIN_SRC emacs-lisp
-     (defun org-element-export-ast (project filename target-directory)
-       (let ((dest-filename (concat
-                             target-directory
-                             (file-name-base filename)
-                             ".ast")))
-         (with-output-to-temp-buffer "*Org AST Output*"
-           (with-current-buffer (find-file-noselect filename)
-             (princ (pp-to-string (org-element-parse-buffer)))))
-         (with-current-buffer "*Org AST Output*"
-           (write-file dest-filename))))
-
-     (setq org-publish-project-alist
-                  '(("blog"
-                    :base-directory "~/org-blog/posts/"
-                    :recursive t
-                    :publishing-directory "~/org-blog-publish/posts/"
-                    :publishing-function org-tufte-export-as-html
-                    :section-numbers nil
-                    :with-title t
-                    :with-toc nil
-                    :auto-sitemap t
-                    :sitemap-sort-files anti-chronologically
-                    :sitemap-filename "index.html"
-                    :sitemap-title "Blog Posts"
-                    :html-head-include-default-style nil
-                    :html-head-include-scripts nil
-                    :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../resources/tufte.css\"/>
-     <link rel=\"stylesheet\" type=\"text/css\" href=\"../resources/htmlize-solarized-light.css\"/>"
-                    :html-html5-fancy t
-                    :html-divs ((preamble "div" "preamble")
-                                (content "article" "content")
-                                (postamble "div" "postamble"))
-                    :html-container "section"
-                    :html-preamble "<div><a href=\"/\">Home</a> &middot; <a href=\"./\">Blog</a> &middot; <a href=\"./rss.xml\">RSS Feed</a></div>"
-                    :html-postamble nil)
-                    ("blog-ast"
-                     :base-directory "~/org-blog/posts/"
-                     :recursive t
-                     :publishing-directory "~/org-blog-publish/ast/"
-                     :publishing-function org-element-export-ast)
-                    ("blog-hexo"
-                     :base-directory "~/org-blog/posts/"
-                     :recursive t
-                     :publishing-directory "~/org-blog-publish/hexo/"
-                     :publishing-function ox-hexo-export-as-md)
-                    ("blog-rss"
-                     :base-directory "~/org-blog/posts/"
-                     :base-extension "org"
-                     :publishing-directory "~/org-blog-publish/rss-posts/"
-                     :publishing-function org-rss-publish-to-rss ; nicht so gut
-                     :html-link-home "https://atlanis.net"
-                     :html-link-use-abs-url t)))
    #+END_SRC
 
 ** systemd
@@ -694,19 +652,23 @@
              '(("/emallson@archlinux.us/INBOX" . ?i)
                ("/emallson@atlanis.net/INBOX" . ?a)
                ("/emallson@cs.uky.edu/INBOX" . ?c)
-               ("/emallson@ufl.edu/INBOX" . ?u)))
+               ("/emallson@ufl.edu/INBOX" . ?u)
+               ("/jdsmith@cise.ufl.edu/INBOX" . ?j)))
 
        (setq message-send-mail-function 'smtpmail-send-it)
 
-       (add-to-list 'mu4e-bookmarks
-                    '("flag:flagged" "Flagged" ?f))
-       (add-to-list 'mu4e-bookmarks
-                    '("maildir:\"/emallson@archlinux.us/Important\" and flag:unread" "Important & Unread" ?I))
-       (add-to-list 'mu4e-bookmarks
-                    '("maildir:\"/emallson@archlinux.us/INBOX\" or maildir:\"/emallson@atlanis.net/INBOX\" or maildir:\"/emallson@cs.uky.edu/INBOX\" or maildir:\"/emallson@ufl.edu/INBOX\"" "Combined Inbox" ?i))
+       (defun mu4e-all-accounts-maildir (subdir)
+         "Returns the mu search for maildir:/*/`subdir'."
+         (string-join (mapcar (lambda (account)
+                                (concat "maildir:\"/" account "/" subdir "\""))
+                              (mapcar #'car mu4e-account-alist))
+                      " or "))
 
-       (add-to-list 'mu4e-bookmarks
-                    '("maildir:\"/emallson@ufl.edu/TA*\"" "TA Classes" ?c))
+       (mu4e-bookmark-define "flag:flagged" "Flagged" ?f)
+       (mu4e-bookmark-define (concat "flag:unread " (mu4e-all-accounts-maildir "INBOX"))
+                             "Inbox Unread" ?u)
+       (mu4e-bookmark-define (mu4e-all-accounts-maildir "INBOX")
+                             "Combined Inbox" ?i)
 
        (add-to-list 'mu4e-view-actions
                     '("open in browser" . mu4e-action-view-in-browser) t)
