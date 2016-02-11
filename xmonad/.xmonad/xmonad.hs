@@ -1,12 +1,15 @@
 -- -*- flycheck-mode: nil -*-
 module Main where
 
+import Control.Monad
+
 import System.Exit
 import System.Process
 
 import Network.HostName
 
 import Data.List
+import Data.Bool
 
 import XMonad
 import qualified XMonad.StackSet as W
@@ -33,6 +36,9 @@ import XMonad.Layout.BorderResize
 -- minimize
 import XMonad.Layout.Minimize
 import XMonad.Layout.BoringWindows
+
+qnot :: Monad m => m Bool -> m Bool
+qnot = liftM not
 
 tmuxAttach :: String -> X ()
 tmuxAttach session = spawn ("st -e tmux attach -t " ++ session)
@@ -85,14 +91,16 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("M-m", withFocused minimizeWindow)
            ,("M-S-m", sendMessage RestoreNextMinimizedWin)
            -- program binds
-           ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") (className =? "st-256color"))
+           ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") ((className =? "st-256color") <&&> (qnot $ title =? "scratchpad")))
            ,("M-S-c", tmuxAttachPrompt def)
            ,("M-C-c", tmuxCreatePrompt def)
            ,("M-b", raiseNextMaybe (spawn "chromium") (className =? "chromium"))
            ,("M-C-b", spawn "chromium")
            ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
            ,("M-C-<Space>", spawn "emacsclient -c")
-           ,("M-<Return>", scratchpadSpawnActionCustom "st -c scratchpad -e tmux attach -t scratch")]
+           -- set st title because apparently -c only adds the new
+           -- classname, doesn't remove the old
+           ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -c scratchpad -e tmux attach -t scratch")]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
             | (tag, key) <- zip [0..] ["z", "x"]
