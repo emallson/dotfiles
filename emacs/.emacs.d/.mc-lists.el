@@ -31,6 +31,7 @@
         evil-previous-line
         evil-scroll-down
         evil-shift-left-line
+        evil-visual-char
         forward-sexp
         icicle-goto-marker-or-set-mark-command
         icicle-yank-maybe-completing
@@ -76,6 +77,8 @@
         evil-ex
         evil-force-normal-state
         evil-normal-state
+        evil-open-below
+        evil-paste-last-insertion
         helm-M-x
         helm-mini
         icicle-execute-extended-command

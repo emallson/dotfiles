@@ -9,6 +9,9 @@
 ;; (require 'cask "~/.cask/cask.el")
 ;; (cask-initialize)
 
+
+;(package-initialize)
+
 (setq vc-follow-symlinks t)
 
 (require 'ob-tangle)

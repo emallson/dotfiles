@@ -245,10 +245,12 @@
  '(pixie-inf-lisp-program "~/Code/pixie/pixie-vm")
  '(projectile-completion-system (quote helm))
  '(projectile-enable-idle-timer t)
+ '(projectile-globally-ignored-buffers (quote ("*scratch*")))
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" "build" "venv" "virtualenv" "node_modules" "ppm-venv" "bower_components")))
  '(projectile-globally-ignored-files (quote ("TAGS" "*.min.css")))
+ '(projectile-go-function (lambda (&rest r) nil))
  '(projectile-tags-command "ctags -Re -f \"%s\" %s")
  '(projectile-test-suffix-function (quote projectile-custom-test-suffix))
  '(prolog-system (quote swi))

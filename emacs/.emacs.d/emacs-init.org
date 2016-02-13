@@ -123,7 +123,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package js2-mode
-        :require (yasnippet tern)
+        :require (tern)
         :mode "\\.js$"
         :config
         (add-hook 'js2-mode-hook #'subword-mode)
@@ -185,10 +185,11 @@
         (add-to-list 'load-path "~/Code/racer/editors/emacs")
         (setq racer-rust-src-path "~/Code/racer/rust/src")
         (setq racer-cmd "~/Code/racer/target/release/racer")
-        (require 'racer)
-        (add-hook 'rust-mode-hook #'racer-activate)
-        (bind-key "M-." #'racer-find-definition rust-mode-map)
-        (bind-key "TAB" #'racer-complete-or-indent rust-mode-map))
+        (require 'racer nil t)
+        (with-eval-after-load 'racer
+          (add-hook 'rust-mode-hook #'racer-activate)
+          (bind-key "M-." #'racer-find-definition rust-mode-map)
+          (bind-key "TAB" #'racer-complete-or-indent rust-mode-map)))
     #+END_SRC
 
 *** Clojure
@@ -229,16 +230,17 @@
     #+BEGIN_SRC emacs-lisp
       (add-hook 'c-mode-hook #'semantic-mode)
       (add-hook 'c++-mode-hook #'semantic-mode)
-      (add-hook 'c-mode-hook #'ede-minor-mode)
     #+END_SRC
 
     Add a project...
     #+BEGIN_SRC emacs-lisp
+      (autoload #'ede-minor-mode "ede")
       (with-eval-after-load 'ede
         (ede-cpp-root-project "Gram"
                               :name "Gram"
                               :file "~/Code/gram/Makefile"
                               :system-include-path '("/usr/include/guile/2.0/")))
+      (add-hook 'c-mode-hook #'ede-minor-mode)
     #+END_SRC
 ** Utility Modes
 *** =helm=
@@ -378,10 +380,10 @@
 
 *** =yasnippet=
 
-    #+BEGIN_SRC emacs-lisp
-      (req-package yasnippet
-        :init (add-hook 'prog-mode-hook #'yas-minor-mode))
-    #+END_SRC
+    # #+BEGIN_SRC emacs-lisp
+    #   (req-package yasnippet
+    #     :init (add-hook 'prog-mode-hook #'yas-minor-mode))
+    # #+END_SRC
 
 *** =org-mode=
 
@@ -676,6 +678,21 @@
        (setq message-kill-buffer-on-exit t)
 
        (setq mu4e-html2text-command 'mu4e-shr2text))
+   #+END_SRC
+** bury compilation buffer
+
+   #+BEGIN_SRC emacs-lisp
+     (defun bury-compile-buffer-if-successful (buffer string)
+       "Bury a compilation buffer if succeeded without warnings "
+       (if (and
+            (string-match "compilation" (buffer-name buffer))
+            (string-match "finished" string))
+           (run-with-timer 1 nil
+                           (lambda (buf)
+                             (bury-buffer buf)
+                             (switch-to-prev-buffer (get-buffer-window buf) 'kill))
+                           buffer)))
+     (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
    #+END_SRC
 * Monkey Patches
 ** semantic-c-do-lex-if
