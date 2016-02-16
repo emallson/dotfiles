@@ -533,6 +533,19 @@
      (bind-key "C-c c" #'compile)
    #+END_SRC
 
+*** bury compilation buffer
+
+    #+BEGIN_SRC emacs-lisp
+      (defun bury-compile-buffer-if-successful (buffer string)
+        "Bury a compilation buffer if succeeded without warnings "
+        (if (and
+             (string-match "compilation" (buffer-name buffer))
+             (string-match "finished" string))
+            (run-with-timer 1 nil (lambda (buf)
+                                    (quit-window nil (get-buffer-window buf)))
+                            buffer)))
+      (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+    #+END_SRC
 ** Un-disabled fns
 
    #+BEGIN_SRC emacs-lisp
@@ -682,21 +695,6 @@
        (setq message-kill-buffer-on-exit t)
 
        (setq mu4e-html2text-command 'mu4e-shr2text))
-   #+END_SRC
-** bury compilation buffer
-
-   #+BEGIN_SRC emacs-lisp
-     (defun bury-compile-buffer-if-successful (buffer string)
-       "Bury a compilation buffer if succeeded without warnings "
-       (if (and
-            (string-match "compilation" (buffer-name buffer))
-            (string-match "finished" string))
-           (run-with-timer 1 nil
-                           (lambda (buf)
-                             (bury-buffer buf)
-                             (switch-to-prev-buffer (get-buffer-window buf) 'kill))
-                           buffer)))
-     (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
    #+END_SRC
 * Monkey Patches
 ** semantic-c-do-lex-if
