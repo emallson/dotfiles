@@ -6,6 +6,7 @@
         TeX-insert-backslash
         backward-sexp
         bibtex-next-field
+        c-beginning-of-statement
         c-electric-delete-forward
         c-electric-paren
         c-electric-semi&comma

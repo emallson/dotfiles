@@ -16,6 +16,7 @@
      (require 'req-package)
      (put 'req-package 'lisp-indent-function 'defun)
      (put 'req-package-force 'lisp-indent-function 'defun)
+     (customize-set-variable 'use-package-verbose t)
    #+END_SRC
 ** el-get
 
@@ -83,30 +84,28 @@
           (add-to-list 'evil-emacs-state-modes mode))
         (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
         :config
-        (progn
-          ;; utility fn to bind motion keys
-          (defun evil-global-set-noninsert-key (key cmd)
-            "Bind `KEY' to `CMD' in all non-insert evil states."
-            (dolist (state '(normal motion visual))
-              (evil-global-set-key state key cmd)))
-          ;; colemak motion bindings
-          (evil-global-set-noninsert-key "e" #'evil-backward-char)
-          (evil-global-set-noninsert-key "n" #'evil-forward-char)
-          (evil-global-set-noninsert-key "s" #'evil-previous-line)
-          (evil-global-set-noninsert-key "t" #'evil-next-line)
-          (evil-global-set-noninsert-key "l" #'evil-find-char-to)
-          (evil-global-set-noninsert-key "L" #'evil-find-char-to-backward)
-          (evil-global-set-noninsert-key "r" #'evil-search-next)
+        (defun evil-global-set-noninsert-key (key cmd)
+          "Bind `KEY' to `CMD' in all non-insert evil states."
+          (dolist (state '(normal motion visual))
+            (evil-global-set-key state key cmd)))
+        ;; colemak motion bindings
+        (evil-global-set-noninsert-key "e" #'evil-backward-char)
+        (evil-global-set-noninsert-key "n" #'evil-forward-char)
+        (evil-global-set-noninsert-key "s" #'evil-previous-line)
+        (evil-global-set-noninsert-key "t" #'evil-next-line)
+        (evil-global-set-noninsert-key "l" #'evil-find-char-to)
+        (evil-global-set-noninsert-key "L" #'evil-find-char-to-backward)
+        (evil-global-set-noninsert-key "r" #'evil-search-next)
 
-          (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
-          (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
+        (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
+        (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
 
-          (evil-global-set-key 'insert (kbd "C-t") 'transpose-chars)
+        (evil-global-set-key 'insert (kbd "C-t") 'transpose-chars)
+        (evil-global-set-key 'visual (kbd "u") #'undo-tree-undo)
 
-          ;; (evil-define-key 'normal evil-paredit-mode-map "x" nil)
-          ;; additional extended commands
-          (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
-          (evil-ex-define-cmd "t[angle]" #'org-babel-tangle)))
+        ;; additional extended commands
+        (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
+        (evil-ex-define-cmd "t[angle]" #'org-babel-tangle))
     #+END_SRC
 *** =evil-surround=
 
@@ -161,6 +160,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package elpy
+        :commands elpy-mode
         :init
         (add-hook 'python-mode-hook #'elpy-mode)
         :config
@@ -198,6 +198,7 @@
       (req-package clojure-mode
         :mode "\\.(clj|cljs|boot)$")
       (req-package cider
+        :commands cider-mode
         :init
         (add-hook 'clojure-mode-hook #'cider-mode))
     #+END_SRC
@@ -213,6 +214,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package haskell-mode
+        :mode "\\.hs\\'"
         :config
         (add-hook 'haskell-mode-hook #'structured-haskell-mode))
 
@@ -221,6 +223,7 @@
 
       (req-package shm ; structured-haskell-mode
         :require haskell-mode
+        :commands structured-haskell-mode
         :config
         (add-hook 'structured-haskell-mode-hook #'evil-disable-auto-indent))
     #+END_SRC
@@ -421,6 +424,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package emms
+        :commands (emms-smart-browse emms-browser)
         :config
         (require 'emms-player-mpd)
         (emms-all)
