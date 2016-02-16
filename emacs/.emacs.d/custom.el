@@ -80,6 +80,7 @@
  '(geiser-racket-extra-keywords
    (quote
     ("provide" "require" "unless" "when" "with-handlers" "define:" "lambda:" "let:" "option")))
+ '(global-writeroom-mode t nil (writeroom-mode))
  '(gnus-init-file "~/.emacs.d/gnus.el")
  '(grep-find-ignored-directories
    (quote
@@ -345,6 +346,7 @@
    (quote
     ("*Completions*" "*helm M-x*" "*helm mini*" "*Helm Find Files*")))
  '(winner-mode t)
+ '(writeroom-major-modes (quote (markdown-mode)))
  '(znc-servers
    (quote
     (("atlanis.net" 6464 t
