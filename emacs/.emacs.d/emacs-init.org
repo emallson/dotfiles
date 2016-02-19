@@ -102,6 +102,7 @@
 
         (evil-global-set-key 'insert (kbd "C-t") 'transpose-chars)
         (evil-global-set-key 'visual (kbd "u") #'undo-tree-undo)
+        (evil-global-set-key 'motion (kbd "SPC") #'evil-ace-jump-word-mode)
 
         ;; additional extended commands
         (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
@@ -684,7 +685,7 @@
                       " or "))
 
        (mu4e-bookmark-define "flag:flagged" "Flagged" ?f)
-       (mu4e-bookmark-define (concat "flag:unread " (mu4e-all-accounts-maildir "INBOX"))
+       (mu4e-bookmark-define (concat "flag:unread AND (" (mu4e-all-accounts-maildir "INBOX") ")")
                              "Inbox Unread" ?u)
        (mu4e-bookmark-define (mu4e-all-accounts-maildir "INBOX")
                              "Combined Inbox" ?i)
