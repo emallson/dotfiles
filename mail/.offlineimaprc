@@ -8,6 +8,7 @@ maxsyncaccounts = 5
 [Account emallson@archlinux.us]
 localrepository = emallson@archlinux.us:Local
 remoterepository = emallson@archlinux.us:Remote
+autorefresh = 5
 
 [Repository emallson@archlinux.us:Local]
 type = Maildir
@@ -30,6 +31,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 [Account emallson@atlanis.net]
 localrepository = emallson@atlanis.net:Local
 remoterepository = emallson@atlanis.net:Remote
+autorefresh = 5
 
 [Repository emallson@atlanis.net:Local]
 type = Maildir
@@ -48,6 +50,7 @@ maxconnections = 3
 [Account emallson@cs.uky.edu]
 localrepository = emallson@cs.uky.edu:Local
 remoterepository = emallson@cs.uky.edu:Remote
+autorefresh = 5
 
 [Repository emallson@cs.uky.edu:Local]
 type = Maildir
@@ -66,6 +69,7 @@ maxconnections = 3
 [Account emallson@ufl.edu]
 localrepository = emallson@ufl.edu:Local
 remoterepository = emallson@ufl.edu:Remote
+autorefresh = 5
 
 [Repository emallson@ufl.edu:Local]
 type = Maildir
@@ -87,6 +91,7 @@ folderfilter = ignore(["Junk Email"])
 [Account jdsmith@cise.ufl.edu]
 localrepository = jdsmith@cise.ufl.edu:Local
 remoterepository = jdsmith@cise.ufl.edu:Remote
+autorefresh = 5
 
 [Repository jdsmith@cise.ufl.edu:Local]
 type = Maildir
