@@ -215,18 +215,16 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package haskell-mode
-        :mode "\\.hs\\'"
-        :config
-        (add-hook 'haskell-mode-hook #'structured-haskell-mode))
+        :mode "\\.hs\\'")
 
-      (defun evil-disable-auto-indent ()
-        (setq-local evil-auto-indent nil))
+      ;; (defun evil-disable-auto-indent ()
+      ;;   (setq-local evil-auto-indent nil))
 
-      (req-package shm ; structured-haskell-mode
-        :require haskell-mode
-        :commands structured-haskell-mode
-        :config
-        (add-hook 'structured-haskell-mode-hook #'evil-disable-auto-indent))
+      ;; (req-package shm ; structured-haskell-mode
+      ;;   :require haskell-mode
+      ;;   :commands structured-haskell-mode
+      ;;   :config
+      ;;   (add-hook 'structured-haskell-mode-hook #'evil-disable-auto-indent))
     #+END_SRC
 
 *** C/C++
@@ -571,6 +569,11 @@
    local Maildirs. It's very fast (which is awesome) and also has
    decent support for threading and multiple accounts.
 
+   On debian, I need to add the load path:
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+   #+END_SRC
+
    #+BEGIN_SRC emacs-lisp
      (autoload 'mu4e "mu4e"
        "If mu4e is not running yet, start it. Then, show the the main
@@ -684,6 +687,14 @@
                               (mapcar #'car mu4e-account-alist))
                       " or "))
 
+       (unless (fboundp 'mu4e-bookmark-define)
+         (defun mu4e-bookmark-define (query title key)
+           (add-to-list 'mu4e-bookmarks (list query title key) nil
+                        (lambda (a b)
+                          (equal (nth 2 a)
+                                  (nth 2 b))))))
+
+       (setq mu4e-bookmarks '())
        (mu4e-bookmark-define "flag:flagged" "Flagged" ?f)
        (mu4e-bookmark-define (concat "flag:unread AND (" (mu4e-all-accounts-maildir "INBOX") ")")
                              "Inbox Unread" ?u)

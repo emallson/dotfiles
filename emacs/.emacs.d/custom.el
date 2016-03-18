@@ -117,7 +117,6 @@
  '(mu4e-compose-dont-reply-to-self t)
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-confirm-quit nil)
- '(mu4e-get-mail-command "offlineimap")
  '(mu4e-user-mail-address-list
    (quote
     ("emallson@archlinux.us" "emallson@cs.uky.edu" "emallson@atlanis.net" "emallson@ufl.edu" "jdsmith@cise.ufl.edu" "aemallson@uky.edu")))
@@ -314,6 +313,7 @@
  '(undo-tree-auto-save-history t)
  '(undo-tree-history-directory-alist (quote (("." . "~/.emacs.d/.undo-tree/"))))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
+ '(use-package-verbose t)
  '(utop-command "utop -emacs")
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
