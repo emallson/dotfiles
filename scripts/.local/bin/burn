@@ -1,0 +1,44 @@
+#!/bin/zsh -f
+# input: seq of JSON objects containing fields author, title, year, and path
+while read line
+do
+    SRC=`echo $line | jq ".path" -r`
+
+    year=`echo $line | jq ".year" -r`
+    authors=`echo $line | jq ".authors" -r`
+    title=`echo $line | jq ".title" -r`
+
+    if [ -z "$SRC" ]; then
+        echo "Skipped $year - $title by $authors because there is no source file"
+        continue;
+    fi
+
+    DEST="/tmp/burn/$year - $title.pdf"
+
+    mkdir -p /tmp/burn
+
+    echo "Converting $year - $title by $authors..."
+    k2pdfopt "$SRC" -o "$DEST" -title "$year - $title" -author "$authors" -ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in < /dev/null > /dev/null
+
+    evince "$DEST" < /dev/null
+
+    echo "Transfer to kindle?"
+    read -q yn
+    echo
+    case $yn in
+        y )
+            mail -a "$DEST" \
+                 -Sfrom="emallson@ufl.edu" \
+                 -S smtp="smtp.office365.com:587" \
+                 -S smtp-use-starttls \
+                 -S smtp-auth=login \
+                 -S smtp-auth-user="emallson@ufl.edu" \
+                 -S smtp-auth-password="${(Q)$(gpg2 -q -d ~/.authinfo.gpg | grep smtp.office365.com | cut -d\  -f8)}" \
+                 emallson@free.kindle.com \
+                 < /dev/null
+            continue ;;
+        n )
+            echo "Skipped $year - $title by $authors..."
+            continue ;;
+    esac
+done
