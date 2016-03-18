@@ -1,5 +1,5 @@
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
+if [ -n $SSH_CONNECTION ]; then
   export EDITOR='emacsclient -c'
 else
   export EDITOR='emacs'
@@ -7,7 +7,7 @@ fi
 
 export CHROME_BIN=chromium;
 export BROWSER=$CHROME_BIN;
-export PATH="/opt/MATLAB/R2014a/bin:$HOME/.cask/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH";
+export PATH="$HOME/.cask/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH";
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
