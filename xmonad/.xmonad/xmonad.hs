@@ -10,17 +10,19 @@ import Network.HostName
 
 import Data.List
 import Data.Bool
+import qualified Data.Map as M
 
 import XMonad
 import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleWS (toggleOrDoSkip)
+import XMonad.Actions.Submap
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
-import XMonad.Util.EZConfig (additionalKeysP, removeKeysP, checkKeymap)
+import XMonad.Util.EZConfig (additionalKeysP, removeKeysP, checkKeymap, mkKeymap)
 import XMonad.Util.Run
 import XMonad.Util.Scratchpad
 import XMonad.Util.WorkspaceCompare (getSortByIndex)
@@ -29,7 +31,6 @@ import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 
 -- tree layout stuff
-import XMonad.Layout.BinarySpacePartition
 import XMonad.Actions.Navigation2D
 import XMonad.Layout.BorderResize
 
@@ -63,25 +64,11 @@ tmuxAttachPrompt :: XPConfig -> X ()
 tmuxAttachPrompt c = do
                  mkXPrompt Tmux c tmuxSessionCompl tmuxAttach
 
-myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) emptyBSP
+myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) (Tall 1 0.03 0.5)
 
-myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
-           ,("M-C-e", sendMessage $ ExpandTowards L)
-           ,("M-C-s", sendMessage $ ExpandTowards U)
-           ,("M-C-t", sendMessage $ ExpandTowards D)
-           ,("M-M1-n", sendMessage $ ShrinkFrom R)
-           ,("M-M1-e", sendMessage $ ShrinkFrom L)
-           ,("M-M1-s", sendMessage $ ShrinkFrom U)
-           ,("M-M1-t", sendMessage $ ShrinkFrom D)
-           ,("M-k", kill)
+myKeymap = [("M-k", kill)
            ,("M-r", spawn "dmenu_run")
            ,("C-S-q", io exitSuccess)
-           ,("M-S-p", sendMessage FocusParent)
-           ,("M-v", sendMessage SelectNode)
-           ,("M-S-v", sendMessage MoveNode)
-           ,("M-w", sendMessage Rotate)
-           ,("M-a", sendMessage Balance)
-           ,("M-S-a", sendMessage Equalize)
            ,("M-S-l", sendMessage ToggleStruts)
            ,("M-l", spawn "i3lock")
            ,("M-.", switchLayer)
@@ -92,15 +79,24 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
            ,("M-S-m", sendMessage RestoreNextMinimizedWin)
            -- program binds
            ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") ((className =? "st-256color") <&&> (qnot $ title =? "scratchpad")))
-           ,("M-S-c", tmuxAttachPrompt def)
-           ,("M-C-c", tmuxCreatePrompt def)
-           ,("M-b", raiseNextMaybe (spawn "chromium") (className =? "chromium"))
+           ,("M-S-c", tmuxAttachPrompt defaultXPConfig)
+           ,("M-C-c", tmuxCreatePrompt defaultXPConfig)
+           ,("M-b", raiseNextMaybe (spawn "chromium") (stringProperty "WM_WINDOW_ROLE" =? "browser"))
            ,("M-C-b", spawn "chromium")
            ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
            ,("M-C-<Space>", spawn "emacsclient -c")
+           ,("M-d", submap $ mkKeymap myConfig
+             [("a", spawn "mpd-menu.sh album"),
+              ("S-a", spawn "mpd-menu.sh artist"),
+              ("t", spawn "mpd-menu.sh title"),
+              ("c", spawn "mpc clear")])
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
            ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -c scratchpad -e tmux attach -t scratch")]
+           ++
+           [("M-" ++ otherModMasks ++ key, action direction False)
+            | (key, direction) <- zip ["n", "e", "s", "t"] [R, L, U, D]
+            , (otherModMasks, action) <- [("", windowGo), ("S-", windowSwap)]]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
             | (tag, key) <- zip [0..] ["z", "x"]
@@ -111,15 +107,16 @@ myKeymap = [("M-C-n", sendMessage $ ExpandTowards R)
             , (otherModMasks, action) <- [("", toggleOrDoSkip ["NSP"] W.view)
                                          ,("S-", windows . W.shift)]]
 
-myConfig = ewmh def { modMask = mod4Mask
+myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig { modMask = mod4Mask
                 , terminal = "st"
                 , focusFollowsMouse = False
                 , clickJustFocuses = False
                 , normalBorderColor = "#202020"
                 , focusedBorderColor = "#404040"
+                , borderWidth = 1
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                 , handleEventHook = docksEventHook
-                , manageHook = manageHook def <+> composeAll
+                , manageHook = manageHook defaultConfig <+> composeAll
                                [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
                                ,className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
@@ -139,7 +136,7 @@ myConfig = ewmh def { modMask = mod4Mask
                 myKeymap
 
 emallsonPP :: PP
-emallsonPP = def {ppOrder = \(ws:_:_:_) -> [ws]}
+emallsonPP = defaultPP {ppOrder = \(ws:_:_:_) -> [ws]}
 
 xmobarCmd :: IO String
 xmobarCmd = do hostName <- getHostName
@@ -154,11 +151,5 @@ pipeLog cmdIO pp conf = do
                          dynamicLogWithPP =<< workspaceNamesPP (pp {ppOutput = hPutStrLn pipe
                                                                    ,ppSort = fmap (.scratchpadFilterOutWorkspace) getSortByIndex })}
 
-main :: IO ()
-main = xmonad =<< pipeLog xmobarCmd emallsonPP (navigation2DP
-                                                def
-                                                ("s", "e", "t", "n")
-                                                [("M-", windowGo)
-                                                ,("M-S-", windowSwap)]
-                                                False
-                                                myConfig)
+-- main :: IO ()
+main = xmonad =<< pipeLog xmobarCmd emallsonPP myConfig

@@ -1,0 +1,76 @@
+#!/usr/bin/python
+import argparse
+import requests
+import csv
+import sys
+import json
+import re
+
+parser = argparse.ArgumentParser("CLI to query Zotero via Zotxt")
+parser.add_argument("--format", help="A list of fields to print out in csv format.", default="year,title,authors,path")
+parser.add_argument("--file-re", help="A regex specifying the files whose paths to return.", default=r"^.*\.pdf$")
+subparsers = parser.add_subparsers(dest="cmd")
+sel_parser = subparsers.add_parser("selection")
+col_parser = subparsers.add_parser("collection")
+col_parser.add_argument("name")
+search_parser = subparsers.add_parser("search")
+search_parser.add_argument("query")
+search_parser.add_argument("--everything", action="store_true")
+search_parser.add_argument("--all-fields", action="store_true")
+
+base_url = "http://localhost:23119/zotxt/"
+
+def get_collection(name):
+    return requests.get(base_url + "items", params={"collection": name, "format": "key"}).json()
+
+def get_selected():
+    return requests.get(base_url + "items", params={"selected": "yes", "format": "key"}).json()
+
+def get_search(query, everything=False, all_fields=False):
+    method = "titleCreatorYear"
+    if all_fields:
+        method = "fields"
+    if everything:
+        method = "everything"
+
+    return requests.get(base_url + "search", params={
+        "q": query,
+        "method": method,
+        "format": "key"
+    }).json()
+
+def from_key(key):
+    raw_obj = requests.get(base_url + "items", params={"key": key}).json()[0]
+    paths = requests.get(base_url + "items", params={"key": key, "format": "paths"}).json()
+
+    raw_obj["key"] = key
+    raw_obj["paths"] = paths[0]["paths"]
+
+    return raw_obj
+
+def clean(obj, file_re):
+    obj["year"] = obj["issued"]["date-parts"][0][0]
+    obj["authors"] = "; ".join([u"{family}, {given}".format(**author) for author in obj["author"]]).encode('utf-8')
+    try:
+        obj["path"] = next(p for p in obj["paths"] if re.match(file_re, p))
+    except StopIteration:
+        obj["path"] = ""
+    return obj
+
+def run(args):
+    keys = None
+    if args.cmd == "collection":
+        keys = get_collection(args.name)
+    elif args.cmd == "search":
+        keys = get_search(args.query, args.everything, args.all_fields)
+    elif args.cmd == "selection":
+        keys = get_selected()
+
+    objs = [clean(from_key(k), args.file_re) for k in keys]
+
+    for obj in objs:
+        print(json.dumps( {k: obj[k] if k in obj else None for k in args.format.split(',')} ))
+
+
+if __name__ == "__main__":
+    run(parser.parse_args())

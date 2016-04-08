@@ -3,7 +3,7 @@ Xft.antialias:  true
 Xft.rgba:       rgb
 Xft.lcdfilter:  lcddefault
 Xft.hinting:    true
-Xft.hintstyle:  hintfull
+Xft.hintstyle:  hintmedium
 
 xterm*termName: xterm-256color
 xterm*faceName: Source Code Pro Light:size=13:antialias=true
