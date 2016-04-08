@@ -1,8 +1,8 @@
 (source "e6h" "http://www.e6h.org/packages/")
-(source "gnu" "http://elpa.gnu.org/packages/")
-(source "marmalade" "http://marmalade-repo.org/packages/")
 (source "melpa" "http://melpa.milkbox.net/packages/")
 (source "melpa-stable" "http://melpa-stable.milkbox.net/packages/")
+(source gnu)
+(source marmalade)
 (source org)
 
 (depends-on "ace-jump-mode")
@@ -51,6 +51,7 @@
 (depends-on "markdown-mode+")
 (depends-on "multiple-cursors")
 (depends-on "nix-mode")
+(depends-on "ob-ipython")
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "pandoc-mode")

@@ -13,6 +13,7 @@
         c-electric-star
         comment-dwim
         delete-horizontal-space
+        electric-newline-and-maybe-indent
         evil-backward-char
         evil-backward-word-begin
         evil-beginning-of-line
@@ -67,6 +68,7 @@
         sp-kill-word
         tern-ac-dot-complete
         tuareg-newline-and-indent
+        web-mode-tag-next
         yas-expand
         ))
 

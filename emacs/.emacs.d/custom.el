@@ -17,6 +17,12 @@
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups/"))))
  '(before-save-hook (quote (delete-trailing-whitespace)))
  '(browse-url-browser-function (quote browse-url-chromium))
+ '(c-basic-offset 2)
+ '(c-default-style
+   (quote
+    ((java-mode . "java")
+     (awk-mode . "awk")
+     (other . "linux"))))
  '(cider-boot-parameters "cider repl -s wait")
  '(comment-auto-fill-only-comments t)
  '(company-backends
@@ -76,6 +82,7 @@
  '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
  '(fringe-mode 0 nil (fringe))
+ '(geiser-active-implementations (quote (guile racket)))
  '(geiser-default-implementation (quote racket))
  '(geiser-racket-extra-keywords
    (quote
@@ -134,6 +141,7 @@
  '(org-clock-idle-time 30)
  '(org-clock-in-resume t)
  '(org-clock-into-drawer t)
+ '(org-confirm-babel-evaluate nil)
  '(org-display-custom-times t)
  '(org-drawers
    (quote
@@ -177,6 +185,7 @@
  '(org-html-htmlize-output-type (quote css))
  '(org-html-postamble nil)
  '(org-html-preamble-format (quote (("en" "<h4>Last Modified: %C</h4>"))))
+ '(org-inline-image-background "#fdf6e3")
  '(org-latex-default-packages-alist
    (quote
     (("AUTO" "inputenc" t)
@@ -200,6 +209,15 @@
  '(org-latex-logfiles-extensions
    (quote
     ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "bbl" "blg" "pyg")))
+ '(org-latex-minted-langs
+   (quote
+    ((emacs-lisp "common-lisp")
+     (cc "c++")
+     (cperl "perl")
+     (shell-script "bash")
+     (caml "ocaml")
+     (ipython "python"))))
+ '(org-latex-packages-alist (quote (("" "minted" nil) ("margin=1in" "geometry" nil))))
  '(org-latex-pdf-process
    (quote
     ("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "biber %b" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")))
@@ -268,7 +286,9 @@
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
    (quote
-    ((semantic-dependency-system-include-path
+    ((pyvenv-activate . /home/emallson/\.anaconda3/envs/gray-bird/)
+     (geiser-scheme-implementation . "guile")
+     (semantic-dependency-system-include-path
       (quote
        ("/usr/include" "/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/" "/usr/local/include/" "/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/" "/usr/include/" "/usr/include/guile/2.0/")))
      (flycheck-mode)

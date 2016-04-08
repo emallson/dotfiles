@@ -80,7 +80,8 @@
                         epa-info-mode
                         paradox-menu-mode
                         image-mode
-                        emms-browser-mode))
+                        emms-browser-mode
+                        special-mode))
           (add-to-list 'evil-emacs-state-modes mode))
         (add-to-list 'evil-insert-state-modes 'cider-repl-mode)
         :config
@@ -217,14 +218,8 @@
       (req-package haskell-mode
         :mode "\\.hs\\'")
 
-      ;; (defun evil-disable-auto-indent ()
-      ;;   (setq-local evil-auto-indent nil))
-
-      ;; (req-package shm ; structured-haskell-mode
-      ;;   :require haskell-mode
-      ;;   :commands structured-haskell-mode
-      ;;   :config
-      ;;   (add-hook 'structured-haskell-mode-hook #'evil-disable-auto-indent))
+      (defun evil-disable-auto-indent ()
+        (setq-local evil-auto-indent nil))
     #+END_SRC
 
 *** C/C++
@@ -390,7 +385,80 @@
 *** =org-mode=
 
     #+BEGIN_SRC emacs-lisp
-    (req-package org)
+      (req-package org
+        :config
+        (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+    #+END_SRC
+
+    Hacking around Org's lack of inline image background support.
+
+    #+BEGIN_SRC emacs-lisp
+      (defcustom org-inline-image-background nil
+        "The color used as the default background for inline images.
+        When nil, use the default face background."
+        :group 'org
+        :type '(choice color (const nil)))
+
+      ;;; literally copypasta from org.el.gz
+      (defun org-display-inline-images (&optional include-linked refresh beg end)
+        "Display inline images.
+      Normally only links without a description part are inlined, because this
+      is how it will work for export.  When INCLUDE-LINKED is set, also links
+      with a description part will be inlined.  This can be nice for a quick
+      look at those images, but it does not reflect what exported files will look
+      like.
+      When REFRESH is set, refresh existing images between BEG and END.
+      This will create new image displays only if necessary.
+      BEG and END default to the buffer boundaries."
+        (interactive "P")
+        (when (display-graphic-p)
+          (unless refresh
+            (org-remove-inline-images)
+            (if (fboundp 'clear-image-cache) (clear-image-cache)))
+          (save-excursion
+            (save-restriction
+          (widen)
+          (setq beg (or beg (point-min)) end (or end (point-max)))
+          (goto-char beg)
+          (let ((re (concat "\\[\\[\\(\\(file:\\)\\|\\([./~]\\)\\)\\([^]\n]+?"
+                    (substring (org-image-file-name-regexp) 0 -2)
+                    "\\)\\]" (if include-linked "" "\\]")))
+                (case-fold-search t)
+                old file ov img type attrwidth width)
+            (while (re-search-forward re end t)
+              (setq old (get-char-property-and-overlay (match-beginning 1)
+                                   'org-image-overlay)
+                file (expand-file-name
+                  (concat (or (match-string 3) "") (match-string 4))))
+              (when (image-type-available-p 'imagemagick)
+                (setq attrwidth (if (or (listp org-image-actual-width)
+                            (null org-image-actual-width))
+                        (save-excursion
+                          (save-match-data
+                            (when (re-search-backward
+                               "#\\+attr.*:width[ \t]+\\([^ ]+\\)"
+                               (save-excursion
+                                 (re-search-backward "^[ \t]*$\\|\\`" nil t)) t)
+                          (string-to-number (match-string 1))))))
+                  width (cond ((eq org-image-actual-width t) nil)
+                      ((null org-image-actual-width) attrwidth)
+                      ((numberp org-image-actual-width)
+                       org-image-actual-width)
+                      ((listp org-image-actual-width)
+                       (or attrwidth (car org-image-actual-width))))
+                  type (if width 'imagemagick)))
+              (when (file-exists-p file)
+                (if (and (car-safe old) refresh)
+                (image-refresh (overlay-get (cdr old) 'display))
+              (setq img (save-match-data (create-image file type nil :width width :background org-inline-image-background)))
+              (when img
+                (setq ov (make-overlay (match-beginning 0) (match-end 0)))
+                (overlay-put ov 'display img)
+                (overlay-put ov 'face 'default)
+                (overlay-put ov 'org-image-overlay t)
+                (overlay-put ov 'modification-hooks
+                         (list 'org-display-inline-remove-overlay))
+                (push ov org-inline-image-overlays))))))))))
     #+END_SRC
 
 *** =smartparens=

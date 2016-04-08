@@ -17,11 +17,13 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleWS (toggleOrDoSkip)
 import XMonad.Actions.Submap
 import XMonad.Actions.WindowGo
+import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.Place
 import XMonad.Util.EZConfig (additionalKeysP, removeKeysP, checkKeymap, mkKeymap)
 import XMonad.Util.Run
 import XMonad.Util.Scratchpad
@@ -90,6 +92,8 @@ myKeymap = [("M-k", kill)
               ("S-a", spawn "mpd-menu.sh artist"),
               ("t", spawn "mpd-menu.sh title"),
               ("c", spawn "mpc clear")])
+           ,("M-g", gotoMenu)
+           ,("M-S-g", bringMenu)
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
            ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -c scratchpad -e tmux attach -t scratch")]
@@ -118,6 +122,7 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , handleEventHook = docksEventHook
                 , manageHook = manageHook defaultConfig <+> composeAll
                                [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
+                               ,placeHook (withGaps (60, 60, 60, 60) (smart (1, 1)))
                                ,className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}

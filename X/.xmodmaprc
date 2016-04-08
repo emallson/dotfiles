@@ -1,3 +1,5 @@
 ! Move ISO_Level3_Shift to Mod4
 remove Mod5 = 0xfe03
 add Mod4 = 0xfe03
+!remove Mod3 = Alt_R
+add Mod4 = Alt_R
