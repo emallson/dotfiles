@@ -1,0 +1,109 @@
+# archlinux.us
+IMAPaccount archlinux.us
+Host imap.gmail.com
+User emallson@archlinux.us
+PassCmd "authinfo.sh imap.gmail.com 993 password"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore archlinux.us-remote
+Account archlinux.us
+
+MaildirStore archlinux.us-local
+Path ~/Mail2/archlinux.us/
+Inbox ~/Mail2/archlinux.us/Inbox
+
+Channel archlinux.us
+Master :archlinux.us-remote:
+Slave :archlinux.us-local:
+Patterns * "![Gmail]/All Mail" "![Gmail]/Spam"
+Create Both
+SyncState *
+
+# atlanis.net
+IMAPaccount atlanis.net
+Host atlanis.net
+SSLType IMAPS
+User emallson
+PassCmd "authinfo.sh imap.atlanis.net 993 password"
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore atlanis.net-remote
+Account atlanis.net
+
+MaildirStore atlanis.net-local
+Path ~/Mail2/atlanis.net/
+Inbox ~/Mail2/atlanis.net/Inbox
+
+Channel atlanis.net
+Master :atlanis.net-remote:
+Slave :atlanis.net-local:
+Patterns *
+Create Both
+SyncState *
+
+# cs.uky.edu
+IMAPaccount cs.uky.edu
+Host mail.cs.uky.edu
+SSLType IMAPS
+User emallson
+PassCmd "authinfo.sh mail.cs.uky.edu 993 password"
+CertificateFile /etc/ssl/certs/mail_cs_uky_edu.crt
+
+IMAPStore cs.uky.edu-remote
+Account cs.uky.edu
+
+MaildirStore cs.uky.edu-local
+Path ~/Mail2/cs.uky.edu/
+Inbox ~/Mail2/cs.uky.edu/Inbox
+
+Channel cs.uky.edu
+Master :cs.uky.edu-remote:
+Slave :cs.uky.edu-local:
+Patterns *
+Create Both
+SyncState *
+
+# ufl.edu
+IMAPaccount ufl.edu
+Host mail.office365.com
+SSLType IMAPS
+User emallson@ufl.edu
+PassCmd "authinfo.sh mail.office365.com 993 password"
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore ufl.edu-remote
+Account ufl.edu
+
+MaildirStore ufl.edu-local
+Path ~/Mail2/ufl.edu/
+Inbox ~/Mail2/ufl.edu/Inbox
+
+Channel ufl.edu
+Master :ufl.edu-remote:
+Slave :ufl.edu-local:
+Patterns * !Spam
+Create Both
+SyncState *
+
+# cise.ufl.edu
+IMAPaccount cise.ufl.edu
+Host mail.cise.ufl.edu
+SSLType IMAPS
+User jdsmith # you had ONE job...
+PassCmd "authinfo.sh mail.cise.ufl.edu 993 password"
+CertificateFile /etc/ssl/certs/mail_cise_ufl_edu.crt
+
+IMAPStore cise.ufl.edu-remote
+Account cise.ufl.edu
+
+MaildirStore cise.ufl.edu-local
+Path ~/Mail2/cise.ufl.edu/
+Inbox ~/Mail2/cise.ufl.edu/Inbox
+
+Channel cise.ufl.edu
+Master :cise.ufl.edu-remote:
+Slave :cise.ufl.edu-local:
+Patterns *
+Create Both
+SyncState *
