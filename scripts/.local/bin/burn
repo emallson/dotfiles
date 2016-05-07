@@ -18,7 +18,7 @@ do
     mkdir -p /tmp/burn
 
     echo "Converting $year - $title by $authors..."
-    k2pdfopt "$SRC" -o "$DEST" -title "$year - $title" -author "$authors" -ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in < /dev/null > /dev/null
+    k2pdfopt "$SRC" -o "$DEST" -title "$year - $title" -author "$authors" -ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in $@ < /dev/null > /dev/null
 
     evince "$DEST" < /dev/null
 

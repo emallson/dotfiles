@@ -91,7 +91,8 @@ myKeymap = [("M-k", kill)
              [("a", spawn "mpd-menu.sh album"),
               ("S-a", spawn "mpd-menu.sh artist"),
               ("t", spawn "mpd-menu.sh title"),
-              ("c", spawn "mpc clear")])
+              ("c", spawn "mpc clear"),
+              ("p", spawn "mpd-play.sh")])
            ,("M-g", gotoMenu)
            ,("M-S-g", bringMenu)
            -- set st title because apparently -c only adds the new
@@ -122,8 +123,8 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , handleEventHook = docksEventHook
                 , manageHook = manageHook defaultConfig <+> composeAll
                                [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
-                               ,placeHook (withGaps (60, 60, 60, 60) (smart (1, 1)))
-                               ,className =? "chromium" <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
+                               ,placeHook $ withGaps (18, 18, 18, 18) $ smart (1, 1)
+                               ,(className =? "chromium" <||> className =? "chromium-browser") <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}
                 `removeKeysP`

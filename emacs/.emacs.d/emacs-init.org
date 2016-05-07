@@ -97,6 +97,8 @@
         (evil-global-set-noninsert-key "l" #'evil-find-char-to)
         (evil-global-set-noninsert-key "L" #'evil-find-char-to-backward)
         (evil-global-set-noninsert-key "r" #'evil-search-next)
+        (evil-global-set-noninsert-key "k" #'evil-forward-word-end)
+        (evil-global-set-noninsert-key "K" #'evil-forward-WORD-end)
 
         (evil-global-set-noninsert-key (kbd "M-a") 'evil-beginning-of-line)
         (evil-global-set-noninsert-key (kbd "M-o") 'evil-end-of-line)
@@ -109,6 +111,10 @@
         (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
         (evil-ex-define-cmd "t[angle]" #'org-babel-tangle))
     #+END_SRC
+
+    #+RESULTS:
+    : -1
+
 *** =evil-surround=
 
     Surround ALL the things!
@@ -473,6 +479,7 @@
         (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
         (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
         :config
+        (require 'smartparens-config)
         (sp-local-pair '(clojure-mode cider-repl-mode) "'" nil :actions nil))
     #+END_SRC
 
@@ -512,6 +519,13 @@
         :config
         (add-hook 'markdown-mode-hook #'pandoc-mode)
         (setq markdown-regex-italic "\\(?:^\\|[^\\]\\)\\(\\([*]\\)\\([^ \n    \\]\\|[^ \n ]\\(?:.\\|\n[^\n]\\)*?[^\\ ]\\)\\(\\2\\)\\)"))
+    #+END_SRC
+*** =helm-swoop=
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package helm-swoop
+        :bind (:map evil-motion-state-map
+               ("M-i" . helm-swoop-from-evil-search)))
     #+END_SRC
 * Miscellaneous Customizations
 ** Mouse Paste Behavior
@@ -660,16 +674,30 @@
          (string-match "<\\(.+\\)>" header)
          (match-string 1 header))
 
+       (defun mu4e-account-for (address)
+         (if (s-contains? "@" address)
+             (cadr (s-split "@" address))
+           address))
+
+       (defun mu4e-account-field (address field)
+         (let* ((account (mu4e-account-for address))
+                (flist (cdr (assoc account mu4e-account-alist))))
+           (cadr (assoc field flist))))
+
        (defun mu4e-sent-folder (msg)
-         (f-join
-          "/"
-          (mu4e-address-from-header (message-field-value "From"))
-          "Sent"))
+         (or
+          (mu4e-account-field (mu4e-address-from-header (message-field-value "From")) 'sent-folder)
+          (f-join
+           "/"
+           (mu4e-account-for (mu4e-address-from-header (message-field-value "From")))
+           "Sent")))
 
        (defun mu4e-trash-folder (msg)
-         (f-join
-          (f-dirname (mu4e-message-field msg :maildir))
-          "Trash"))
+         (or
+          (mu4e-account-field (cadr (s-split "/" (mu4e-message-field msg :maildir))) 'trash-folder)
+          (f-join
+           (f-dirname (mu4e-message-field msg :maildir))
+           "Trash")))
 
        (setq mu4e-maildir       "~/Mail/"
              mu4e-drafts-folder "/drafts"
@@ -677,36 +705,40 @@
              mu4e-trash-folder  #'mu4e-trash-folder)
 
        (defvar mu4e-account-alist
-         '(("emallson@archlinux.us"
-            (mu4e-drafts-folder "/emallson@archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
+         '(("archlinux.us"
+            (mu4e-drafts-folder "/archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
             (user-mail-address "emallson@archlinux.us")
             (smtpmail-default-smtp-server "smtp.gmail.com")
             (smtpmail-smtp-server "smtp.gmail.com")
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
-           ("emallson@atlanis.net"
-            (mu4e-drafts-folder "/emallson@atlanis.net/Drafts")
+           ("atlanis.net"
+            (mu4e-drafts-folder "/atlanis.net/Drafts")
             (user-mail-address "emallson@atlanis.net")
             (smtpmail-default-smtp-server "smtp.atlanis.net")
             (smtpmail-smtp-server "smtp.atlanis.net")
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
-           ("emallson@cs.uky.edu"
-            (mu4e-drafts-folder "/emallson@cs.uky.edu/Drafts")
+           ("cs.uky.edu"
+            (mu4e-drafts-folder "/cs.uky.edu/Drafts")
+            (mu4e-sent-folder "/cs.uky.edu/Sent")
             (user-mail-address "emallson@cs.uky.edu")
             (smtpmail-default-smtp-server "mail.cs.uky.edu")
             (smtpmail-smtp-server "mail.cs.uky.edu")
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
-           ("emallson@ufl.edu"
-            (mu4e-drafts-folder "/emallson@ufl.edu/Drafts")
+           ("ufl.edu"
+            (mu4e-drafts-folder "/ufl.edu/Drafts")
+            (mu4e-sent-folder "/ufl.edu/Sent Items")
+            (trash-folder "/ufl.edu/Deleted Items")
             (user-mail-address "emallson@ufl.edu")
             (smtpmail-default-smtp-server "smtp.office365.com")
             (smtpmail-smtp-server "smtp.office365.com")
             (smtpmail-stream-type starttls)
             (smtpmail-smtp-service 587))
-           ("jdsmith@cise.ufl.edu"
-            (mu4e-drafts-folder "/jdsmith@cise.ufl.edu/Drafts")
+           ("cise.ufl.edu"
+            (mu4e-drafts-folder "/cise.ufl.edu/Drafts")
+            (mu4e-sent-folder "/cise.ufl.edu/Sent")
             (user-mail-address "jdsmith@cise.ufl.edu")
             (smtpmail-default-smtp-server "mail.cise.ufl.edu")
             (smtpmail-smtp-server "mail.cise.ufl.edu")
@@ -740,11 +772,11 @@
        (setq mu4e-sent-messages-behavior #'mu4e-behavior-delete-when-gmail)
 
        (setq mu4e-maildir-shortcuts
-             '(("/emallson@archlinux.us/INBOX" . ?i)
-               ("/emallson@atlanis.net/INBOX" . ?a)
-               ("/emallson@cs.uky.edu/INBOX" . ?c)
-               ("/emallson@ufl.edu/INBOX" . ?u)
-               ("/jdsmith@cise.ufl.edu/INBOX" . ?j)))
+             '(("/archlinux.us/INBOX" . ?i)
+               ("/atlanis.net/INBOX" . ?a)
+               ("/cs.uky.edu/INBOX" . ?c)
+               ("/ufl.edu/INBOX" . ?u)
+               ("/cise.ufl.edu/INBOX" . ?j)))
 
        (setq message-send-mail-function 'smtpmail-send-it)
 
@@ -774,7 +806,13 @@
 
        (setq message-kill-buffer-on-exit t)
 
-       (setq mu4e-html2text-command 'mu4e-shr2text))
+       (setq mu4e-html2text-command 'mu4e-shr2text)
+
+       ;; add format=flowed to outgoing email
+       (add-hook 'mu4e-compose-mode-hook
+                 (defun cpb-compose-setup ()
+                   "Outgoing mails get format=flowed."
+                   (use-hard-newlines t 'guess))))
    #+END_SRC
 * Monkey Patches
 ** semantic-c-do-lex-if

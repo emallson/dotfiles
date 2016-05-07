@@ -3,6 +3,7 @@ Description=Emacs Daemon
 
 [Service]
 Type=forking
+EnvironmentFile=/home/emallson/.gnupg/gpg-agent-info-*
 ExecStart=/usr/bin/emacs --daemon
 ExecStop=/usr/bin/emacsclient -e "(kill-emacs)"
 

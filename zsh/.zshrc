@@ -88,3 +88,5 @@ TERM=xterm-256color
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit
 compinit
+
+bindkey '^B' push-line-or-edit

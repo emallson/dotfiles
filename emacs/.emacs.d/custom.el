@@ -23,7 +23,9 @@
     ((java-mode . "java")
      (awk-mode . "awk")
      (other . "linux"))))
+ '(cider-boot-command "/home/emallson/.local/bin/boot")
  '(cider-boot-parameters "cider repl -s wait")
+ '(cider-default-repl-command "boot")
  '(comment-auto-fill-only-comments t)
  '(company-backends
    (quote
@@ -34,7 +36,7 @@
  '(create-lockfiles nil)
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "c5a044ba03d43a725bd79700087dea813abcb6beb6be08c7eb3303ed90782482" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "3a9ff11d1337a00ca267f1d94dd4a8cdcee083014a9ef13d6c25bb11a9eac199" "e88e253e38a442679ebd43cbd75d56f0659f568881cb6977527f0b0bd7e03080" "b621af558778c09cd767d8bc3923552b1066cad5f398fb3ed6abf029dde69ffa" "3090af8bd70378df5c78fdcbdf20539eaccac7d0f3d948bd0f0a3245e59b82bc" "e5e0e4e20697cd7c2a8ab900246db214241a826d5348e0cd943b0aadc57d6170" "26cec1daa06ecf8191983cfbe8a4b33115529111093c7d4b3b19b37e2c54c625" "729372c7d16866ab00ae494ebcd9f5c9f91477e0adffec585e170bdab107361c" "5d65ef430d457bcf697f2dc2c3de3f270a7b6709f48cc96184dc286b84805240" "a14fa334282295971b68538b2d64593472a5dd09534dd48f3db748e534d10377" "9fc8b10d1bb9ff26507114013a9283c49ac1e09a5b67a12755ec67bedb18fc98" "6bbe1f9067adbc38752fc2b1e9ead7b660b0fc92034a52cb09843413ecd311ed" "1c2253db4f3c34e54cad751372ba54c0eb114fb7f6a4a4fb9c44d1f250bf5416" "22b0cb305c407fe7220501c46e0bc36c34dc10138f8c61dee72079340cd838f5" "3c7d756bfd56e4fe67baecbe1e972fea7c5374b7457839d179e73823d6d9f2ac" default)))
+    ("40bc0ac47a9bd5b8db7304f8ef628d71e2798135935eb450483db0dbbfff8b11" "603a9c7f3ca3253cb68584cb26c408afcf4e674d7db86badcfe649dd3c538656" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "c5a044ba03d43a725bd79700087dea813abcb6beb6be08c7eb3303ed90782482" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "3a9ff11d1337a00ca267f1d94dd4a8cdcee083014a9ef13d6c25bb11a9eac199" "e88e253e38a442679ebd43cbd75d56f0659f568881cb6977527f0b0bd7e03080" "b621af558778c09cd767d8bc3923552b1066cad5f398fb3ed6abf029dde69ffa" "3090af8bd70378df5c78fdcbdf20539eaccac7d0f3d948bd0f0a3245e59b82bc" "e5e0e4e20697cd7c2a8ab900246db214241a826d5348e0cd943b0aadc57d6170" "26cec1daa06ecf8191983cfbe8a4b33115529111093c7d4b3b19b37e2c54c625" "729372c7d16866ab00ae494ebcd9f5c9f91477e0adffec585e170bdab107361c" "5d65ef430d457bcf697f2dc2c3de3f270a7b6709f48cc96184dc286b84805240" "a14fa334282295971b68538b2d64593472a5dd09534dd48f3db748e534d10377" "9fc8b10d1bb9ff26507114013a9283c49ac1e09a5b67a12755ec67bedb18fc98" "6bbe1f9067adbc38752fc2b1e9ead7b660b0fc92034a52cb09843413ecd311ed" "1c2253db4f3c34e54cad751372ba54c0eb114fb7f6a4a4fb9c44d1f250bf5416" "22b0cb305c407fe7220501c46e0bc36c34dc10138f8c61dee72079340cd838f5" "3c7d756bfd56e4fe67baecbe1e972fea7c5374b7457839d179e73823d6d9f2ac" default)))
  '(desktop-path (quote ("~/.emacs.d/desktop/" "~/.emacs.d/" "~")))
  '(dirtrack-list (quote ("\\[\\(.*\\)\\]" 1)))
  '(display-battery-mode t)
@@ -78,6 +80,8 @@
  '(explicit-shell-file-name "/usr/bin/zsh")
  '(fci-rule-color "#383838")
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
+ '(flycheck-clang-language-standard "c++11")
+ '(flycheck-gcc-language-standard "c++11")
  '(flycheck-perl-include-path (quote ("/home/emallson/perl5/lib/perl5/")))
  '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
@@ -124,13 +128,14 @@
  '(mu4e-compose-dont-reply-to-self t)
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-confirm-quit nil)
+ '(mu4e-get-mail-command "mbsync -a")
  '(mu4e-user-mail-address-list
    (quote
     ("emallson@archlinux.us" "emallson@cs.uky.edu" "emallson@atlanis.net" "emallson@ufl.edu" "jdsmith@cise.ufl.edu" "aemallson@uky.edu")))
  '(mu4e-view-prefer-html t)
  '(mu4e-view-show-addresses t)
  '(mu4e-view-show-images t)
- '(org-agenda-files (quote ("~/org/work.org" "~/org/notes.org")))
+ '(org-agenda-files (quote ("~/org/work.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (dot . t) (python . t))))
  '(org-babel-tangle-lang-exts (quote (("emacs-lisp" . "el") ("clojure" . "clj"))))
  '(org-capture-templates
@@ -283,6 +288,8 @@
    (quote
     (rainbow-identifiers-face-overridable rainbow-identifiers-js2-filter)))
  '(reb-re-syntax (quote string))
+ '(recentf-max-menu-items 100)
+ '(recentf-max-saved-items 100)
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
    (quote
@@ -310,12 +317,16 @@
  '(sml/mode-width 5)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
- '(sp-autoescape-string-quote nil)
  '(sp-base-key-bindings (quote paredit))
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay nil)
  '(sp-highlight-wrap-tag-overlay nil)
  '(sp-hybrid-kill-entire-symbol (quote sp-point-in-string))
+ '(sp-override-key-bindings
+   (quote
+    ((")" . sp-up-sexp)
+     ("]" . sp-up-sexp)
+     ("}" . sp-up-sexp))))
  '(sublimity-scroll-drift-length 6)
  '(tab-stop-list
    (cl-loop with i = 0 do
@@ -357,6 +368,7 @@
      (340 . "#94BFF3")
      (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3")
+ '(web-mode-auto-close-style 2)
  '(web-mode-code-indent-offset 4)
  '(web-mode-enable-auto-pairing t)
  '(web-mode-enable-auto-quoting nil)
