@@ -107,6 +107,12 @@
         (evil-global-set-key 'visual (kbd "u") #'undo-tree-undo)
         (evil-global-set-key 'motion (kbd "SPC") #'evil-ace-jump-word-mode)
 
+        ;; colemak window motion
+        (define-key 'evil-window-map (kbd "n") #'evil-window-right)
+        (define-key 'evil-window-map (kbd "e") #'evil-window-left)
+        (define-key 'evil-window-map (kbd "s") #'evil-window-up)
+        (define-key 'evil-window-map (kbd "t") #'evil-window-down)
+
         ;; additional extended commands
         (evil-ex-define-cmd "k[ill]" #'kill-this-buffer)
         (evil-ex-define-cmd "t[angle]" #'org-babel-tangle))
@@ -188,16 +194,17 @@
     later.
 
     #+BEGIN_SRC emacs-lisp
-      (req-package rust-mode
+      (req-package racer
         :config
-        (add-to-list 'load-path "~/Code/racer/editors/emacs")
-        (setq racer-rust-src-path "~/Code/racer/rust/src")
-        (setq racer-cmd "~/Code/racer/target/release/racer")
-        (require 'racer nil t)
-        (with-eval-after-load 'racer
-          (add-hook 'rust-mode-hook #'racer-activate)
-          (bind-key "M-." #'racer-find-definition rust-mode-map)
-          (bind-key "TAB" #'racer-complete-or-indent rust-mode-map)))
+        (setq racer-rust-src-path "~/Code/rust/src")
+        (setq racer-cmd "~/.cargo/bin/racer"))
+      (req-package flycheck-rust
+        :init
+        (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+      (req-package rust-mode
+        :require (racer flycheck-rust)
+        :config
+        (add-hook 'rust-mode-hook #'racer-activate))
     #+END_SRC
 
 *** Clojure
@@ -222,10 +229,16 @@
 
     #+BEGIN_SRC emacs-lisp
       (req-package haskell-mode
-        :mode "\\.hs\\'")
+        :require ghc
+        :mode "\\.hs\\'"
+        :config
+        (add-hook 'haskell-mode-hook #'ghc-init))
 
       (defun evil-disable-auto-indent ()
         (setq-local evil-auto-indent nil))
+
+      (req-package ghc
+        :commands (ghc-init ghc-debug))
     #+END_SRC
 
 *** C/C++
@@ -243,7 +256,43 @@
                               :name "Gram"
                               :file "~/Code/gram/Makefile"
                               :system-include-path '("/usr/include/guile/2.0/")))
-      (add-hook 'c-mode-hook #'ede-minor-mode)
+    #+END_SRC
+
+*** Cap'n Proto
+
+    The mode for this is not in ELPA, not in EL-GET and not included
+    in the debian package. Eww.
+
+    #+BEGIN_SRC emacs-lisp
+      (with-eval-after-load 'el-get
+      (add-to-list 'el-get-sources '(:name capnp-mode
+                                           :type http
+                                           :url "https://github.com/sandstorm-io/capnproto/raw/master/highlighting/emacs/capnp-mode.el"
+                                           :after (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode)))))
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (req-package capnp-mode
+        :loader el-get)
+    #+END_SRC
+
+
+*** OCaml
+
+    This depends on Merlin being installed through OPAM.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+
+      (req-package merlin
+        :loader :path
+        :require tuareg
+        :init
+        (add-hook 'tuareg-mode-hook 'merlin-mode t)
+        (add-hook 'caml-mode-hook 'merlin-mode t)
+        :config
+        (setq merlin-command 'opam))
     #+END_SRC
 ** Utility Modes
 *** =helm=
@@ -391,9 +440,9 @@
 *** =org-mode=
 
     #+BEGIN_SRC emacs-lisp
-      (req-package org
-        :config
-        (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+      ;(req-package org
+      ;  :config
+      ;  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
     #+END_SRC
 
     Hacking around Org's lack of inline image background support.
@@ -813,6 +862,18 @@
                  (defun cpb-compose-setup ()
                    "Outgoing mails get format=flowed."
                    (use-hard-newlines t 'guess))))
+   #+END_SRC
+** Remove TAGS from capf
+
+   I have no idea why, but on some projects
+   =tags-completion-at-point-functions= just hangs forever. I don't
+   really use tags except on C/C++ projects where I can manually
+   enable it in mode-specific stuff, so I'm removing it from the
+   default.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default completion-at-point-functions
+                   (remove #'tags-completion-at-point-function completion-at-point-functions))
    #+END_SRC
 * Monkey Patches
 ** semantic-c-do-lex-if

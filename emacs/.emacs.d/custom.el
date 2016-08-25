@@ -30,7 +30,7 @@
  '(company-backends
    (quote
     (company-ghc merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
-                 (company-dabbrev-code company-gtags company-etags company-keywords)
+                 (company-dabbrev-code company-gtags company-keywords)
                  company-oddmuse company-files company-dabbrev)))
  '(compilation-read-command nil)
  '(create-lockfiles nil)
@@ -96,7 +96,7 @@
  '(grep-find-ignored-directories
    (quote
     ("$RECYCLE.BIN" ".AppleDouble" ".DS_Store" ".DocumentRevisions-V100" ".LSOverride" ".Rhistory" ".Spotlight-V100" ".TemporaryItems" ".Trashes" ".actionScriptProperties" ".apt_generated" ".bdfcache.el" ".build" ".buildpath" ".builds" ".bzr" ".cdv" ".classpath" ".com.apple.timemachine.donotpresent" ".com.apple.timemachine.supported" ".coverage" ".cproject" ".directory" ".dropbox" ".dropbox.cache" ".emacs-places" ".emacs.desktop" ".emacs.desktop.lock" ".eunit" ".externalToolBuilders" ".flexProperties" ".fseventsd" ".git" ".hg" ".idea" ".idlwave" ".ido.last" ".kkcrc" ".last_cover_stats" ".lein-deps-sum" ".loadpath" ".netrwhist" ".notes" ".org-id-locations" ".pc" ".project" ".projectile" ".prove" ".puppet-bak" ".quickurls" ".recentf" ".redcar" ".rspec" ".sass-cache" ".scala_dependencies" ".shadow_todo" ".shadows" ".strokes" ".svn" ".timelog" ".todo-do" ".todo-done" ".todo-top" ".tox" ".type-break" ".vip" ".viper" ".wmncach.el" ".yardoc" "_MTN" "__history" "_bdfcache.el" "_build" "_cgo_defun.c" "_cgo_gotypes.go" "_darcs" "_obj" "_sgbak" "_site" "_test" "_testmain.go" "_yardoc" "aclocal.m4" "auto-save-list" "autom4te.cache" "bin-debug" "bin-release" "blib" "build" "Build" "Build.bat" "COMMIT_EDITMSG" "cmake_install.cmake" "CMakeCache.txt" "CMakeFiles" "cover_db" "cscope.csd" "cscope.files" "cscope.inc" "cscope.lst" "cscope.out" "cscope.out.po" "cscope.tmplist" "CVS" "Debug" "debug" "depcomp" "DerivedData" "Desktop.ini" "ehthumbs.db" "GHI_ISSUE" "git-rebase-todo" "gwt-unitCache" "gwt_bree" "install-sh" "install_manifest.txt" "InstalledFiles" "Makefile.in" "Makefile.old" "MCVS" "META.yml" "MERGE_MSG" "minimal-session-saver-data.el" "MYMETA.yml" "nbbuild" "nbdist" "nosetests.xml" "nytprof" "nytprof.out" "perltidy.ERR" "pm_to_blib" "Profile" "profile" "RCS" "Release" "release" "SCCS" "Session.vim" "slprj" "SQUASH_MSG" "TAGS" "TAG_EDITMSG" "tags" "TestResult" "testresult" "Thumbs.db" "tmtags" "xcuserdata" "xhtml-loader.rnc" "{arch}" "~.dep" "~.dot" "~.nib" "~.plst" "test.out" "test_out" "test.output" "test_output" "doc" "coverage")))
- '(haskell-process-type (quote cabal-repl))
+ '(haskell-process-type (quote stack-ghci))
  '(helm-buffers-fuzzy-matching t)
  '(helm-ff-auto-update-initial-value t)
  '(helm-ff-skip-boring-files t)
@@ -129,6 +129,9 @@
  '(mu4e-compose-signature-auto-include nil)
  '(mu4e-confirm-quit nil)
  '(mu4e-get-mail-command "mbsync -a")
+ '(mu4e-headers-include-related t)
+ '(mu4e-headers-results-limit 200)
+ '(mu4e-headers-skip-duplicates t)
  '(mu4e-user-mail-address-list
    (quote
     ("emallson@archlinux.us" "emallson@cs.uky.edu" "emallson@atlanis.net" "emallson@ufl.edu" "jdsmith@cise.ufl.edu" "aemallson@uky.edu")))
@@ -293,7 +296,8 @@
  '(ropemacs-guess-project t)
  '(safe-local-variable-values
    (quote
-    ((pyvenv-activate . /home/emallson/\.anaconda3/envs/gray-bird/)
+    ((flycheck-clang-language-standard)
+     (pyvenv-activate . /home/emallson/\.anaconda3/envs/gray-bird/)
      (geiser-scheme-implementation . "guile")
      (semantic-dependency-system-include-path
       (quote

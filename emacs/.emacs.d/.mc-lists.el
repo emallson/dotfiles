@@ -66,6 +66,7 @@
         sp-forward-slurp-sexp
         sp-kill-hybrid-sexp
         sp-kill-word
+        sp-up-sexp
         tern-ac-dot-complete
         tuareg-newline-and-indent
         web-mode-tag-next
