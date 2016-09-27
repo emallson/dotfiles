@@ -82,6 +82,7 @@
  '(flycheck-check-syntax-automatically (quote (save mode-enabled)))
  '(flycheck-clang-language-standard "c++11")
  '(flycheck-gcc-language-standard "c++11")
+ '(flycheck-global-modes (quote (not haskell-mode)))
  '(flycheck-perl-include-path (quote ("/home/emallson/perl5/lib/perl5/")))
  '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
@@ -188,7 +189,7 @@
     ("aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "blg" "pyg")))
  '(org-format-latex-options
    (quote
-    (:foreground default :background default :scale 1.1 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+    (:foreground default :background default :scale 1.5 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-htmlize-output-type (quote css))
  '(org-html-postamble nil)

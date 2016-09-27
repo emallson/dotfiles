@@ -104,7 +104,7 @@ myKeymap = [("M-k", kill)
             , (otherModMasks, action) <- [("", windowGo), ("S-", windowSwap)]]
            ++
            [(otherModMasks ++ "M-" ++ key, screenWorkspace tag >>= flip whenJust (windows . action))
-            | (tag, key) <- zip [0..] ["z", "x"]
+            | (tag, key) <- zip [0..] ["z", "x", "/"]
             , (otherModMasks, action) <- [("", W.view), ("S-", W.shift)]]
            ++
            [(otherModMasks ++ "M-" ++ key, action tag)

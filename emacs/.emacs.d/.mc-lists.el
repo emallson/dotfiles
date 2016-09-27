@@ -14,6 +14,7 @@
         comment-dwim
         delete-horizontal-space
         electric-newline-and-maybe-indent
+        evil-append-line
         evil-backward-char
         evil-backward-word-begin
         evil-beginning-of-line
@@ -23,6 +24,7 @@
         evil-delete-backward-word
         evil-end-of-line
         evil-find-char
+        evil-forward-WORD-begin
         evil-forward-char
         evil-forward-word-begin
         evil-indent

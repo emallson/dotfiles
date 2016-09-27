@@ -2,7 +2,7 @@
 IMAPaccount archlinux.us
 Host imap.gmail.com
 User emallson@archlinux.us
-PassCmd "authinfo.sh imap.gmail.com 993 password"
+PassCmd "authinfo.sh imap.gmail.com 993 emallson@archlinux.us password"
 UseIMAPS yes
 
 IMAPStore archlinux.us-remote
@@ -21,10 +21,10 @@ SyncState *
 
 # atlanis.net
 IMAPaccount atlanis.net
-Host atlanis.net
+Host imap.gmail.com
 UseIMAPS yes
-User emallson
-PassCmd "authinfo.sh imap.atlanis.net 993 password"
+User emallson@atlanis.net
+PassCmd "authinfo.sh imap.gmail.com 993 emallson@atlanis.net password"
 
 IMAPStore atlanis.net-remote
 Account atlanis.net
@@ -45,7 +45,7 @@ IMAPaccount cs.uky.edu
 Host mail.cs.uky.edu
 UseIMAPS yes
 User emallson
-PassCmd "authinfo.sh mail.cs.uky.edu 993 password"
+PassCmd "authinfo.sh mail.cs.uky.edu 993 emallson password"
 CertificateFile /etc/ssl/certs/mail_cs_uky_edu.crt
 
 IMAPStore cs.uky.edu-remote
@@ -67,7 +67,7 @@ IMAPaccount ufl.edu
 Host mail.office365.com
 UseIMAPS yes
 User emallson@ufl.edu
-PassCmd "authinfo.sh mail.office365.com 993 password"
+PassCmd "authinfo.sh mail.office365.com 993 emallson@ufl.edu password"
 
 IMAPStore ufl.edu-remote
 Account ufl.edu
@@ -80,27 +80,5 @@ Channel ufl.edu
 Master :ufl.edu-remote:
 Slave :ufl.edu-local:
 Patterns * !Spam
-Create Both
-SyncState *
-
-# cise.ufl.edu
-IMAPaccount cise.ufl.edu
-Host imap.cise.ufl.edu
-UseIMAPS yes
-User jdsmith
-PassCmd "authinfo.sh imap.cise.ufl.edu 993 password"
-CertificateFile /etc/ssl/certs/mail_cise_ufl_edu.crt
-
-IMAPStore cise.ufl.edu-remote
-Account cise.ufl.edu
-
-MaildirStore cise.ufl.edu-local
-Path ~/Mail/cise.ufl.edu/
-Inbox ~/Mail/cise.ufl.edu/Inbox
-
-Channel cise.ufl.edu
-Master :cise.ufl.edu-remote:
-Slave :cise.ufl.edu-local:
-Patterns *
 Create Both
 SyncState *

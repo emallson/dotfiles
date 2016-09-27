@@ -90,3 +90,6 @@ autoload -Uz compinit
 compinit
 
 bindkey '^B' push-line-or-edit
+
+# OPAM configuration
+. /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

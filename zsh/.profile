@@ -7,7 +7,8 @@ fi
 
 export CHROME_BIN=chromium;
 export BROWSER=$CHROME_BIN;
-export PATH="$HOME/.cask/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH";
+export PATH="$HOME/.cargo/bin:$HOME/.cask/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH";
+export CARGO_HOME="$HOME/.cargo/"
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

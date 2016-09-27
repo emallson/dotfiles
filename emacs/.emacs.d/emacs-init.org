@@ -232,6 +232,7 @@
         :require ghc
         :mode "\\.hs\\'"
         :config
+        (add-to-list 'load-path "~/.stack/snapshots/x86_64-linux/lts-6.9/7.10.3/share/x86_64-linux-ghc-7.10.3/ghc-mod-5.5.0.0/elisp/")
         (add-hook 'haskell-mode-hook #'ghc-init))
 
       (defun evil-disable-auto-indent ()
@@ -350,9 +351,7 @@
 *** =flycheck=
 
     #+BEGIN_SRC emacs-lisp
-      (req-package flycheck
-        :init
-        (add-hook 'prog-mode-hook #'flycheck-mode))
+      (req-package flycheck)
     #+END_SRC
 
 *** =auto-fill-mode=
@@ -756,6 +755,7 @@
        (defvar mu4e-account-alist
          '(("archlinux.us"
             (mu4e-drafts-folder "/archlinux.us/Drafts")  ; changed from [Gmail].Drafts because these buggers don't get deleted properly
+            (trash-folder "/archlinux.us/\[Gmail\]/Trash")
             (user-mail-address "emallson@archlinux.us")
             (smtpmail-default-smtp-server "smtp.gmail.com")
             (smtpmail-smtp-server "smtp.gmail.com")
