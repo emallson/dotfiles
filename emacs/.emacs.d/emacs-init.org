@@ -875,6 +875,19 @@
      (setq-default completion-at-point-functions
                    (remove #'tags-completion-at-point-function completion-at-point-functions))
    #+END_SRC
+
+** Unicode Support
+
+   Emacs has built-in unicode support, of course. However, the default
+   setup gives most unicode glyphs something like 3x line-height. This
+   is obnoxious because I want to have abbrevs set up for characters
+   like π without having them break my +carefully constructed+
+   haphazard-but-functional typographic setup.
+
+   #+BEGIN_SRC emacs-lisp
+     (req-package unicode-fonts
+       :init (unicode-fonts-setup))
+   #+END_SRC
 * Monkey Patches
 ** semantic-c-do-lex-if
 
