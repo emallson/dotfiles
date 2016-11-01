@@ -54,6 +54,7 @@
 (depends-on "markdown-mode")
 (depends-on "multiple-cursors")
 (depends-on "ob-ipython")
+(depends-on "ov")
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "pandoc-mode")
