@@ -87,7 +87,7 @@
  '(font-lock-global-modes (quote (not speedbar-mode erc-mode)))
  '(fortran-minimum-statement-indent-fixed 8)
  '(fringe-mode 0 nil (fringe))
- '(geiser-active-implementations (quote (guile racket)))
+ '(geiser-active-implementations (quote (guile racket chez)))
  '(geiser-default-implementation (quote racket))
  '(geiser-racket-extra-keywords
    (quote

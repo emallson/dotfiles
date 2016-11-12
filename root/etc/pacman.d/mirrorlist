@@ -5,14 +5,12 @@
 ##
 
 ## Score: 0.8, United States
-Server = https://lug.mtu.edu/archlinux/$repo/os/$arch
+#Server = https://lug.mtu.edu/archlinux/$repo/os/$arch
 ## Score: 1.1, United States
 Server = https://arch.localmsp.org/arch/$repo/os/$arch
 ## Score: 1.2, United States
 Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
 ## Score: 1.4, United States
 Server = https://mirror.lty.me/archlinux/$repo/os/$arch
-## Score: 2.4, United States
-Server = https://kwk.pw/arch/$repo/os/$arch
 ## Score: 3.3, United States
 Server = https://mirrors.ocf.berkeley.edu/archlinux/$repo/os/$arch
