@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import argparse
 import requests
 import csv
@@ -50,7 +50,7 @@ def from_key(key):
 
 def clean(obj, file_re):
     obj["year"] = obj["issued"]["date-parts"][0][0]
-    obj["authors"] = "; ".join([u"{family}, {given}".format(**author) for author in obj["author"]]).encode('utf-8')
+    obj["authors"] = "; ".join([u"{family}, {given}".format(**author) for author in obj["author"]])
     try:
         obj["path"] = next(p for p in obj["paths"] if re.match(file_re, p))
     except StopIteration:
@@ -69,7 +69,9 @@ def run(args):
     objs = [clean(from_key(k), args.file_re) for k in keys]
 
     for obj in objs:
-        print(json.dumps( {k: obj[k] if k in obj else None for k in args.format.split(',')} ))
+        data = json.dumps( {k: obj[k] if k in obj else None
+                            for k in args.format.split(',')}, ensure_ascii=False)
+        print(data)
 
 
 if __name__ == "__main__":
