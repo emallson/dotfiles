@@ -92,7 +92,9 @@ myKeymap = [("M-k", kill)
               ("S-a", spawn "mpd-menu.sh artist"),
               ("t", spawn "mpd-menu.sh title"),
               ("c", spawn "mpc clear"),
-              ("p", spawn "mpd-play.sh")])
+              ("p", spawn "mpd-play.sh"),
+              ("s", spawn "mpc shuffle"),
+              ("n", spawn "mpd-next.sh")])
            ,("M-g", gotoMenu)
            ,("M-S-g", bringMenu)
            -- set st title because apparently -c only adds the new
