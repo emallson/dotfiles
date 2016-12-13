@@ -288,10 +288,7 @@
  '(rainbow-identifiers-cie-l*a*b*-saturation 25)
  '(rainbow-identifiers-faces-to-override
    (quote
-    (js2-function-call js2-function-param js2-external-variable font-lock-variable-name-face font-lock-function-name-face)))
- '(rainbow-identifiers-filter-functions
-   (quote
-    (rainbow-identifiers-face-overridable rainbow-identifiers-js2-filter)))
+    (js2-function-call js2-function-param js2-external-variable font-lock-variable-name-face font-lock-function-name-face default)))
  '(reb-re-syntax (quote string))
  '(recentf-max-menu-items 100)
  '(recentf-max-saved-items 100)

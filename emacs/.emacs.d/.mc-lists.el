@@ -37,6 +37,7 @@
         evil-shift-left-line
         evil-visual-char
         forward-sexp
+        helm-show-kill-ring
         icicle-goto-marker-or-set-mark-command
         icicle-yank-maybe-completing
         indent-for-tab-command

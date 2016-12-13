@@ -83,7 +83,7 @@ myKeymap = [("M-k", kill)
            ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") ((className =? "st-256color") <&&> (qnot $ title =? "scratchpad")))
            ,("M-S-c", tmuxAttachPrompt defaultXPConfig)
            ,("M-C-c", tmuxCreatePrompt defaultXPConfig)
-           ,("M-b", raiseNextMaybe (spawn "chromium") (stringProperty "WM_WINDOW_ROLE" =? "browser"))
+           ,("M-b", raiseNextMaybe (spawn "chromium") ((className =? "chromium-browser") <&&> (stringProperty "WM_WINDOW_ROLE" =? "browser")))
            ,("M-C-b", spawn "chromium")
            ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
            ,("M-C-<Space>", spawn "emacsclient -c")
@@ -92,7 +92,9 @@ myKeymap = [("M-k", kill)
               ("S-a", spawn "mpd-menu.sh artist"),
               ("t", spawn "mpd-menu.sh title"),
               ("c", spawn "mpc clear"),
-              ("p", spawn "mpd-play.sh")])
+              ("p", spawn "mpd-play.sh"),
+              ("s", spawn "mpc shuffle"),
+              ("n", spawn "mpd-next.sh")])
            ,("M-g", gotoMenu)
            ,("M-S-g", bringMenu)
            -- set st title because apparently -c only adds the new

@@ -175,6 +175,11 @@
     #+BEGIN_SRC emacs-lisp
       (req-package elpy
         :commands elpy-mode
+        :bind (:map elpy-mode-map
+                    ("C-<right>" . nil)
+                    ("C-<left>" . nil)
+                    ("M-<up>" . nil)
+                    ("C-<up>" . nil))
         :init
         (add-hook 'python-mode-hook #'elpy-mode)
         :config
@@ -202,9 +207,10 @@
         :init
         (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
       (req-package rust-mode
-        :require (racer flycheck-rust)
+        :require (racer flycheck-rust smartparens)
         :config
-        (add-hook 'rust-mode-hook #'racer-activate))
+        (add-hook 'rust-mode-hook #'racer-activate)
+        (add-hook 'rust-mode-hook #'smartparens-strict-mode))
     #+END_SRC
 
 *** Clojure
