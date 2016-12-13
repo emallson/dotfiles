@@ -7,6 +7,8 @@ Xft.hintstyle:  hintmedium
 
 xterm*termName: xterm-256color
 xterm*faceName: Source Code Pro Light:size=13:antialias=true
+xterm*metaSendsEscape: true
+
 URxvt*font: xft:Source Code Pro Light:size=13:antialias=true
 
 *foreground: rgb:dc/dc/cc
