@@ -1,44 +1,74 @@
-#!/bin/zsh -f
-# input: seq of JSON objects containing fields author, title, year, and path
-while read line
-do
-    SRC=`echo $line | jq ".path" -r`
+#!/usr/bin/env python3
+"""Create PDFs for and send to Kindle.
 
-    year=`echo $line | jq ".year" -r`
-    authors=`echo $line | jq ".authors" -r`
-    title=`echo $line | jq ".title" -r`
+Usage:
+    burn json [options]
+    burn <file> <title> <authors> [options]
 
-    if [ -z "$SRC" ]; then
-        echo "Skipped $year - $title by $authors because there is no source file"
-        continue;
-    fi
+Options:
+    -h --help               Show this screen.
+    --no-confirm            Send without confirming correctness of PDF output.
+    --k2opts <opts>         Additional options for k2pdfopt. These will be added to the end of the command line and will overwrite existing options.
+    --smtp-server <host>    SMTP host to send via.
+    --smtp-port <port>      SMTP port.
+    --smtp-user <username>
+    --from <email>
+    --to <email>
+"""
 
-    DEST="/tmp/burn/$year - $title.pdf"
+from docopt import docopt
+import json
+import subprocess
+import tempfile
+from distutils.util import strtobool
+import sys
+import os
+from configparser import ConfigParser
 
-    mkdir -p /tmp/burn
 
-    echo "Converting $year - $title by $authors..."
-    k2pdfopt "$SRC" -o "$DEST" -title "$year - $title" -author "$authors" -ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in $@ < /dev/null > /dev/null
+default_config = {
+    'k2pdfopts': '-ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in'.split(' '),
+}
 
-    evince "$DEST" < /dev/null
+def convert(file, title, authors, opts=[]):
+    tmp = tempfile.NamedTemporaryFile(prefix='burn', suffix='.pdf', delete=False)
+    cmd = ['k2pdfopt', file, '-o', tmp.name, '-title', title, '-author', authors] + default_config['k2pdfopts'] + opts
+    subprocess.run(cmd).check_returncode()
+    return tmp.name
 
-    echo "Transfer to kindle?"
-    read -q yn
-    echo
-    case $yn in
-        y )
-            mail -a "$DEST" \
-                 -Sfrom="emallson@ufl.edu" \
-                 -S smtp="smtp.office365.com:587" \
-                 -S smtp-use-starttls \
-                 -S smtp-auth=login \
-                 -S smtp-auth-user="emallson@ufl.edu" \
-                 -S smtp-auth-password="${(Q)$(gpg2 -q -d ~/.authinfo.gpg | grep smtp.office365.com | cut -d\  -f8)}" \
-                 emallson@free.kindle.com \
-                 < /dev/null
-            continue ;;
-        n )
-            echo "Skipped $year - $title by $authors..."
-            continue ;;
-    esac
-done
+def confirm(file):
+    cmd = ['evince', file]
+    subprocess.run(cmd)
+    return strtobool(input('Send to kindle? (Y/N)'))
+
+
+def send(file, from_user, to, username, server, port=587):
+    cmd = ['mail', '-a', file, 
+            '-Sfrom=' + from_user, 
+            '-S', 'smtp=' + server + ":" + str(port),
+            '-S', 'smtp-use-starttls',
+            '-S', 'smtp-auth=login',
+            '-S', 'smtp-auth-user=' + username,
+            '-S', 'smtp-auth-password="${{(Q)$(gpg2 -q -d ~/.authinfo.gpg | grep {server} | cut -d\  -f8)}}"'.format(server=server),
+            to, '<', '/dev/null']
+    subprocess.run(' '.join(cmd), shell=True, executable='/bin/zsh').check_returncode()
+
+if __name__ == '__main__':
+    args = docopt(__doc__, version='0.1')
+    cfg = ConfigParser()
+    files_read = cfg.read(os.path.expanduser('~/.burnrc'))
+    args = {**cfg['burn'], **{k: v for k, v in args.items() if v is not None}} if files_read != [] else args
+    print(args)
+    if args['json']:
+        for line in sys.stdin:
+            paper = json.loads(line)
+            if paper['path'] == "":
+                print("{} has no path, skipping...", paper["title"])
+                continue
+            file = convert(paper['path'], paper['year'] + ' - ' + paper['title'], paper['authors'])
+            if confirm(file):
+                send(file, args['from'], args['to'], args['smtp-user'], args['smtp-server'], args['smtp-port'])
+    else:
+        file = convert(args['<file>'], args['<title>'], args['<authors>'])
+        if confirm(file):
+            send(file, args['from'], args['to'], args['smtp-user'], args['smtp-server'], args['smtp-port'])
