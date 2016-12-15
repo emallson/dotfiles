@@ -85,7 +85,7 @@ static unsigned int tabspaces = 4;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
   "#202020", /* black -- USED */
-  "#dfaf8f", /* maroon -- USED*/
+  "#cc9393", /* red-- USED  */
   "#7f9f7f", /* green -- USED */
   "#d0bf8f", /* olive -- USED */
   "#7cc0c3", /* navy -- USED */
@@ -93,7 +93,7 @@ static const char *colorname[] = {
   "#dfaf8f", /* teal */
   "#efefef", /* silver -- USED */
   "#404040", /* 8; grey -- USED */
-  "#cc9393", /* red-- USED  */
+  "#dfaf8f", /* maroon -- USED*/
   "#bfdfbf", /* lime -- USED */
   "#f0dfaf", /* yellow -- USED */
   "#8cd0d3", /* blue -- USED */
@@ -464,4 +464,3 @@ static char ascii_printable[] =
 	" !\"#$%&'()*+,-./0123456789:;<=>?"
 	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
 	"`abcdefghijklmnopqrstuvwxyz{|}~";
-

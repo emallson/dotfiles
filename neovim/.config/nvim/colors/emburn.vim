@@ -37,24 +37,24 @@ hi Delimiter guifg=#dcdccc gui=none ctermfg=15 cterm=none
 "hi Structure guifg=#f0dfaf gui=bold
 " Constants
 hi Constant guifg=#bfdfbf ctermfg=10
-hi Character guifg=#cc9393 ctermfg=9
-hi String guifg=#cc9393 ctermfg=9
+hi Character guifg=#cc9393 ctermfg=1
+hi String guifg=#cc9393 ctermfg=1
 " Macros
 hi PreProc guifg=#93e0e3 ctermfg=14
 "Identifiers
 hi Function guifg=#93e0e3 ctermfg=14
-hi Identifier guifg=#dfaf8f ctermfg=1 cterm=none gui=none
+hi Identifier guifg=#dfaf8f ctermfg=9 cterm=none gui=none
 hi Type guifg=#7cc0c3 ctermfg=4
 hi Typedef guifg=#7cc0c3 ctermfg=4
 " Messages
 hi WarningMsg guifg=#d0bf8f ctermfg=3
-hi Error guifg=#cc9393 gui=italic guibg=#202020 ctermfg=9 cterm=italic
-hi ErrorMsg guifg=#cc9393 gui=italic guibg=#202020 ctermfg=9 cterm=italic
+hi Error guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 cterm=italic
+hi ErrorMsg guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 cterm=italic
 " StatusLine
 hi StatusLine guifg=#dcdccc guibg=#202020 ctermfg=15 ctermbg=0
 hi StatusLineNC guifg=#dcdccc guifg=#202020 ctermfg=15 ctermbg=0
-			
+
 " Uncategorized
 hi NonText guifg=#dcdccc guibg=#202020 ctermfg=15 ctermbg=0
 " Spell
-hi SpellBad guifg=#cc9393 gui=italic ctermfg=9 cterm=italic
+hi SpellBad guifg=#cc9393 gui=italic ctermfg=1 cterm=italic

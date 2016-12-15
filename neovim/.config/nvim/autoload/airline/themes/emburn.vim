@@ -40,9 +40,9 @@ let g:airline#themes#emburn#palette.normal.airline_x = ['#202020', '#f0dfaf', 0,
 " applied after g:airline#themes#emburn#palette.normal, hence why only certain keys are
 " declared.
 let g:airline#themes#emburn#palette.normal_modified = {
-      \ 'airline_x': [ '#202020' , '#cc9393' , 0 , 9 , ''     ] ,
+      \ 'airline_x': [ '#202020' , '#cc9393' , 0 , 1 , ''     ] ,
       \ }
- 
+
 
 let s:I1 = [ '#202020' , '#7cc0c3' , 0, 4 ]
 let s:I2 = s:N2
@@ -57,7 +57,7 @@ let g:airline#themes#emburn#palette.insert_paste = {
 
 let g:airline#themes#emburn#palette.replace = copy(g:airline#themes#emburn#palette.insert)
 let g:airline#themes#emburn#palette.replace.airline_x = ['#202020', '#f0dfaf', 0, 11, '' ]
-let g:airline#themes#emburn#palette.replace.airline_a = [ s:I2[0]   , '#cc9393' , s:I2[2] , 9     , ''     ]
+let g:airline#themes#emburn#palette.replace.airline_a = [ s:I2[0]   , '#cc9393' , s:I2[2] , 1     , ''     ]
 let g:airline#themes#emburn#palette.replace_modified = g:airline#themes#emburn#palette.insert_modified
 
 
@@ -73,7 +73,7 @@ let s:IA1 = [ '#dcdccc', '#404040', 15, 8 ]
 let s:IA2 = s:N2
 let s:IA3 = s:N3
 let g:airline#themes#emburn#palette.inactive = airline#themes#generate_color_map(s:IA1, s:IA2, s:IA3)
-let g:airline#themes#emburn#palette.inactive_modified = g:airline#themes#emburn#palette.normal_modified 
+let g:airline#themes#emburn#palette.inactive_modified = g:airline#themes#emburn#palette.normal_modified
 let g:airline#themes#emburn#palette.inactive.airline_x = ['#202020', '#f0dfaf', 0, 11, '' ]
 
 
@@ -100,4 +100,3 @@ let g:airline#themes#emburn#palette.ctrlp = airline#extensions#ctrlp#generate_co
       \ [ '#d7d7ff' , '#5f00af' , 189 , 55  , ''     ],
       \ [ '#ffffff' , '#875fd7' , 231 , 98  , ''     ],
       \ [ '#5f00af' , '#ffffff' , 55  , 231 , 'bold' ])
-
