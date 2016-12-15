@@ -31,10 +31,11 @@ default_config = {
 }
 
 def convert(file, title, authors, opts=[]):
-    tmp = tempfile.NamedTemporaryFile(prefix='burn', suffix='.pdf', delete=False)
-    cmd = ['k2pdfopt', file, '-o', tmp.name, '-title', title, '-author', authors] + default_config['k2pdfopts'] + opts
+    tmp = '/tmp/burn/{}.pdf'.format(title)
+    os.makedirs('/tmp/burn/', exist_ok=True)
+    cmd = ['k2pdfopt', file, '-o', tmp, '-title', title, '-author', authors] + default_config['k2pdfopts'] + opts
     subprocess.run(cmd).check_returncode()
-    return tmp.name
+    return tmp
 
 def confirm(file):
     cmd = ['evince', file]
@@ -43,8 +44,8 @@ def confirm(file):
 
 
 def send(file, from_user, to, username, server, port=587):
-    cmd = ['mail', '-a', file, 
-            '-Sfrom=' + from_user, 
+    cmd = ['mail', '-a', '"{}"'.format(file),
+            '-Sfrom=' + from_user,
             '-S', 'smtp=' + server + ":" + str(port),
             '-S', 'smtp-use-starttls',
             '-S', 'smtp-auth=login',
@@ -58,7 +59,7 @@ if __name__ == '__main__':
     cfg = ConfigParser()
     files_read = cfg.read(os.path.expanduser('~/.burnrc'))
     args = {**cfg['burn'], **{k: v for k, v in args.items() if v is not None}} if files_read != [] else args
-    print(args)
+    # print(args)
     if args['json']:
         for line in sys.stdin:
             paper = json.loads(line)
