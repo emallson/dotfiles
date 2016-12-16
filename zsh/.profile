@@ -21,3 +21,5 @@ eval `dircolors ~/.dircolors`;
 export BOOT_JVM_OPTIONS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none'
 
 which systemctl &> /dev/null && systemctl --user import-environment PATH
+
+export PATH="$HOME/.cargo/bin:$PATH"

@@ -6,3 +6,19 @@ map global normal n <right>
 map global normal e <left>
 map global normal s <up>
 map global normal t <down>
+
+# rust attrs
+addhl -group /rust/code regex \#!?\[.+?\] 0:meta
+# rust extern crate as keywords
+rmhl /rust/code/hlregex'\b(?:crate|use|extern)\b'
+addhl -group /rust/code regex \b(?:crate|use|extern)\b 0:keyword
+# rust variable decl higlighting
+addhl -group /rust/code regex \b\w+:[^:] 0:identifier
+#rust type highlighting
+addhl -group /rust/code regex [[:upper:]]\w+ 0:type
+addhl -group /rust/code regex \b[[:upper:]]\b 0:typevar
+# rust lifetime highlighting
+addhl -group /rust/code regex "<(?:'(\w+),?\s*)+?>" 1:emgreen4
+addhl -group /rust/code regex "&'(?:static|(\w+))\b" 1:emgreen2
+# rust fn name highlighting
+addhl -group /rust/code regex "\bfn (\w+)\b" 1:emcyan

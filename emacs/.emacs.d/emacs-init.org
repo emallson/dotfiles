@@ -289,17 +289,17 @@
     This depends on Merlin being installed through OPAM.
 
     #+BEGIN_SRC emacs-lisp
-      (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+      ;; (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+      ;; (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 
-      (req-package merlin
-        :loader :path
-        :require tuareg
-        :init
-        (add-hook 'tuareg-mode-hook 'merlin-mode t)
-        (add-hook 'caml-mode-hook 'merlin-mode t)
-        :config
-        (setq merlin-command 'opam))
+      ;; (req-package merlin
+      ;;   :loader :path
+      ;;   :require tuareg
+      ;;   :init
+      ;;   (add-hook 'tuareg-mode-hook 'merlin-mode t)
+      ;;   (add-hook 'caml-mode-hook 'merlin-mode t)
+      ;;   :config
+      ;;  (setq merlin-command 'opam))
     #+END_SRC
 ** Utility Modes
 *** =helm=
@@ -927,73 +927,73 @@
    Anyway, apparently =prettify-symbols-mode= demands WORDS not
    SUBSTRINGS. This is unfortunate. Rolling my own...
 
-   #+BEGIN_SRC emacs-lisp
-     (req-package 'ov)
-     (require 'ov)                           ; TODO: there is a req-package key for this
+   # #+BEGIN_SRC emacs-lisp
+   #   (req-package 'ov)
+   #   (require 'ov)                           ; TODO: there is a req-package key for this
 
-     (defcustom symbol-overlay-alist nil
-       "Alist used to overlay symbols in `symbol-overlay-mode'. Each
-       key should be a regexp, and each value should be the string to
-       be displayed in the overlay."
-       :type 'alist
-       :group 'symbol-overlay)
+   #   (defcustom symbol-overlay-alist nil
+   #     "Alist used to overlay symbols in `symbol-overlay-mode'. Each
+   #     key should be a regexp, and each value should be the string to
+   #     be displayed in the overlay."
+   #     :type 'alist
+   #     :group 'symbol-overlay)
 
-     (defun symbol-overlay-modification-hook (overlay afterp _beg _end &optional len)
-       (let ((inhibit-modification-hooks t))
-         (if afterp
-             (unless (= len 0)
-               (delete-overlay overlay)))))
+   #   (defun symbol-overlay-modification-hook (overlay afterp _beg _end &optional len)
+   #     (let ((inhibit-modification-hooks t))
+   #       (if afterp
+   #           (unless (= len 0)
+   #             (delete-overlay overlay)))))
 
-     (defun symbol-overlay-within-line (pair)
-       (let* ((regexp (car pair))
-              (replacement (cdr pair))
-              (overlay (ov-regexp regexp (line-beginning-position) (line-end-position))))
-         (ov-set overlay
-                 'category 'symbol-overlay
-                 'display (if (characterp replacement)
-                              (char-to-string replacement)
-                            replacement)
-                 'modification-hooks '(symbol-overlay-modification-hook))))
+   #   (defun symbol-overlay-within-line (pair)
+   #     (let* ((regexp (car pair))
+   #            (replacement (cdr pair))
+   #            (overlay (ov-regexp regexp (line-beginning-position) (line-end-position))))
+   #       (ov-set overlay
+   #               'category 'symbol-overlay
+   #               'display (if (characterp replacement)
+   #                            (char-to-string replacement)
+   #                          replacement)
+   #               'modification-hooks '(symbol-overlay-modification-hook))))
 
-     (defun symbol-overlay-current-line (_beg _end _len)
-       (save-excursion
-         (ov-clear 'category 'symbol-overlay (line-beginning-position) (line-end-position))
-         (-flatten (mapcar #'symbol-overlay-within-line symbol-overlay-alist))))
+   #   (defun symbol-overlay-current-line (_beg _end _len)
+   #     (save-excursion
+   #       (ov-clear 'category 'symbol-overlay (line-beginning-position) (line-end-position))
+   #       (-flatten (mapcar #'symbol-overlay-within-line symbol-overlay-alist))))
 
-     (defun symbol-overlay-buffer (&optional no-clearp)
-       "Overlay the entire buffer. If `no-clearp' is nil, clear
-       overlays with category `symbol-overlay' first."
-       (interactive)
-       (save-excursion
-         (unless no-clearp
-           (ov-clear 'category 'symbol-overlay))
-         (while (not (eobp))
-           (symbol-overlay-current-line nil nil nil)
-           (forward-line))))
+   #   (defun symbol-overlay-buffer (&optional no-clearp)
+   #     "Overlay the entire buffer. If `no-clearp' is nil, clear
+   #     overlays with category `symbol-overlay' first."
+   #     (interactive)
+   #     (save-excursion
+   #       (unless no-clearp
+   #         (ov-clear 'category 'symbol-overlay))
+   #       (while (not (eobp))
+   #         (symbol-overlay-current-line nil nil nil)
+   #         (forward-line))))
 
-     (define-minor-mode symbol-overlay-mode
-       "Display symbols in overlays replacing regexps.
+   #   (define-minor-mode symbol-overlay-mode
+   #     "Display symbols in overlays replacing regexps.
 
-     Please don't shoot yourself in the foot. Use fast regexps. All
-     regexps are (currently) limited to matching within a line."
-       :lighter " §"
-       (if (not (null symbol-overlay-mode))
-           (progn
-             (symbol-overlay-buffer t)
-             (add-hook 'after-change-functions #'symbol-overlay-current-line t t))
-         (progn (ov-clear 'category 'symbol-overlay)
-                (remove-hook 'after-change-functions #'symbol-overlay-current-line t))))
-   #+END_SRC
+   #   Please don't shoot yourself in the foot. Use fast regexps. All
+   #   regexps are (currently) limited to matching within a line."
+   #     :lighter " §"
+   #     (if (not (null symbol-overlay-mode))
+   #         (progn
+   #           (symbol-overlay-buffer t)
+   #           (add-hook 'after-change-functions #'symbol-overlay-current-line t t))
+   #       (progn (ov-clear 'category 'symbol-overlay)
+   #              (remove-hook 'after-change-functions #'symbol-overlay-current-line t))))
+   # #+END_SRC
 
-   And now we turn it on with greek symbols in =prog-mode=.
+   # And now we turn it on with greek symbols in =prog-mode=.
 
-   #+BEGIN_SRC emacs-lisp
-     (defun prog-mode-pretty-symbols ()
-       (setq-local symbol-overlay-alist greek-symbols-alist))
+   # #+BEGIN_SRC emacs-lisp
+   #   (defun prog-mode-pretty-symbols ()
+   #     (setq-local symbol-overlay-alist greek-symbols-alist))
 
-     (add-hook 'prog-mode-hook #'symbol-overlay-mode)
-     (add-hook 'prog-mode-hook #'prog-mode-pretty-symbols)
-   #+END_SRC
+   #   (add-hook 'prog-mode-hook #'symbol-overlay-mode)
+   #   (add-hook 'prog-mode-hook #'prog-mode-pretty-symbols)
+   # #+END_SRC
 
 * Monkey Patches
 ** semantic-c-do-lex-if
