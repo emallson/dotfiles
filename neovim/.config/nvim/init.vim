@@ -52,5 +52,12 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#rust#racer_binary=expand("~/Code/racer/target/release/racer")
 let g:deoplete#sources#rust#rust_source_path=expand("~/Code/racer/rust/src")
 
-let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/jedi-venv/bin/python3")
-let g:python3_host_prog=expand("~/.config/nvim/jedi-venv/bin/python3")
+let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3")
+let g:python_host_prog= expand("~/.config/nvim/pynv2/bin/python")
+let g:python3_host_prog=expand("~/.config/nvim/pynv3/bin/python3")
+
+" messing with conceal
+set conceallevel=2
+set concealcursor="nvci"
+syntax keyword Normal lambda conceal cchar=λ
+hi clear Conceal
