@@ -89,7 +89,7 @@ static const char *colorname[] = {
   "#7f9f7f", /* green -- USED */
   "#d0bf8f", /* olive -- USED */
   "#7cc0c3", /* navy -- USED */
-  "#c0bed1", /* purple */
+  "#5f7f5f", /* purple */
   "#dfaf8f", /* teal */
   "#efefef", /* silver -- USED */
   "#404040", /* 8; grey -- USED */

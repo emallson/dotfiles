@@ -99,7 +99,7 @@ myKeymap = [("M-k", kill)
            ,("M-S-g", bringMenu)
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
-           ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -c scratchpad -e tmux attach -t scratch")]
+           ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -n scratchpad -e tmux attach -t scratch")]
            ++
            [("M-" ++ otherModMasks ++ key, action direction False)
             | (key, direction) <- zip ["n", "e", "s", "t"] [R, L, U, D]
@@ -126,7 +126,7 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , manageHook = manageHook defaultConfig <+> composeAll
                                [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
                                ,placeHook $ withGaps (18, 18, 18, 18) $ smart (1, 1)
-                               ,(className =? "chromium" <||> className =? "chromium-browser") <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
+                               ,(className =? "chromium" <||> className =? "Chromium-browser") <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}
                 `removeKeysP`

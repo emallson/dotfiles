@@ -14,7 +14,7 @@ let emorange = "#dfaf8f"
 let emyellow = "#f0dfaf"
 let emyellow_2 = "#d0bf8f"
 let emgreen = "#7f9f7f"
-let emgreen4 = "bfdfbf"
+let emgreen4 = "#bfdfbf"
 let emcyan = "#93e0e3"
 let emblue = "#8cd0d3"
 let emblue1 = "#9ce0e3"
@@ -35,6 +35,7 @@ hi Delimiter guifg=#dcdccc gui=none ctermfg=15 cterm=none
 "hi Repeat guifg=#f0dfaf gui=bold
 "hi Label guifg=#f0dfaf gui=bold
 "hi Structure guifg=#f0dfaf gui=bold
+hi MatchParen cterm=bold ctermbg=0
 " Constants
 hi Constant guifg=#bfdfbf ctermfg=10
 hi Character guifg=#cc9393 ctermfg=1
@@ -49,7 +50,12 @@ hi Typedef guifg=#7cc0c3 ctermfg=4
 " Messages
 hi WarningMsg guifg=#d0bf8f ctermfg=3
 hi Error guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 cterm=italic
-hi ErrorMsg guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 cterm=italic
+hi ErrorMsg guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 ctermbg=0 cterm=italic
+" Pmenu
+hi Pmenu guifg=#dcdccc guibg=#404040 ctermfg=15 ctermbg=8
+hi PmenuSel guifg=#dcdccc guibg=#404040 ctermfg=0 ctermbg=2 cterm=bold
+hi PmenuSbar ctermbg=3
+hi PmenuThumb ctermbg=2
 " StatusLine
 hi StatusLine guifg=#dcdccc guibg=#202020 ctermfg=15 ctermbg=0
 hi StatusLineNC guifg=#dcdccc guifg=#202020 ctermfg=15 ctermbg=0
