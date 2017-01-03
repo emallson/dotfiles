@@ -12,7 +12,7 @@ noremap <C-w>t <C-w><down>
 noremap <M-a> 0
 noremap <M-o> $
 
-vmap <Tab> =
+let mapleader = ","
 
 call plug#begin("~/.config/nvim/plugged")
 
@@ -27,13 +27,16 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jnurmine/Zenburn'
 
-Plug 'rust-lang/rust.vim'
+"Plug 'rust-lang/rust.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'sebastianmarkow/deoplete-rust'
 Plug 'zchee/deoplete-jedi'
 
 Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdcommenter'
+
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -61,3 +64,8 @@ set conceallevel=2
 set concealcursor="nvci"
 syntax keyword Normal lambda conceal cchar=λ
 hi clear Conceal
+
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+
+autocmd Filetype pandoc setlocal tw=79 fo+=t fo-=l

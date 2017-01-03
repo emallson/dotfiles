@@ -22,4 +22,4 @@ export BOOT_JVM_OPTIONS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 
 
 which systemctl &> /dev/null && systemctl --user import-environment PATH
 
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.gem/ruby/2.3.0/bin/:$HOME/.cargo/bin:$PATH"
