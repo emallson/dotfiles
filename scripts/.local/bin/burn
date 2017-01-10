@@ -8,6 +8,7 @@ Usage:
 Options:
     -h --help               Show this screen.
     --no-confirm            Send without confirming correctness of PDF output.
+    --no-convert            Skip conversion process. Implies --no-confirm.
     --k2opts <opts>         Additional options for k2pdfopt. These will be added to the end of the command line and will overwrite existing options.
     --smtp-server <host>    SMTP host to send via.
     --smtp-port <port>      SMTP port.
@@ -30,10 +31,11 @@ default_config = {
     'k2pdfopts': '-ui- -x -n -dev kp3 -j -1 -jf -1 0.75 -mode 2col -ls- -bp- -m 0.5in -mb 0.75in -mt 0.6in'.split(' '),
 }
 
-def convert(file, title, authors, opts=[]):
+def convert(file, title, authors, opts=''):
     tmp = '/tmp/burn/{}.pdf'.format(title)
     os.makedirs('/tmp/burn/', exist_ok=True)
-    cmd = ['k2pdfopt', file, '-o', tmp, '-title', title, '-author', authors] + default_config['k2pdfopts'] + opts
+    cmd = ['k2pdfopt', file, '-o', tmp, '-title', title, '-author', authors] + default_config['k2pdfopts'] + opts.split(' ')
+    print(cmd)
     subprocess.run(cmd).check_returncode()
     return tmp
 
@@ -54,22 +56,31 @@ def send(file, from_user, to, username, server, port=587):
             to, '<', '/dev/null']
     subprocess.run(' '.join(cmd), shell=True, executable='/bin/zsh').check_returncode()
 
+
+def process(args, paper):
+    if args['--no-convert']:
+        file = paper['path']
+    else:
+        file = convert(paper['path'], 
+                       paper['year'] + ' - ' + paper['title'] if 'year' in paper else paper['title'], 
+                       paper['authors'], 
+                       args['--k2opts'] if '--k2opts' in args and args['--k2opts'] is not None else '')
+    if args['--no-confirm'] or args['--no-convert'] or confirm(file):
+        send(file, args['from'], args['to'], args['smtp-user'], args['smtp-server'], args['smtp-port'])
+
 if __name__ == '__main__':
     args = docopt(__doc__, version='0.1')
     cfg = ConfigParser()
     files_read = cfg.read(os.path.expanduser('~/.burnrc'))
     args = {**cfg['burn'], **{k: v for k, v in args.items() if v is not None}} if files_read != [] else args
-    # print(args)
     if args['json']:
-        for line in sys.stdin:
+        lines = [l.strip() for l in sys.stdin.readlines()]
+        sys.stdin = open('/dev/tty')
+        for line in lines:
             paper = json.loads(line)
             if paper['path'] == "":
                 print("{} has no path, skipping...", paper["title"])
                 continue
-            file = convert(paper['path'], paper['year'] + ' - ' + paper['title'], paper['authors'])
-            if confirm(file):
-                send(file, args['from'], args['to'], args['smtp-user'], args['smtp-server'], args['smtp-port'])
+            process(args, paper)
     else:
-        file = convert(args['<file>'], args['<title>'], args['<authors>'])
-        if confirm(file):
-            send(file, args['from'], args['to'], args['smtp-user'], args['smtp-server'], args['smtp-port'])
+        process(args, {"path": args['<file>'], "title": args['title'], "authors": args['<authors>']})
