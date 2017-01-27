@@ -83,4 +83,4 @@ if __name__ == '__main__':
                 continue
             process(args, paper)
     else:
-        process(args, {"path": args['<file>'], "title": args['title'], "authors": args['<authors>']})
+        process(args, {"path": args['<file>'], "title": args['<title>'], "authors": args['<authors>']})
