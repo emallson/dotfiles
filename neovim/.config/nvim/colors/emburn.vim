@@ -63,4 +63,11 @@ hi StatusLineNC guifg=#dcdccc guifg=#202020 ctermfg=15 ctermbg=0
 " Uncategorized
 hi NonText guifg=#dcdccc guibg=#202020 ctermfg=15 ctermbg=0
 " Spell
-hi SpellBad guifg=#cc9393 gui=italic ctermfg=1 cterm=italic
+hi SpellBad guifg=#cc9393 gui=italic ctermfg=1 ctermbg=0 cterm=italic
+
+" Tabs
+hi TabLineFill ctermfg=0 ctermbg=0 cterm=none
+hi TabLineSel ctermbg=0 ctermfg=15 cterm=bold
+hi TabLine ctermbg=0 ctermfg=15 cterm=none
+
+set fillchars +=vert:\  

@@ -1,5 +1,5 @@
-set nu
 noremap l t
+noremap r n
 noremap n <right>
 noremap e <left>
 noremap s <up>
@@ -12,11 +12,15 @@ noremap <C-w>t <C-w><down>
 noremap <M-a> 0
 noremap <M-o> $
 
+map <F1> <del>
+map! <F1> <del>
+
 let mapleader = ","
 
+set nu
 call plug#begin("~/.config/nvim/plugged")
 
-"Plug 'kassio/neoterm'
+Plug 'kassio/neoterm'
 "Plug 'neomake/neomake'
 
 Plug 'vim-pandoc/vim-pandoc'
@@ -34,9 +38,12 @@ Plug 'sebastianmarkow/deoplete-rust'
 Plug 'zchee/deoplete-jedi'
 
 Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'sheerun/vim-polyglot'
+
+Plug 'mbbill/undotree'
 
 call plug#end()
 
@@ -52,8 +59,8 @@ let g:rustfmt_autosave = 1
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#rust#racer_binary=expand("~/Code/racer/target/release/racer")
-let g:deoplete#sources#rust#rust_source_path=expand("~/Code/racer/rust/src")
+let g:deoplete#sources#rust#racer_binary=expand("~/.cargo/bin/racer")
+let g:deoplete#sources#rust#rust_source_path=expand("~/Code/rust/src/")
 
 let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3")
 let g:python_host_prog= expand("~/.config/nvim/pynv2/bin/python")
@@ -68,4 +75,11 @@ hi clear Conceal
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
+let g:AutoPairsFlyMode = 1
+
 autocmd Filetype pandoc setlocal tw=79 fo+=t fo-=l
+autocmd Filetype rust let g:AutoPairs = {'`': '`', '"': '"', '{': '}', '(': ')', '[': ']'}
+
+nnoremap <F5> :UndotreeToggle<cr>
+
+set tw=72
