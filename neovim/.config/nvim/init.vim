@@ -21,7 +21,7 @@ set nu
 call plug#begin("~/.config/nvim/plugged")
 
 Plug 'kassio/neoterm'
-"Plug 'neomake/neomake'
+Plug 'neomake/neomake'
 
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -75,11 +75,23 @@ hi clear Conceal
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
-let g:AutoPairsFlyMode = 1
-
+set fo-=t
 autocmd Filetype pandoc setlocal tw=79 fo+=t fo-=l
 autocmd Filetype rust let g:AutoPairs = {'`': '`', '"': '"', '{': '}', '(': ')', '[': ']'}
 
 nnoremap <F5> :UndotreeToggle<cr>
 
 set tw=72
+
+function! neomake#makers#cargo#cargo() abort
+    return {
+        \ 'args': ['rustc', '--', '-Zno-trans'],
+        \ 'errorformat':
+            \ neomake#makers#ft#rust#rustc()['errorformat'],
+        \ }
+endfunction
+
+augroup local_neomake_cmds
+    autocmd!
+    autocmd BufWritePost *.rs Neomake! cargo
+augroup END

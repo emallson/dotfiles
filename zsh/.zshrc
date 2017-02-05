@@ -9,9 +9,9 @@ antigen bundle git-flow-avh
 antigen bundle lein
 antigen bundle emallson/gulp-zsh-completion
 
-antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle autojump
 antigen bundle safe-paste       # todo: patch st or safe-paste to escape escape sequences in pasted text
+antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen theme gallois
 
@@ -19,14 +19,10 @@ antigen apply
 
 alias ls='ls --color=auto -B'
 
-setopt extendedglob
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red'
 
-function uva() {
-    g++ -g -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
-}
-function uva-11() {
-    g++ -g -std=c++11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE $1 -o $(echo $1 | rev | cut -d. -f2- | rev)
-}
+setopt extendedglob
 
 function anacondon() {
     PATH="$HOME/.anaconda3/bin:${PATH}";
@@ -54,13 +50,8 @@ function clone() {
 
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 
-alias rs="redshift -l 38:-85"
 alias syus="systemctl --user"
 alias na='sudo netctl-auto'
-
-alias start='sudo systemctl start'
-alias restart='sudo systemctl restart'
-alias stop='sudo systemctl stop'
 
 alias em='emacsclient -t'
 
@@ -77,13 +68,6 @@ alias wem='emacsclient -nc'
 function line() {
     head -n $1 $2 | tail -n 1;
 }
-
-function k {
-    k2pdfopt $1 -dev kp3 -j -1 -jf -1 0.75 -mode 2col -n -x -ls- -m 0,1in,0,1in -bp- -o $2
-}
-
-# fix colors
-TERM=xterm-256color
 
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit

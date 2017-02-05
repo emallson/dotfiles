@@ -71,3 +71,6 @@ hi TabLineSel ctermbg=0 ctermfg=15 cterm=bold
 hi TabLine ctermbg=0 ctermfg=15 cterm=none
 
 set fillchars +=vert:\  
+
+" Neomake
+hi NeomakeWarningDefault ctermfg=3
