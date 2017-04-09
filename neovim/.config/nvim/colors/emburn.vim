@@ -72,5 +72,8 @@ hi TabLine ctermbg=0 ctermfg=15 cterm=none
 
 set fillchars +=vert:\  
 
+hi Conceal ctermbg=0
+hi Folded ctermbg=0 cterm=italic
+
 " Neomake
-hi NeomakeWarningDefault ctermfg=3
+hi NeomakeWarning ctermfg=9 cterm=underline

@@ -36,6 +36,7 @@ Plug 'jnurmine/Zenburn'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'sebastianmarkow/deoplete-rust'
 Plug 'zchee/deoplete-jedi'
+" Plug 'artur-shaik/vim-javacomplete2'
 
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
@@ -45,9 +46,15 @@ Plug 'sheerun/vim-polyglot'
 
 Plug 'mbbill/undotree'
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'easymotion/vim-easymotion'
+
 call plug#end()
 
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
+set undofile
 
 colors emburn
 
@@ -66,12 +73,6 @@ let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3
 let g:python_host_prog= expand("~/.config/nvim/pynv2/bin/python")
 let g:python3_host_prog=expand("~/.config/nvim/pynv3/bin/python3")
 
-" messing with conceal
-set conceallevel=2
-set concealcursor="nvci"
-syntax keyword Normal lambda conceal cchar=λ
-hi clear Conceal
-
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
@@ -85,7 +86,7 @@ set tw=72
 
 function! neomake#makers#cargo#cargo() abort
     return {
-        \ 'args': ['rustc', '--', '-Zno-trans'],
+        \ 'args': ['check'],
         \ 'errorformat':
             \ neomake#makers#ft#rust#rustc()['errorformat'],
         \ }
@@ -95,3 +96,10 @@ augroup local_neomake_cmds
     autocmd!
     autocmd BufWritePost *.rs Neomake! cargo
 augroup END
+
+nmap <leader>o :Files<Space>
+nmap <leader>f :GFiles<Return>
+nmap <leader>b :Buffers<Return>
+hi NeomakeWarningDefault ctermfg=9
+
+map <Leader><Space> <Plug>(easymotion-prefix)
