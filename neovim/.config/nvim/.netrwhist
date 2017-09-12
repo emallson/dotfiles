@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/home/emallson/Code/NetworkingProject/build'
 let g:netrw_dirhist_2='/home/emallson/Code/ris/src'
 let g:netrw_dirhist_3='/home/emallson/Code/interdict-experiments/cfg'
@@ -7,3 +7,5 @@ let g:netrw_dirhist_4='/home/emallson/Code/NetworkingProject/build'
 let g:netrw_dirhist_5='/home/emallson/Code/avarice/src'
 let g:netrw_dirhist_6='/home/emallson/Code/interdict-experiments/plot-specs'
 let g:netrw_dirhist_7='/home/emallson/Code/interdict-experiments/impl/khalil_kdd14'
+let g:netrw_dirhist_8='/home/emallson/Code/interdict-experiments/logs/interdict'
+let g:netrw_dirhist_9='/home/emallson/Code/interdict-experiments/plot-specs'

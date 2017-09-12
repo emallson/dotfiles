@@ -16,8 +16,10 @@ map <F1> <del>
 map! <F1> <del>
 
 let mapleader = ","
+let maplocalleader = "\\"
 
 set nu
+set hidden autowrite autoread
 call plug#begin("~/.config/nvim/plugged")
 
 Plug 'kassio/neoterm'
@@ -43,14 +45,23 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'sheerun/vim-polyglot'
+Plug 'lervag/vimtex'
 
 Plug 'mbbill/undotree'
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+" Plug 'junegunn/fzf.vim'
+
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'easymotion/vim-easymotion'
+Plug 'farmergreg/vim-lastplace'
 
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'junegunn/vim-easy-align'
+
+Plug 'majutsushi/tagbar'
 call plug#end()
 
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
@@ -97,9 +108,45 @@ augroup local_neomake_cmds
     autocmd BufWritePost *.rs Neomake! cargo
 augroup END
 
-nmap <leader>o :Files<Space>
-nmap <leader>f :GFiles<Return>
-nmap <leader>b :Buffers<Return>
+nmap <leader>f :NERDTree<Return>
 hi NeomakeWarningDefault ctermfg=9
 
 map <Leader><Space> <Plug>(easymotion-prefix)
+
+xmap <leader>a <Plug>(EasyAlign)
+xmap <leader>A <Plug>(LiveEasyAlign)
+
+map <Leader>t :TagbarToggle<CR>
+
+ let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits,traits',
+        \'i:impls,trait implementations',
+    \]
+    \}
+
+nmap <leader>b :buffer<space>
+
+" polyglot configuration
+let g:polyglot_disabled = ['latex']
+" vimtex configuration
+let g:tex_flavor = 'latex'
+let g:vimtex_view_general_viewer = 'okular'
+let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+let g:vimtex_view_general_options_latexmk = '--unique'
+noremap <localleader>tsc <plug>(vimtex-cmd-toggle-star)
+noremap <localleader>tse <plug>(vimtex-env-toggle-star)
+noremap <localleader>tsd <plug>(vimtex-delim-toggle-modifier)
+noremap <localleader>tsD <plug>(vimtex-delim-toggle-modifier-reverse)
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+let g:vimtex_quickfix_latexlog = {'fix_paths':0}
