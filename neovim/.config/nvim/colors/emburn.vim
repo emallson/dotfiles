@@ -77,3 +77,9 @@ hi Folded ctermbg=0 cterm=italic
 
 " Neomake
 hi NeomakeWarning ctermfg=9 cterm=underline
+
+" Diff
+hi DiffAdd ctermbg=0 ctermfg=2 cterm=bold
+hi DiffChange ctermbg=0 ctermfg=15 cterm=underline
+hi DiffText ctermbg=0 ctermfg=11 cterm=underline
+hi DiffDelete ctermbg=0 ctermfg=1 cterm=italic

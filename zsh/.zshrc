@@ -12,6 +12,8 @@ antigen bundle emallson/gulp-zsh-completion
 antigen bundle autojump
 antigen bundle safe-paste       # todo: patch st or safe-paste to escape escape sequences in pasted text
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle emallson/notifyosd.zsh
+antigen bundle zsh-users/zsh-autosuggestions
 
 antigen theme gallois
 
@@ -21,8 +23,9 @@ alias ls='ls --color=auto -B'
 
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
-setopt extendedglob
+setopt extended_glob
 
 function anacondon() {
     PATH="$HOME/.anaconda3/bin:${PATH}";

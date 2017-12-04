@@ -18,7 +18,9 @@ export NVM_DIR="/home/emallson/.nvm"
 
 eval `dircolors ~/.dircolors`;
 
+export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64'
 export BOOT_JVM_OPTIONS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none'
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gurobi752/linux64/lib
 
 which systemctl &> /dev/null && systemctl --user import-environment PATH
 

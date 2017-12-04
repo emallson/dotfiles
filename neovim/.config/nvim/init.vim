@@ -62,6 +62,9 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'junegunn/vim-easy-align'
 
 Plug 'majutsushi/tagbar'
+
+" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/echodoc.vim'
 call plug#end()
 
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
@@ -78,7 +81,7 @@ let g:rustfmt_autosave = 1
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#rust#racer_binary=expand("~/.cargo/bin/racer")
-let g:deoplete#sources#rust#rust_source_path=expand("~/Code/rust/src/")
+let g:deoplete#sources#rust#rust_source_path=expand("~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
 
 let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3")
 let g:python_host_prog= expand("~/.config/nvim/pynv2/bin/python")
@@ -145,8 +148,18 @@ noremap <localleader>tsc <plug>(vimtex-cmd-toggle-star)
 noremap <localleader>tse <plug>(vimtex-env-toggle-star)
 noremap <localleader>tsd <plug>(vimtex-delim-toggle-modifier)
 noremap <localleader>tsD <plug>(vimtex-delim-toggle-modifier-reverse)
+inoremap <C-]> <plug>(vimtex-delim-close)
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 let g:vimtex_quickfix_latexlog = {'fix_paths':0}
+
+" RLS setup
+" let g:LanguageClient_serverCommands = {
+    " \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    " \ }
+" let g:LanguageClient_autoStart = 1
+" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
