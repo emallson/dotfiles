@@ -18,7 +18,9 @@ import XMonad.Actions.CycleWS (toggleOrDoSkip)
 import XMonad.Actions.Submap
 import XMonad.Actions.WindowGo
 import XMonad.Actions.WindowBringer
-import XMonad.Actions.WorkspaceNames
+import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.DynamicWorkspaceGroups
+import XMonad.Actions.CopyWindow
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
@@ -68,11 +70,12 @@ tmuxAttachPrompt c = do
 
 myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) (Tall 1 0.03 0.5)
 
-myKeymap = [("M-k", kill)
+myKeymap = [("M-k", kill1)
            ,("M-r", spawn "dmenu_run")
+           ,("M-p", spawn "gnome-screenshot -a")
            ,("C-S-q", io exitSuccess)
            ,("M-S-l", sendMessage ToggleStruts)
-           ,("M-l", spawn "i3lock")
+           ,("M-l", spawn "i3lock -t -i /home/emallson/Pictures/ravnica.png")
            ,("M-.", switchLayer)
            ,("M-S-.", withFocused $ windows . W.sink)
            ,("M-<Backspace>", sendMessage $ Toggle FULL)
@@ -80,13 +83,18 @@ myKeymap = [("M-k", kill)
            ,("M-m", withFocused minimizeWindow)
            ,("M-S-m", sendMessage RestoreNextMinimizedWin)
            -- program binds
-           ,("M-c", raiseNextMaybe (spawn "st -e tmux attach") ((className =? "st-256color") <&&> (qnot $ title =? "scratchpad")))
            ,("M-S-c", tmuxAttachPrompt defaultXPConfig)
            ,("M-C-c", tmuxCreatePrompt defaultXPConfig)
-           ,("M-b", raiseNextMaybe (spawn "chromium") ((className =? "chromium-browser") <&&> (stringProperty "WM_WINDOW_ROLE" =? "browser")))
+           ,("M-b", raiseNextMaybe (spawn "chromium") ((className =? "Chromium-browser") <&&> (stringProperty "WM_WINDOW_ROLE" =? "browser")))
            ,("M-C-b", spawn "chromium")
-           ,("M-<Space>", raiseNextMaybe (spawn "emacsclient -c") (className =? "Emacs"))
-           ,("M-C-<Space>", spawn "emacsclient -c")
+           ,("M-<Space>", selectWorkspace defaultXPConfig)
+           ,("M-C-<Space>", addWorkspacePrompt defaultXPConfig)
+           ,("M-S-<Space>", withWorkspace defaultXPConfig (windows . W.shift))
+           ,("M-S-k", removeEmptyWorkspace)
+           ,("M-c", withWorkspace def (windows . copy))
+           ,("M-<Delete>", promptWSGroupView defaultXPConfig "Go to Group: ")
+           ,("M-C-<Delete>", promptWSGroupAdd defaultXPConfig "Create Group: ")
+           ,("M-S-<Delete>", promptWSGroupForget defaultXPConfig "Forget Group: ")
            ,("M-d", submap $ mkKeymap myConfig
              [("a", spawn "mpd-menu.sh album"),
               ("S-a", spawn "mpd-menu.sh artist"),
@@ -94,9 +102,9 @@ myKeymap = [("M-k", kill)
               ("c", spawn "mpc clear"),
               ("p", spawn "mpd-play.sh"),
               ("s", spawn "mpc shuffle"),
-              ("n", spawn "mpd-next.sh")])
-           ,("M-g", gotoMenu)
-           ,("M-S-g", bringMenu)
+              ("n", spawn "mpd-next.sh"),
+              ("x", spawn "mpc del 0")])
+           ,("M-g", promptWSGroupView defaultXPConfig "Go to Group: ")
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
            ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -n scratchpad -e tmux attach -t scratch")]
@@ -111,7 +119,7 @@ myKeymap = [("M-k", kill)
            ++
            [(otherModMasks ++ "M-" ++ key, action tag)
             | (tag, key) <- let ws = map show [0..9] in zip ws ws
-            , (otherModMasks, action) <- [("", toggleOrDoSkip ["NSP"] W.view)
+            , (otherModMasks, action) <- [("", toggleOrDoSkip ["NSP"] W.greedyView)
                                          ,("S-", windows . W.shift)]]
 
 myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig { modMask = mod4Mask
@@ -120,13 +128,15 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , clickJustFocuses = False
                 , normalBorderColor = "#202020"
                 , focusedBorderColor = "#404040"
-                , borderWidth = 1
+                , borderWidth = 2
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                 , handleEventHook = docksEventHook
                 , manageHook = manageHook defaultConfig <+> composeAll
                                [scratchpadManageHook (W.RationalRect 0 0 1 0.3)
                                ,placeHook $ withGaps (18, 18, 18, 18) $ smart (1, 1)
                                ,(className =? "chromium" <||> className =? "Chromium-browser") <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
+                               ,className =? "Pidgin" --> doFloat
+                               ,className =? "feh" --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}
                 `removeKeysP`
@@ -134,7 +144,6 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 ,"M-S-k"
                 ,"M-j"
                 ,"M-S-j"
-                ,"M-p"
                 ,"M-h"
                 ,"M-l"
                 ,"<XF86AudioRaiseVolume>"
@@ -156,8 +165,8 @@ pipeLog cmdIO pp conf = do
     pipe <- spawnPipe cmd
     return $ conf
            {logHook = do
-                         dynamicLogWithPP =<< workspaceNamesPP (pp {ppOutput = hPutStrLn pipe
-                                                                   ,ppSort = fmap (.scratchpadFilterOutWorkspace) getSortByIndex })}
+               dynamicLogWithPP (pp {ppOutput = hPutStrLn pipe
+                                    ,ppSort = fmap (.scratchpadFilterOutWorkspace) getSortByIndex })}
 
 -- main :: IO ()
 main = xmonad =<< pipeLog xmobarCmd emallsonPP myConfig
