@@ -49,7 +49,7 @@ hi Type guifg=#7cc0c3 ctermfg=4
 hi Typedef guifg=#7cc0c3 ctermfg=4
 " Messages
 hi WarningMsg guifg=#d0bf8f ctermfg=3
-hi Error guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 cterm=italic
+hi Error guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 ctermbg=0 cterm=italic
 hi ErrorMsg guifg=#cc9393 gui=italic guibg=#202020 ctermfg=1 ctermbg=0 cterm=italic
 " Pmenu
 hi Pmenu guifg=#dcdccc guibg=#404040 ctermfg=15 ctermbg=8

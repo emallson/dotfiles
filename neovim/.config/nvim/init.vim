@@ -3,7 +3,9 @@ noremap r n
 noremap n <right>
 noremap e <left>
 noremap s <up>
+noremap gs gk
 noremap t <down>
+noremap gt gj
 noremap <C-w><S-s> <C-w>s
 noremap <C-w>n <C-w><right>
 noremap <C-w>e <C-w><left>
@@ -36,8 +38,8 @@ Plug 'jnurmine/Zenburn'
 "Plug 'rust-lang/rust.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'sebastianmarkow/deoplete-rust'
-Plug 'zchee/deoplete-jedi'
+" Plug 'sebastianmarkow/deoplete-rust'
+" Plug 'zchee/deoplete-jedi'
 " Plug 'artur-shaik/vim-javacomplete2'
 
 Plug 'tpope/vim-surround'
@@ -46,8 +48,14 @@ Plug 'scrooloose/nerdcommenter'
 
 Plug 'sheerun/vim-polyglot'
 Plug 'lervag/vimtex'
+Plug 'ekalinin/Dockerfile.vim'
 
 Plug 'mbbill/undotree'
+
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 " Plug 'junegunn/fzf.vim'
@@ -61,10 +69,12 @@ Plug 'farmergreg/vim-lastplace'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'junegunn/vim-easy-align'
 
-Plug 'majutsushi/tagbar'
-
-" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
+
+Plug 'tpope/vim-fugitive'
+Plug 'cloudhead/neovim-fuzzy'
+
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
@@ -75,17 +85,19 @@ colors emburn
 let g:airline_theme='emburn' " note: small green line in LHS powerline symbol
 let g:airline_powerline_fonts = 1
 set noshowmode
+let g:echodoc#enable_at_startup = 1
 let g:rustfmt_autosave = 1
 
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#rust#racer_binary=expand("~/.cargo/bin/racer")
-let g:deoplete#sources#rust#rust_source_path=expand("~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
+" let g:deoplete#sources#rust#racer_binary=expand("~/.cargo/bin/racer")
+" let g:deoplete#sources#rust#rust_source_path=expand("~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
 
-let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3")
+" let g:deoplete#sources#jedi#python_path=expand("~/.config/nvim/pynv3/bin/python3")
 let g:python_host_prog= expand("~/.config/nvim/pynv2/bin/python")
 let g:python3_host_prog=expand("~/.config/nvim/pynv3/bin/python3")
+autocmd CompleteDone * silent! pclose!
 
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
@@ -98,18 +110,7 @@ nnoremap <F5> :UndotreeToggle<cr>
 
 set tw=72
 
-function! neomake#makers#cargo#cargo() abort
-    return {
-        \ 'args': ['check'],
-        \ 'errorformat':
-            \ neomake#makers#ft#rust#rustc()['errorformat'],
-        \ }
-endfunction
-
-augroup local_neomake_cmds
-    autocmd!
-    autocmd BufWritePost *.rs Neomake! cargo
-augroup END
+call neomake#configure#automake('nw', 750)
 
 nmap <leader>f :NERDTree<Return>
 hi NeomakeWarningDefault ctermfg=9
@@ -118,22 +119,6 @@ map <Leader><Space> <Plug>(easymotion-prefix)
 
 xmap <leader>a <Plug>(EasyAlign)
 xmap <leader>A <Plug>(LiveEasyAlign)
-
-map <Leader>t :TagbarToggle<CR>
-
- let g:tagbar_type_rust = {
-    \ 'ctagstype' : 'rust',
-    \ 'kinds' : [
-        \'T:types,type definitions',
-        \'f:functions,function definitions',
-        \'g:enum,enumeration names',
-        \'s:structure names',
-        \'m:modules,module names',
-        \'c:consts,static constants',
-        \'t:traits,traits',
-        \'i:impls,trait implementations',
-    \]
-    \}
 
 nmap <leader>b :buffer<space>
 
@@ -154,12 +139,26 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 let g:vimtex_quickfix_latexlog = {'fix_paths':0}
+let g:vimtex_imaps_leader = '<F9>'
 
-" RLS setup
-" let g:LanguageClient_serverCommands = {
-    " \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    " \ }
-" let g:LanguageClient_autoStart = 1
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+au FileType javascript setl sw=2 sts=2
+au FileType javascript.jsx setl sw=2 sts=2
+
+let g:python_highlight_space_errors = 0
+
+nnoremap <C-p> :FuzzyOpen<CR>
+
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['/home/emallson/.config/nvim/pynv3/bin/pyls'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ }
+
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+
+autocmd FileType * call LC_maps()
