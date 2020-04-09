@@ -85,8 +85,8 @@ myKeymap = [("M-k", kill1)
            -- program binds
            ,("M-S-c", tmuxAttachPrompt defaultXPConfig)
            ,("M-C-c", tmuxCreatePrompt defaultXPConfig)
-           ,("M-b", raiseNextMaybe (spawn "chromium") ((className =? "Chromium-browser") <&&> (stringProperty "WM_WINDOW_ROLE" =? "browser")))
-           ,("M-C-b", spawn "chromium")
+           ,("M-b", raiseNextMaybe (spawn "firefox") ((className =? "Firefox-esr") <&&> (stringProperty "WM_WINDOW_ROLE" =? "browser")))
+           ,("M-C-b", spawn "firefox")
            ,("M-<Space>", selectWorkspace defaultXPConfig)
            ,("M-C-<Space>", addWorkspacePrompt defaultXPConfig)
            ,("M-S-<Space>", withWorkspace defaultXPConfig (windows . W.shift))
@@ -105,6 +105,10 @@ myKeymap = [("M-k", kill1)
               ("n", spawn "mpd-next.sh"),
               ("x", spawn "mpc del 0")])
            ,("M-g", promptWSGroupView defaultXPConfig "Go to Group: ")
+           ,("<XF86AudioMute>", spawn "amixer -q set Master toggle")
+           ,("<XF86AudioLowerVolume>", spawn "amixer -q sset -- Master 2%-")
+           ,("<XF86AudioRaiseVolume>", spawn "amixer -q sset -- Master 2%+")
+           ,("<XF86Display>", spawn "~/.local/bin/toggle-touchpad.sh")
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
            ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -n scratchpad -e tmux attach -t scratch")]
@@ -127,7 +131,7 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , focusFollowsMouse = False
                 , clickJustFocuses = False
                 , normalBorderColor = "#202020"
-                , focusedBorderColor = "#404040"
+                , focusedBorderColor = "#405565"
                 , borderWidth = 2
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                 , handleEventHook = docksEventHook

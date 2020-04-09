@@ -1,6 +1,0 @@
-[Service]
-ExecStart=/usr/bin/touchegg
-Environment=DISPLAY=:%i
-
-[Install]
-WantedBy=default.target
