@@ -28,23 +28,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 setopt extended_glob
 
 function anacondon() {
-    PATH="$HOME/.anaconda3/bin:${PATH}";
-}
-
-function conda() {
-    if ! [[ "$PATH" =~ ".anaconda3" ]]; then
-       anacondon;
-    fi
-
-    if [[ "$1" = "activate" ]]; then
-        source "$HOME/.anaconda3/envs/$2/bin/activate" "$2"
-    elif [[ "$1" = "deactivate" ]]; then
-        shift
-        . deactivate
-        anacondon
-    else
-        "$HOME/.anaconda3/bin/conda" $@
-    fi
+    PATH="$HOME/miniconda3/bin:${PATH}";
 }
 
 function clone() {
@@ -73,6 +57,7 @@ function line() {
 }
 
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+fpath+=~/.zfunc
 autoload -Uz compinit
 compinit
 
@@ -80,3 +65,19 @@ bindkey '^B' push-line-or-edit
 
 # OPAM configuration
 . /home/emallson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/emallson/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/emallson/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/emallson/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/emallson/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

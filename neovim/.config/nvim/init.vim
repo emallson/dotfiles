@@ -166,5 +166,9 @@ if !exists('g:vscode')
 
     autocmd FileType * call LC_maps()
 else
+    call plug#begin("~/.config/nvim/plugged")
+    Plug 'tpope/vim-surround'
+    call plug#end()
+
     nmap <leader>s :<C-u>call VSCodeNotify('editor.action.showHover')<CR>
 endif

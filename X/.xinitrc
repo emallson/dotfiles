@@ -13,19 +13,19 @@ xsetroot -cursor_name left_ptr
 setxkbmap -option control:nocaps -option compose:prsc
 
 xbindkeys
-sh ~/.fehbg &
+# sh ~/.fehbg &
 
-DISP_NUM=${DISPLAY/:/}
-systemctl --user start redshift@$DISP_NUM touchegg@$DISP_NUM
+# DISP_NUM=${DISPLAY/:/}
+# systemctl --user start redshift@$DISP_NUM touchegg@$DISP_NUM
 
 #sshfs -o reconnect amos.csr.uky.edu: ~/Remotes/csr &
 #sshfs -o reconnect vulture.csr.uky.edu:/u/vul-d1/scratch/emallson ~/Remotes/scratch/vulture &
 
-if [[ "$(hostname)" == "Rubi-Ka" ]]; then
-   xmodmap ~/.xmodmaprc
-fi
+# if [[ "$(hostname)" == "Rubi-Ka" ]]; then
+   # xmodmap ~/.xmodmaprc
+# fi
 
-xautolock -locker "i3lock -n" -time 5 -secure &
+# xautolock -locker "i3lock -n" -time 5 -secure &
 
 # exec i3 -V >> ~/.i3log-$(date +'%F-%k-%M-%S') 2>&1
 exec xmonad

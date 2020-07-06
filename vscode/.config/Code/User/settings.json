@@ -1,0 +1,23 @@
+{
+    "C_Cpp.clang_format_style": "Google",
+    "window.menuBarVisibility": "toggle",
+    "vscode-neovim.neovimPath": "/usr/bin/nvim",
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Zenburn",
+    "editor.fontFamily": "'Source Code Pro', 'monospace', monospace, 'Droid Sans Fallback'",
+    "latex-workshop.latex.outDir": "%DIR%/out",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.search.rootFiles.include": [
+        "main.tex",
+        "**/*.tex"
+    ],
+    "rust.clippy_preference": "on",
+    "python.venvPath": "~/.cache/pypoetry/virtualenvs",
+    "workbench.startupEditor": "newUntitledFile",
+    "[typescriptreact]": {
+        "editor.tabSize": 2,
+        "editor.autoClosingOvertype": "always",
+        "editor.autoClosingBrackets": "beforeWhitespace"       
+    },
+    "extensions.ignoreRecommendations": true
+}
