@@ -81,3 +81,21 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+alias fd=fdfind
+
+eval "$(direnv hook zsh)"
+
+
+function add-music() {
+    if [[ $(basename "$1") =~ "(.+) - (.+)\.zip" ]]; then
+       artist=$match[1];
+       album=$match[2];
+
+       mkdir -p "$HOME/Music/$artist/$album";
+       unzip -d "$HOME/Music/$artist/$album" "$1";
+       cd "$HOME/Music/$artist/$album";
+       metaflac --add-replay-gain *.flac;
+       mpc update;
+       cd -1;
+    fi
+}

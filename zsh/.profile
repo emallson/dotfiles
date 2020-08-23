@@ -18,3 +18,6 @@ which systemctl &> /dev/null && systemctl --user import-environment PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
