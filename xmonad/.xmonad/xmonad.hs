@@ -40,6 +40,7 @@ import XMonad.Layout.BorderResize
 
 -- minimize
 import XMonad.Layout.Minimize
+import XMonad.Actions.Minimize
 import XMonad.Layout.BoringWindows
 
 qnot :: Monad m => m Bool -> m Bool
@@ -81,7 +82,7 @@ myKeymap = [("M-k", kill1)
            ,("M-<Backspace>", sendMessage $ Toggle FULL)
            ,("M-,", renameWorkspace defaultXPConfig)
            ,("M-m", withFocused minimizeWindow)
-           ,("M-S-m", sendMessage RestoreNextMinimizedWin)
+           ,("M-S-m", withLastMinimized maximizeWindowAndFocus)
            -- program binds
            ,("M-S-c", tmuxAttachPrompt defaultXPConfig)
            ,("M-C-c", tmuxCreatePrompt defaultXPConfig)
@@ -109,6 +110,10 @@ myKeymap = [("M-k", kill1)
            ,("<XF86AudioLowerVolume>", spawn "amixer -q sset -- Master 2%-")
            ,("<XF86AudioRaiseVolume>", spawn "amixer -q sset -- Master 2%+")
            ,("<XF86Display>", spawn "~/.local/bin/toggle-touchpad.sh")
+           ,("<XF86MonBrightnessDown>", spawn "xbacklight -dec 5")
+           ,("<XF86MonBrightnessUp>", spawn "xbacklight -inc 5")
+           ,("<XF86AudioPlay>", spawn "mpc toggle")
+           ,("<XF86Favorites>", spawn "mpc toggle")
            -- set st title because apparently -c only adds the new
            -- classname, doesn't remove the old
            ,("M-<Return>", scratchpadSpawnActionCustom "st -t scratchpad -n scratchpad -e tmux attach -t scratch")]
@@ -126,7 +131,7 @@ myKeymap = [("M-k", kill1)
             , (otherModMasks, action) <- [("", toggleOrDoSkip ["NSP"] W.greedyView)
                                          ,("S-", windows . W.shift)]]
 
-myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig { modMask = mod4Mask
+myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig { modMask = mod5Mask
                 , terminal = "st"
                 , focusFollowsMouse = False
                 , clickJustFocuses = False
@@ -141,6 +146,7 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                                ,(className =? "chromium" <||> className =? "Chromium-browser") <&&> stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
                                ,className =? "Pidgin" --> doFloat
                                ,className =? "feh" --> doFloat
+                               ,(className =? "r_x11" <||> className =? "R_x11") --> doFloat
                                ,manageDocks]
                 , layoutHook = myLayoutHook}
                 `removeKeysP`
@@ -161,7 +167,7 @@ emallsonPP = defaultPP {ppOrder = \(ws:_:_:_) -> [ws]}
 
 xmobarCmd :: IO String
 xmobarCmd = do hostName <- getHostName
-               return $ "xmobar /home/emallson/.xmonad/" ++ hostName ++ "/xmobar.hs"
+               return $ "xmobar /home/emallson/.xmonad/" ++ hostName ++ "/xmobar.config"
 
 pipeLog :: IO String -> PP -> XConfig l -> IO (XConfig l)
 pipeLog cmdIO pp conf = do
