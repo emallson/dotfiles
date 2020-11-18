@@ -51,3 +51,4 @@
 
 (package! tao-theme)
 (package! rainbow-identifiers)
+(package! evil-escape :disable t)

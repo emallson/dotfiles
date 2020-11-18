@@ -73,6 +73,12 @@
 
 (add-hook 'prog-mode-hook #'rainbow-identifiers-mode)
 
+;; js2 does some funky things with faces that makes every word (even in comments
+;; and strings) show up in rainbow colors. turning rainbow-identifiers off for
+;; js2
+(after! js2-mode
+  (add-hook! js2-mode :append (rainbow-identifiers-mode -1)))
+
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "J David Smith"
@@ -92,6 +98,7 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "Source Code Pro")
 ;;       doom-unicode-font (font-spec :family "DejaVu Sans Mono"))
+(setq doom-font (font-spec :family "Iosevka Extended"))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -102,7 +109,8 @@
   (tao-with-color-variables
     tao-theme-yang-palette
     (custom-theme-set-faces! 'tao-yang
-      `(hl-line :background ,color-5 :foreground unspecified))))
+      `(hl-line :background ,color-5 :foreground unspecified)
+      `(markdown-markup-face :foreground ,color-8))))
 
 (after! company-box
   (custom-theme-set-faces! 'tao-yang
@@ -214,15 +222,9 @@ _e_ ^+^ _n_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
 
 (after! lispy
   (lispy-set-key-theme '(paredit c-digits))
-  (setq! lispyville-key-theme '(operators c-w prettify slurp/barf-lispy additional)))
-
-(after! lispy
-  (add-hook! clojurescript-mode :append
-    (setq! completion-at-point-functions (remove #'lispy-clojure-complete-at-point completion-at-point-functions)))
-  (add-hook! clojure-mode :append
-    (setq! completion-at-point-functions (remove #'lispy-clojure-complete-at-point completion-at-point-functions)))
-  (add-hook! clojurec-mode :append
-    (setq! completion-at-point-functions (remove #'lispy-clojure-complete-at-point completion-at-point-functions))))
+  (setq! lispyville-key-theme '(operators c-w slurp/barf-lispy additional))
+  (add-hook! (list clojurescript-mode clojure-mode clojurec-mode cider-repl-mode) :append (setq! completion-at-point-functions (remove #'lispy-clojure-complete-at-point completion-at-point-functions)))
+  (defun lispy--clojure-middleware-load () nil))
 
 (map! :leader "P s" #'profiler-start)
 (after! profiler
@@ -238,3 +240,14 @@ _e_ ^+^ _n_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
   (setq! web-mode-code-indent-offset 2)
   (setq! web-mode-markup-indent-offset 2)
   (setq! web-mode-css-indent-offset 2))
+
+;; (add-hook 'after-change-major-mode-hook (defun disable-prettify-symbols-mode ()
+;;                                           (prettify-symbols-mode -1)))
+
+;; (setq +ligatures-extras-in-modes nil)
+;; (global-prettify-symbols-mode -1)
+
+(setq! csv-separators (list "|" "," "	"))
+
+(after! js
+  (setq! js-indent-level 2))
