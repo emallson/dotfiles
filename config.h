@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Source Code Pro Light:size=9:antialias=true:autohint=true:dpi=210";
+static char font[] = "Iosevka Extended:size=9:antialias=true:autohint=true:dpi=210";
 static int borderpx = 2;
 
 /*
@@ -16,7 +16,7 @@ static int borderpx = 2;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/zsh";
+static char *shell = "/home/emallson/.cargo/bin/nu";
 char *utmp = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
@@ -84,22 +84,22 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-  "#202020", /* black -- USED */
-  "#cc9393", /* red-- USED  */
-  "#7f9f7f", /* green -- USED */
-  "#d0bf8f", /* olive -- USED */
+  "#4E4B3D", /* black */
+  "#909d700a678c", /* red-- USED  */
+  "#617e7de86d26", /* green -- USED */
+  "#617e7de86d26", /* olive -- USED */
   "#7cc0c3", /* navy -- USED */
   "#5f7f5f", /* purple */
-  "#dfaf8f", /* teal */
-  "#efefef", /* silver -- USED */
-  "#404040", /* 8; grey -- USED */
-  "#dfaf8f", /* maroon -- USED*/
-  "#bfdfbf", /* lime -- USED */
-  "#f0dfaf", /* yellow -- USED */
+  "#87ed741a5f3a", /* teal */
+  "#4E4B3D", /* silver -- USED */
+  "#b0ada2", /* 8; grey -- USED */
+  "#90a67005679f", /* maroon -- USED*/
+  "#617e7de86d26", /* lime -- USED */
+  "#b0ada2", /* yellow -- USED */
   "#8cd0d3", /* blue -- USED */
-  "#dc8cc3", /* fuchsia -- USED */
-  "#93e0e3", /* aqua -- USED */
-  "#dcdccc", /* white -- USED */
+  "#88e470178396", /* fuchsia -- USED */
+  "#55b47ecd7d0d", /* aqua -- USED */
+  "#fffff8", /* white */
 	/* /\* 8 normal colors *\/ */
 	/* "black", */
 	/* "red3", */
@@ -120,18 +120,8 @@ static const char *colorname[] = {
 	/* "cyan", */
 	/* "white", */
 
-	[255] = 0,
-
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	/* 257+ */
-	"#dcdccc",
-	"#404040", /* 16 */
-	"#bfdfbf",
-	"#cc9393",
-	"#9ce0e3",
-	"#7cc0c3",
-	"#d0bf8f",
+  [240] = "#ffffff",
+  [241] = "#faf7ee",
 };
 
 
@@ -139,10 +129,10 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
-static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+unsigned int defaultfg = 0;
+unsigned int defaultbg = 15;
+static unsigned int defaultcs = 0;
+static unsigned int defaultrcs = 15;
 
 /*
  * Default shape of cursor
@@ -164,7 +154,7 @@ static unsigned int rows = 24;
  * Default colour and shape of the mouse cursor
  */
 static unsigned int mouseshape = XC_xterm;
-static unsigned int mousefg = 7;
+static unsigned int mousefg = 16;
 static unsigned int mousebg = 0;
 
 /*

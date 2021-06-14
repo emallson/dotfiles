@@ -1,0 +1,34 @@
+disable_table_indexes = true
+edit_mode = "emacs"
+path = ["/home/emallson/.guix-profile/bin", "/home/emallson/.config/guix/current/bin", "/home/emallson/miniconda3/condabin", "/home/emallson/.cabal/bin", "/home/emallson/.emacs.d/bin", "/home/emallson/.config/yarn/global/node_modules/.bin", "/home/emallson/.poetry/bin", "/home/emallson/.cargo/bin", "/home/emallson/.cask/bin", "/home/emallson/.local/bin", "/home/emallson/.nvm/versions/node/v11.13.0/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/local/games", "/usr/games"]
+prompt = "starship prompt"
+skip_welcome_message = true
+
+[color_config]
+separator_color = "black"
+
+[env]
+BOOT_JVM_OPTIONS = "-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none"
+BROWSER = "firefox"
+CARGO_HOME = "/home/emallson/.cargo/"
+CHROME_BIN = "chromium"
+CLUTTER_IM_MODULE = "ibus"
+CONDA_EXE = "/home/emallson/miniconda3/bin/conda"
+CONDA_SHLVL = "0"
+EMACSLOADPATH = "/home/emallson/.guix-profile/share/emacs/site-lisp"
+GUIX_PROFILE = "/home/emallson/.guix-profile"
+HOME = "/home/emallson"
+INFOPATH = "/home/emallson/.guix-profile/share/info"
+JAVA_HOME = "/usr/lib/jvm/java-8-openjdk-amd64"
+LANG = "en_US.UTF-8"
+LESS = "-R"
+LOGNAME = "emallson"
+LSCOLORS = "Gxfxcxdxbxegedabagacad"
+LS_COLORS = "tw=30;43:ow=30;43:"
+NVM_BIN = "/home/emallson/.nvm/versions/node/v11.13.0/bin"
+NVM_CD_FLAGS = "-q"
+NVM_DIR = "/home/emallson/.nvm"
+PAGER = "less"
+
+[textview]
+theme = "Solarized"

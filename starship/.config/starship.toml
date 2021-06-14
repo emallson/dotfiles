@@ -1,0 +1,19 @@
+add_newline = false
+
+[line_break]
+disabled = true
+
+[git_branch]
+style = "bold green"
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[java]
+disabled = true
+
+[python]
+detect_extensions = []
