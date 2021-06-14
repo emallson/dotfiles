@@ -33,6 +33,7 @@ import XMonad.Util.WorkspaceCompare (getSortByIndex)
 import XMonad.Prompt
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.OneBig
 
 -- tree layout stuff
 import XMonad.Actions.Navigation2D
@@ -69,7 +70,7 @@ tmuxAttachPrompt :: XPConfig -> X ()
 tmuxAttachPrompt c = do
                  mkXPrompt Tmux c tmuxSessionCompl tmuxAttach
 
-myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) (Tall 1 0.03 0.5)
+myLayoutHook = boringWindows $ minimize $ avoidStruts $ borderResize $ mkToggle (single FULL) (OneBig (3/4) (3/4))
 
 myKeymap = [("M-k", kill1)
            ,("M-r", spawn "dmenu_run")
@@ -139,7 +140,7 @@ myConfig = withNavigation2DConfig defaultNavigation2DConfig $ ewmh defaultConfig
                 , clickJustFocuses = False
                 , normalBorderColor = "#202020"
                 , focusedBorderColor = "#405565"
-                , borderWidth = 2
+                , borderWidth = 5
                 , startupHook = setWMName "LG3D" >> checkKeymap myConfig myKeymap
                 , handleEventHook = docksEventHook
                 , manageHook = manageHook defaultConfig <+> composeAll

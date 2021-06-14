@@ -66,10 +66,25 @@
 (evil-define-key 'normal projectile-mode-map
   (kbd "C-p") '+ivy/projectile-find-file)
 
+(defun rainbow-identifiers-never-default (begin _end)
+  "Never highlight the `default` face. This has some negative consequences re:
+jsx and ts imports, but it is better than having literally all the html text
+content be highlighted."
+  (let ((face (get-text-property begin 'face)))
+    (not (null face))))
+
+(defun rainbow-identifiers-jsx-fix (begin _end)
+  (cond
+   ((not (derived-mode-p 'web-mode)) t)
+   ((and (web-mode-jsx-is-html begin) (not (web-mode-jsx-is-expr begin)))
+    (not (null (get-text-property begin 'tag-name))))
+   (t t)))
+
 (after! rainbow-identifiers
   (setq! rainbow-identifiers-choose-face-function #'rainbow-identifiers-cie-l*a*b*-choose-face)
-  (setq! rainbow-identifiers-faces-to-override '(font-lock-function-name-face font-lock-variable-name-face font-lock-type-face web-mode-variable-name-face web-mode-function-name-face web-mode-function-call-face))
-  (setq! rainbow-identifiers-cie-l*a*b*-color-count (* 256 256 256)))
+  (setq! rainbow-identifiers-faces-to-override '(font-lock-function-name-face font-lock-variable-name-face font-lock-type-face web-mode-variable-name-face web-mode-function-name-face web-mode-function-call-face web-mode-html-tag-face))
+  (setq! rainbow-identifiers-cie-l*a*b*-color-count (* 256 256 256))
+  (setq! rainbow-identifiers-filter-functions '(rainbow-identifiers-face-overridable rainbow-identifiers-jsx-fix)))
 
 (add-hook 'prog-mode-hook #'rainbow-identifiers-mode)
 
@@ -231,8 +246,11 @@ _e_ ^+^ _n_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
   (map! :leader "P t" #'profiler-stop
         :leader "P r" #'profiler-report))
 
-(after! clojure
-  (modify-syntax-entry ?- "w" clojure-mode-syntax-table))
+(after! clojure-mode
+  (modify-syntax-entry ?- "w" clojure-mode-syntax-table)
+  (define-clojure-indent
+    (alet 'defun)
+    (mlet 'defun)))
 
 (setq tab-width 2)
 
@@ -241,13 +259,108 @@ _e_ ^+^ _n_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
   (setq! web-mode-markup-indent-offset 2)
   (setq! web-mode-css-indent-offset 2))
 
-;; (add-hook 'after-change-major-mode-hook (defun disable-prettify-symbols-mode ()
-;;                                           (prettify-symbols-mode -1)))
-
-;; (setq +ligatures-extras-in-modes nil)
-;; (global-prettify-symbols-mode -1)
+(after! typescript-mode
+  (setq! typescript-indent-level 2)
+  (setq-hook! 'typescript-mode-hook
+    tab-width typescript-indent-level))
 
 (setq! csv-separators (list "|" "," "	"))
 
 (after! js
   (setq! js-indent-level 2))
+
+(after! magit
+  (map! :map magit-status-mode-map "p" #'magit-push))
+
+(after! rustic
+  (setq! lsp-rust-analyzer-proc-macro-enable t)
+  (setq! lsp-rust-analyzer-completion-add-call-argument-snippets nil))
+
+(after! lsp-mode
+  (setq! lsp-ui-sideline-show-code-actions nil))
+
+(after! clojure-mode
+  (defun clojure-indent-function (indent-point state)
+    "When indenting a line within a function call, indent properly.
+
+INDENT-POINT is the position where the user typed TAB, or equivalent.
+Point is located at the point to indent under (for default indentation);
+STATE is the `parse-partial-sexp' state for that position.
+
+If the current line is in a call to a Clojure function with a
+non-nil property `clojure-indent-function', that specifies how to do
+the indentation.
+
+The property value can be
+
+- `:defn', meaning indent `defn'-style;
+- an integer N, meaning indent the first N arguments specially
+  like ordinary function arguments and then indent any further
+  arguments like a body;
+- a function to call just as this function was called.
+  If that function returns nil, that means it doesn't specify
+  the indentation.
+- a list, which is used by `clojure-backtracking-indent'.
+
+This function also returns nil meaning don't specify the indentation."
+    ;; Goto to the open-paren.
+    (goto-char (elt state 1))
+    ;; Maps, sets, vectors and reader conditionals.
+    (if (clojure--not-function-form-p)
+        (1+ (current-column))
+      ;; Function or macro call.
+      (forward-char 1)
+      (let ((method (clojure--find-indent-spec))
+            (last-sexp calculate-lisp-indent-last-sexp)
+            (containing-form-column (1- (current-column))))
+        (pcase method
+          ((or (pred integerp) `(m))
+           (let ((method (if (integerp method) method m))
+                 (pos -1))
+             (condition-case nil
+                 (while (and (<= (point) indent-point)
+                             (not (eobp)))
+                   (clojure-forward-logical-sexp 1)
+                   (cl-incf pos))
+               ;; If indent-point is _after_ the last sexp in the
+               ;; current sexp, we detect that by catching the
+               ;; `scan-error'. In that case, we should return the
+               ;; indentation as if there were an extra sexp at point.
+               (scan-error (cl-incf pos)))
+             (cond
+              ;; The first non-special arg. Rigidly reduce indentation.
+              ((= pos (1+ method))
+               (+ lisp-body-indent containing-form-column))
+              ;; Further non-special args, align with the arg above.
+              ((> pos (1+ method))
+               (clojure--normal-indent last-sexp 'always-align))
+              ;; Special arg. Rigidly indent with a large indentation.
+              (t
+               (+ (* 2 lisp-body-indent) containing-form-column)))))
+          (`:defn
+           (+ lisp-body-indent containing-form-column))
+          ((pred functionp)
+           (funcall method indent-point state))
+          ;; No indent spec, do the default.
+          (`nil
+           (let ((function (thing-at-point 'symbol)))
+             (cond
+              ;; Preserve useful alignment of :require (and friends) in `ns' forms.
+              ((and function (string-match "^:" function))
+               (clojure--normal-indent last-sexp 'always-align))
+              ;; This should be identical to the :defn above.
+              ((and function
+                    (string-match "\\`\\(?:\\S +/\\)?\\(def[a-z]*\\|with-\\)"
+                                  function)
+                    (not (string-match "\\`default" (match-string 1 function))))
+               (+ lisp-body-indent containing-form-column))
+              ;; Finally, nothing special here, just respect the user's
+              ;; preference.
+              (t (clojure--normal-indent last-sexp clojure-indent-style))))))))))
+
+(setq! gcmh-high-cons-threshold 1073741824)
+
+(ligature-set-ligatures 'prog-mode '("->" "->>" "!=" "==" "===" "!==" ">=" "<=" "<<" ">>"))
+(global-ligature-mode t)
+
+(setq! +format-on-save-enabled-modes (nconc +format-on-save-enabled-modes '(clojure-mode clojurec-mode clojurescript-mode)))

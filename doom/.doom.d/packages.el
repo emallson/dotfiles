@@ -52,3 +52,11 @@
 (package! tao-theme)
 (package! rainbow-identifiers)
 (package! evil-escape :disable t)
+
+;; use this instead of the builtin ligatures setup because it doesn't include a
+;; bunch of cruft that slows things down w/ rainbow-identifiers
+(package! ligature
+  :recipe (:host github :repo "mickeynp/ligature.el")
+  :pin "5d75849")
+
+(package! paredit :recipe (:depth full))

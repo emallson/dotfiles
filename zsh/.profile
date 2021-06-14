@@ -24,3 +24,4 @@ export PATH="$HOME/.cabal/bin:$PATH"
 
 export GUIX_PROFILE="$HOME/.guix-profile"
 . "$GUIX_PROFILE/etc/profile"
+export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
