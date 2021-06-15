@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Iosevka Extended:size=9:antialias=true:autohint=true:dpi=210";
+static char font[] = "Iosevka Extended:size=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
