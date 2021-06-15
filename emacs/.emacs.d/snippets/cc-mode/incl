@@ -1,4 +1,0 @@
-#name : #include <...> (incl)
-#key  : incl
-# --
-#include <$1>

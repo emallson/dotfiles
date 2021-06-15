@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: karma-it
-# key: it
-# --
-it("$1", function() {
-    $0
-});

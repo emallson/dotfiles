@@ -1,9 +1,0 @@
-[Unit]
-Description="GPG Agent (Env File: ~/.gpg-agent-info)"
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/gpg-agent --daemon --write-env-file %h/.gpg-agent-info
-
-[Install]
-WantedBy=default.target
