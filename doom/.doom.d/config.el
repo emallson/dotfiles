@@ -113,7 +113,7 @@ content be highlighted."
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "Source Code Pro")
 ;;       doom-unicode-font (font-spec :family "DejaVu Sans Mono"))
-(setq doom-font (font-spec :family "Iosevka Extended"))
+(setq doom-font (font-spec :family "Iosevka Extended" :size 24))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -360,7 +360,7 @@ This function also returns nil meaning don't specify the indentation."
 
 (setq! gcmh-high-cons-threshold 1073741824)
 
-(ligature-set-ligatures 'prog-mode '("->" "->>" "!=" "==" "===" "!==" ">=" "<=" "<<" ">>"))
+(ligature-set-ligatures 'prog-mode '("->" "->>" "!=" "==" "===" "!==" ">=" "<=" "<<" ">>" "=>" "==>" "===>"))
 (global-ligature-mode t)
 
 (setq! +format-on-save-enabled-modes (nconc +format-on-save-enabled-modes '(clojure-mode clojurec-mode clojurescript-mode)))

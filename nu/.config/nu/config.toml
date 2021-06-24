@@ -1,19 +1,15 @@
 disable_table_indexes = true
 edit_mode = "emacs"
-path = ["/home/emallson/.guix-profile/bin", "/home/emallson/.config/guix/current/bin", "/home/emallson/miniconda3/condabin", "/home/emallson/.cabal/bin", "/home/emallson/.emacs.d/bin", "/home/emallson/.config/yarn/global/node_modules/.bin", "/home/emallson/.poetry/bin", "/home/emallson/.cargo/bin", "/home/emallson/.cask/bin", "/home/emallson/.local/bin", "/home/emallson/.nvm/versions/node/v11.13.0/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/local/games", "/usr/games"]
+path = ["/home/emallson/.guix-profile/bin", "/home/emallson/.config/guix/current/bin", "/home/emallson/miniconda3/condabin", "/home/emallson/.cabal/bin", "/home/emallson/.emacs.d/bin", "/home/emallson/.config/yarn/global/node_modules/.bin", "/home/emallson/.poetry/bin", "/home/emallson/.cargo/bin", "/home/emallson/.cask/bin", "/home/emallson/.local/bin", "/home/emallson/.nvm/versions/node/v16.3.0/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/local/games", "/usr/games"]
 prompt = "__zoxide_hook;starship prompt"
 skip_welcome_message = true
-
-startup = [
-  "alias gst = git status",
-  "alias j = __zoxide_z",
-  "source ~/.config/nu/zoxide.nu"
-]
+startup = ["alias gst = git status", "alias j = __zoxide_z", "source ~/.config/nu/zoxide.nu"]
 
 [color_config]
 separator_color = "black"
 
 [env]
+BAT_THEME = "Coldark-Cold"
 BOOT_JVM_OPTIONS = "-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none"
 BROWSER = "firefox"
 CARGO_HOME = "/home/emallson/.cargo/"
