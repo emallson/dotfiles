@@ -8,7 +8,19 @@
  '(safe-local-variable-values
    '((eval progn
            (make-variable-buffer-local 'cider-jack-in-nrepl-middlewares)
-           (add-to-list 'cider-jack-in-nrepl-middlewares "shadow.cljs.devtools.server.nrepl/middleware")))))
+           (add-to-list 'cider-jack-in-nrepl-middlewares "shadow.cljs.devtools.server.nrepl/middleware"))))
+ '(warning-suppress-types
+   '((nrepl-connected-hook)
+     (nrepl-connected-hook)
+     (nrepl-connected-hook)
+     (lsp-on-idle-hook)
+     (lsp-on-idle-hook)
+     (before-save-hook)
+     (before-save-hook)
+     (before-save-hook)
+     (before-save-hook)
+     (before-save-hook)
+     (before-save-hook))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

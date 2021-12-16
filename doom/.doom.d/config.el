@@ -113,7 +113,7 @@ content be highlighted."
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "Source Code Pro")
 ;;       doom-unicode-font (font-spec :family "DejaVu Sans Mono"))
-(setq doom-font (font-spec :family "Iosevka Extended" :size 24))
+(setq doom-font (font-spec :family "Iosevka Extended" :size 15))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -273,11 +273,19 @@ _e_ ^+^ _n_ | _d_one      ^ ^  | _o_ops   | _M_: matcher %-5s(ivy--matcher-desc)
   (map! :map magit-status-mode-map "p" #'magit-push))
 
 (after! rustic
+  (setq! rustic-lsp-server 'rust-analyzer)
   (setq! lsp-rust-analyzer-proc-macro-enable t)
   (setq! lsp-rust-analyzer-completion-add-call-argument-snippets nil))
 
 (after! lsp-mode
+  (setq! lsp-idle-delay 1)
   (setq! lsp-ui-sideline-show-code-actions nil))
+
+(after! lsp-ui
+  (setq lsp-ui-doc-enable nil))
+
+(after! company-mode
+  (setq! company-idle-delay 1))
 
 (after! clojure-mode
   (defun clojure-indent-function (indent-point state)
@@ -358,9 +366,34 @@ This function also returns nil meaning don't specify the indentation."
               ;; preference.
               (t (clojure--normal-indent last-sexp clojure-indent-style))))))))))
 
-(setq! gcmh-high-cons-threshold 1073741824)
+;; (setq! gcmh-high-cons-threshold (* 16 1073741824))
+;; (setq! gcmh-low-cons-threshold 1073741824)
+;; (setq! gcmh-idle-delay 15)
 
-(ligature-set-ligatures 'prog-mode '("->" "->>" "!=" "==" "===" "!==" ">=" "<=" "<<" ">>" "=>" "==>" "===>"))
-(global-ligature-mode t)
+;; (ligature-set-ligatures 'prog-mode
+;;                         '(("-" (rx (* "-") ">" (? ">")))
+;;                           ("!" (rx "=" (? "=")))
+;;                           ("=" (rx "=" (? "=")))
+;;                           (">" (rx (| ">" "=")))
+;;                           ("<" (rx (| "<" "=")))
+;;                           ("=" (rx (* "=") ">"))))
+;; (global-ligature-mode t)
 
-(setq! +format-on-save-enabled-modes (nconc +format-on-save-enabled-modes '(clojure-mode clojurec-mode clojurescript-mode)))
+(setq! +format-on-save-enabled-modes (nconc +format-on-save-enabled-modes '(clojure-mode clojurec-mode clojurescript-mode html-mode web-mode)))
+
+(after! json-mode
+  (setq! json-reformat:indent-width 2))
+
+(after! rescript-mode
+  (setq! lsp-rescript-server-command '("node" "/home/emallson/.rescript-lsp/out/server.js" "--stdio"))
+  (require 'lsp-rescript)
+  (add-hook! rescript-mode :append #'lsp-deferred))
+
+
+(after! flycheck
+  (add-hook! flycheck-mode :append (flycheck-popup-tip-mode -1)))
+
+(after! counsel
+  (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s || true"))
+
+(setq auth-sources (cons "~/.authinfo" auth-sources))
