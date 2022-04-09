@@ -10,7 +10,6 @@ export NVM_DIR="/home/emallson/.nvm"
 
 eval `dircolors ~/.dircolors`;
 
-export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64'
 export BOOT_JVM_OPTIONS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xverify:none'
 
 which systemctl &> /dev/null && systemctl --user import-environment PATH
@@ -22,6 +21,7 @@ export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+export PATH="$HOME/.ebcli-virtual-env/executables:$PATH"
 
 export GUIX_PROFILE="$HOME/.guix-profile"
 . "$GUIX_PROFILE/etc/profile"

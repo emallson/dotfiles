@@ -84,3 +84,5 @@ function add-music() {
        cd -1;
     fi
 }
+
+source /home/emallson/.config/broot/launcher/bash/br

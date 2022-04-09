@@ -12,7 +12,6 @@ noremap <C-w>s <C-w><up>
 noremap <C-w>t <C-w><down>
 noremap <M-a> 0
 noremap <M-o> $
-noremap <M-o> <End>
 noremap gb <C-o>
 noremap <M-x> :
 
@@ -22,8 +21,9 @@ let maplocalleader = ",m"
 set termguicolors
 set background=light
 
-set autoindent
-set tabstop=2 expandtab shiftwidth=2
+set signcolumn=yes
+set tabstop=4
+set expandtab
 
 colorscheme plain
 
@@ -33,15 +33,18 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 require('plugins');
 
 require('nvim-treesitter.configs').setup({
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
-	rainbow = {
-		enable = true,
-		extended_mode = true
-	},
-  rainbow_identifiers = {
-    enable = true,
-  }
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+    indent = {
+        enable = true,
+    },
+    rainbow = {
+        enable = true,
+        extended_mode = true
+    },
+    rainbow_identifiers = {
+        enable = true,
+    }
 })
